@@ -1,0 +1,11 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace service.Interface
+{
+    public partial interface IFGInventoryService
+    {
+        Task<List<Pccount>> GetPcCountAsync(string whCode, string subwhCode);
+        Task<List<Pcinput>> ExecutePcInputAndQueryAsync(Pcinputrequest req);
+    }
+}
