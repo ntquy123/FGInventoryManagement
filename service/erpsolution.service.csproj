@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FGInventoryManagement.csproj" />
+    <ProjectReference Include="..\erpsolution.api.csproj" />
   </ItemGroup>
 
 </Project>
