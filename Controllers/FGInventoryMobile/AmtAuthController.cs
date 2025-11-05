@@ -1,10 +1,15 @@
-﻿namespace FGInventoryManagement.Controllers.FGInventoryMobile
+﻿using dal.EF;
+using entities.Common;
+using FGInventoryManagement.Base;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class AmtAuthController : ControllerBaseEx<IAmtAuthService, OspAppusrTbl, decimal>
     {
         private AmtContext _context;
         private IMapper _mapper;
-        private AppSettings _appSettings;
         public IServiceProvider _serviceProvider;
         private readonly IPkTbMasDeviceService _deviceService;
         private readonly IMasUserService _masUserService;

@@ -1,27 +1,24 @@
-﻿using entities.Common;
+﻿using dal.EF;
+using entities.Common;
+using FGInventoryManagement.Base;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using service.Interface;
 
 namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class PhysicalCountingController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
     {
         private AmtContext _context;
-        private IMapper _mapper;
-        private AppSettings _appSettings;
         public IServiceProvider _serviceProvider;
-        private readonly IPkTbMasDeviceService _deviceService;
+ 
         public PhysicalCountingController(IFGInventoryService service,
         IServiceProvider serviceProvider,
         AmtContext context,
-        IPkTbMasDeviceService deviceService,
         ICurrentUser currentUser) : base(service, currentUser)
         {
             _serviceProvider = serviceProvider;
             _context = context;
-            _deviceService = deviceService;
-
-            var option = (IOptions<AppSettings>)_serviceProvider.GetService(typeof(IOptions<AppSettings>));
-            if (option != null)
-                _appSettings = option.Value;
         }
 
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
