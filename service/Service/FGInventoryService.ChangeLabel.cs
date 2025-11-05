@@ -1,14 +1,15 @@
-using Microsoft.EntityFrameworkCore;
-using Oracle.ManagedDataAccess.Client;
+ 
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using dal.EF;
+using service.Common.Base;
+using service.Interface;
 namespace service.Service
 {
-    public partial class FGInventoryService
+    public partial class FGInventoryService : ServiceBase<FgRequestRow>
     {
         public async Task<List<UccListDetailDto>> ScanQRtoChangeLabelForCarton(string cartonId)
         {
