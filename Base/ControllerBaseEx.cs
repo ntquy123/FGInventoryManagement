@@ -5,6 +5,9 @@ using System.Linq.Expressions;
 using System.Security;
 using entities.Common;
 using service.Common.Base.Interface;
+using Microsoft.EntityFrameworkCore;
+using erpsolution.api.Controllers.Base;
+using erpsolution.entities.Common;
 
 namespace FGInventoryManagement.Base
 {

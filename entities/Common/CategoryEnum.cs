@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿ 
 
-namespace entities.Common
+namespace erpsolution.entities.Common
 {
+    public enum Permission
+    {
+        SAVE_YN,
+        DELETE_YN,
+        SEARCH_YN,
+        POSTING_YN,
+        PDA_DEVICE_YN
+    }
     public enum DataModeType
     {
         View = 0,
