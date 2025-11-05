@@ -1,3 +1,4 @@
+using erpsolution.dal.DTO;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace service.Service
                 FROM MT_UCC_LIST MULL
                 LEFT JOIN (
                     SELECT MFSU.*
-                    FROM MT_FG_STOCK MFSM, MT_FG_STOCK_UCC MFSU
+                    FROM c MFSM, MT_FG_STOCK_UCC MFSU
                     WHERE MFSM.WH_CODE     = MFSU.WH_CODE
                       AND MFSM.SUBWH_CODE  = MFSU.SUBWH_CODE
                       AND MFSM.LOC_CODE    = MFSU.LOC_CODE
@@ -50,7 +51,8 @@ namespace service.Service
                  AND MFSD.STLCOSN   = MULL.STLCOSN
                  AND MFSD.STLREVN   = MULL.STLREVN
                  AND MFSD.CARTON_ID = MULL.CARTON_ID
-                INNER JOIN AO_STLMST_TBL ASMT
+                INNER JOIN AO_STLMST_TBL ASMTMT_UCC_LIST
+
                         ON MULL.STLCD   = ASMT.STLCD
                        AND MULL.STLSIZ  = ASMT.STLSIZ
                        AND MULL.STLCOSN = ASMT.STLCOSN

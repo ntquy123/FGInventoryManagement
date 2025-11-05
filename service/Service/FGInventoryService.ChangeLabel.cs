@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using erpsolution.dal.DTO;
 using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using service.Interface;

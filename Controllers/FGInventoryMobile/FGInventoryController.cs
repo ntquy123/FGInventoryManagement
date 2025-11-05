@@ -1,4 +1,16 @@
-﻿namespace FGInventoryManagement.Controllers.FGInventoryMobile
+﻿using AutoMapper;
+using entities.Common;
+using entities.Setting;
+using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
+using FGInventoryManagement.Base;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using service.Common.Base.Interface;
+using service.Interface;
+
+namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class FGInventoryController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
     {

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "erpsolution.api", "erpsolut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "erpsolution.service", "service\erpsolution.service.csproj", "{67923914-EB76-4CC1-90E2-1906BD831BE4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "erpsolution.da", "dal\erpsolution.da.csproj", "{EB81AF55-90B1-4581-ADC4-EFD1148BDAD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "erpsolution.dal", "dal\erpsolution.dal.csproj", "{EB81AF55-90B1-4581-ADC4-EFD1148BDAD1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "erpsolution.entities", "entities\erpsolution.entities.csproj", "{7EDE7E21-DB03-416A-98F5-951F2117A20C}"
 EndProject
