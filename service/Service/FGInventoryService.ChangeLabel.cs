@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using dal.EF;
+using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using service.Interface;
 namespace service.Service

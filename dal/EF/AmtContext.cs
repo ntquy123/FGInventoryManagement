@@ -19,8 +19,8 @@ namespace erpsolution.dal.EF
         }
  
         public virtual DbSet<MtUccList> MtUccList { get; set; }
-        public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
-        public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
+       // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
+      //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -229,8 +229,8 @@ namespace erpsolution.dal.EF
                     .HasColumnName("DEST");
             });
 
-            modelBuilder.Entity<UserMenuRoleView>().HasNoKey();
-            modelBuilder.Entity<UserMenuInfo>().HasNoKey();
+           // modelBuilder.Entity<UserMenuRoleView>().HasNoKey();
+            //modelBuilder.Entity<UserMenuInfo>().HasNoKey();
 
 
             OnModelCreatingPartial(modelBuilder);
