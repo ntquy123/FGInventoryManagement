@@ -10,25 +10,18 @@ namespace FGInventoryManagement
 {
     public class Startup
     {
-        public Startup(IWebHostEnvironment hostEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
-          
-
-            HostingEnvironment = hostEnvironment;
-            var builder = new ConfigurationBuilder().SetBasePath(hostEnvironment.ContentRootPath)
+            // Rebuild the configuration so environment specific appsettings files are loaded consistently.
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(hostEnvironment.ContentRootPath)
+                .AddConfiguration(configuration)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+                .AddEnvironmentVariables()
+                .Build();
         }
 
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        private IWebHostEnvironment HostingEnvironment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.

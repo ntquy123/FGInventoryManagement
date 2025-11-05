@@ -1,67 +1,24 @@
+using erpsolution.logger;
 using FGInventoryManagement;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Clear default logging providers so NLog is the single source of truth for log output.
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Instantiate Startup so we can continue using the familiar Configure/ConfigureServices pattern.
+var startup = new Startup(builder.Configuration, builder.Environment);
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Resolve the logging dependencies that Startup.Configure expects.
+var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
+var loggerManager = app.Services.GetRequiredService<ILoggerManager>();
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+// Configure the HTTP pipeline using the existing Startup logic.
+startup.Configure(app, app.Environment, loggerFactory, app.Services, loggerManager);
 
 app.Run();
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        try
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-
-    //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-    //    WebHost.CreateDefaultBuilder(args)
-    //        .UseStartup<Startup>();
-
-    public static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        var appSettings = Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json")));
-        var environmentValue = appSettings["Environment"].ToString();
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureLogging((hostingContext, loggingBuilder) =>
-            {
-                loggingBuilder.AddConsole(x => x.IncludeScopes = true).AddDebug();
-            })
-            .UseNLog()
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                if (!String.IsNullOrEmpty(environmentValue))
-                {
-                    webBuilder.UseEnvironment(environmentValue);
-                }
-                //When start multi app, so we need to config it
-                //webBuilder.UseUrls(appSettings["Urls"].ToString());
-                webBuilder.UseStartup<Startup>();
-            });
-    }
-}
