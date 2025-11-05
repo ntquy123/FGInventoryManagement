@@ -19,6 +19,8 @@ namespace erpsolution.dal.EF
         }
  
         public virtual DbSet<MtUccList> MtUccList { get; set; }
+
+        public virtual DbSet<MtFgStockUcc> MtFgStockUcc { get; set; }
        // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
       //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -227,6 +229,93 @@ namespace erpsolution.dal.EF
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasColumnName("DEST");
+            });
+
+            modelBuilder.Entity<MtFgStockUcc>(entity =>
+            {
+                entity.ToTable("MT_FG_STOCK_UCC");
+
+                entity.HasKey(e => new { e.WhCode, e.SubwhCode, e.LocCode, e.Aono, e.Stlcd, e.Stlsiz, e.Stlcosn, e.Stlrevn, e.CartonId });
+
+                entity.Property(e => e.WhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WH_CODE");
+
+                entity.Property(e => e.SubwhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SUBWH_CODE");
+
+                entity.Property(e => e.LocCode)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("LOC_CODE");
+
+                entity.Property(e => e.Byrcd)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("BYRCD");
+
+                entity.Property(e => e.Aono)
+                    .HasMaxLength(11)
+                    .IsUnicode(false)
+                    .HasColumnName("AONO");
+
+                entity.Property(e => e.Stlcd)
+                    .HasMaxLength(7)
+                    .IsUnicode(false)
+                    .HasColumnName("STLCD");
+
+                entity.Property(e => e.Stlsiz)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("STLSIZ");
+
+                entity.Property(e => e.Stlcosn)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("STLCOSN");
+
+                entity.Property(e => e.Stlrevn)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("STLREVN");
+
+                entity.Property(e => e.CartonId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("CARTON_ID");
+
+                entity.Property(e => e.StockQty)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("STOCK_QTY");
+
+                entity.Property(e => e.Unitpri)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("UNITPRI");
+
+                entity.Property(e => e.ReserveQty)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("RESERVE_QTY");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
             });
 
            // modelBuilder.Entity<UserMenuRoleView>().HasNoKey();
