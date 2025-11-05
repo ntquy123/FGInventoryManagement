@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
+using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using service.Interface;
@@ -53,31 +56,15 @@ namespace service.Service
             }
         }
 
-        public async Task<List<UccListBoxDto>> ScanQRtoChangeLabelForBuyer(string cartonId)
+        public async Task<List<MtUccList>> ScanQRtoChangeLabelForBuyer(string cartonId)
         {
             try
             {
-                var result = await _amtContext.UccListBoxDto.FromSqlInterpolated($@"
-            SELECT
-                 MULL.BYRCD       AS ByrCd
-               , MULL.BYR_PONO    AS ByrPono
-               , MULL.STLCD       AS Stlcd
-               , MULL.BYR_STLNAME AS ByrStlname
-               , MULL.BYR_STLCLR  AS ByrStlclr
-               , MULL.BYR_STLCLRWAY AS ByrStlclrway
-               , MULL.TOTAL_QTY   AS Qty
-               , MULL.CARTON_ID   AS CartonId
-               , MULL.MIXED_FLAG  AS MixedFlag
-               , CASE
-                    WHEN MULL.QTY_PER_CTN - MULL.TOTAL_QTY > 0
-                    THEN 'Y'
-                    ELSE 'N'
-                 END AS PatialBox
-            FROM MT_UCC_LIST MULL
-            WHERE MULL.USED_FLAG = 'Y'
-              AND MULL.LABEL_TYPE = 'B'
-              AND MULL.CARTON_ID = {cartonId}
-        ").ToListAsync();
+                var result = await _amtContext.MtUccList
+                    .Where(m => m.UsedFlag == "Y"
+                                && m.LabelType == "B"
+                                && m.CartonId == cartonId)
+                    .ToListAsync();
 
                 return result;
             }
