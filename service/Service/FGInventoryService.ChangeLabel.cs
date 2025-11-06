@@ -27,34 +27,39 @@ namespace service.Service
         {
             try
             {
-                var result = await _amtContext.UccListDetailDto.FromSqlInterpolated($@"
-            SELECT
-                 MULL.BYRCD AS ByrCd
-               , MULL.AONO AS Aono
-               , MULL.STLCD AS Stlcd
-               , ASMT.STLNM AS Stlnm
-               , MULL.STLSIZ AS Stlsiz
-               , MULL.STLCOSN AS Stlcosn
-               , ASMT.STLCLRWAY AS Stlclrway
-               , MULL.STLREVN AS Stlrevn
-               , MULL.TOTAL_QTY AS Qty
-               , MULL.CARTON_ID AS CartonId
-               , MULL.MIXED_FLAG AS MixedFlag
-               , CASE
-                    WHEN MULL.QTY_PER_CTN - MULL.TOTAL_QTY > 0
-                    THEN 'Y'
-                    ELSE 'N'
-                 END AS PatialBox
-            FROM MT_UCC_LIST MULL
-            INNER JOIN AO_STLMST_TBL ASMT
-                ON MULL.STLCD = ASMT.STLCD
-               AND MULL.STLSIZ = ASMT.STLSIZ
-               AND MULL.STLCOSN = ASMT.STLCOSN
-               AND MULL.STLREVN = ASMT.STLREVN
-            WHERE MULL.USED_FLAG = 'Y'
-              AND MULL.LABEL_TYPE = 'P'
-              AND MULL.CARTON_ID = {cartonId}
-        ").ToListAsync();
+                var result = await (from mull in _amtContext.MtUccList
+                                    join asmt in _amtContext.AoStlmstTbl on new
+                                    {
+                                        mull.Stlcd,
+                                        mull.Stlsiz,
+                                        mull.Stlcosn,
+                                        mull.Stlrevn
+                                    }
+                                    equals new
+                                    {
+                                        asmt.Stlcd,
+                                        asmt.Stlsiz,
+                                        asmt.Stlcosn,
+                                        asmt.Stlrevn
+                                    }
+                                    where mull.UsedFlag == "Y"
+                                          && mull.LabelType == "P"
+                                          && mull.CartonId == cartonId
+                                    select new UccListDetailDto
+                                    {
+                                        ByrCd = mull.Byrcd,
+                                        Aono = mull.Aono,
+                                        Stlcd = mull.Stlcd,
+                                        Stlnm = asmt.Stlnm,
+                                        Stlsiz = mull.Stlsiz,
+                                        Stlcosn = mull.Stlcosn,
+                                        Stlclrway = asmt.Stlclrway,
+                                        Stlrevn = mull.Stlrevn,
+                                        Qty = mull.TotalQty,
+                                        CartonId = mull.CartonId,
+                                        MixedFlag = mull.MixedFlag,
+                                        PatialBox = ((mull.QtyPerCtn ?? 0) - (mull.TotalQty ?? 0)) > 0 ? "Y" : "N"
+                                    }).ToListAsync();
 
                 return result;
             }
