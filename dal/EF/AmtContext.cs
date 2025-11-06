@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using erpsolution.dal.EFAMT;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,9 @@ namespace erpsolution.dal.EF
         public virtual DbSet<MtFgStockUcc> MtFgStockUcc { get; set; }
 
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
-       // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
-      //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
+        public virtual DbSet<MtUccListUpload> MtUccListUpload { get; set; }
+        // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
+        //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -36,6 +38,174 @@ namespace erpsolution.dal.EF
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MtUccListUpload>(entity =>
+            {
+                entity.HasKey(e => new { e.XlsId, e.XlsSq })
+                      .HasName("PK_MT_UCC_LIST_UPLOAD");
+
+                entity.ToTable("MT_UCC_LIST_UPLOAD");
+
+                // PK fields
+                entity.Property(e => e.XlsId)
+                    .HasColumnName("XLS_ID")
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.XlsSq)
+                    .HasColumnName("XLS_SQ");
+
+                // String / varchar columns
+                entity.Property(e => e.WhCode)
+                    .HasColumnName("WH_CODE")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CartonId)
+                    .HasColumnName("CARTON_ID")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrCd)
+                    .HasColumnName("BYRCD")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LabelType)
+                    .HasColumnName("LABEL_TYPE")
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AoNo)
+                    .HasColumnName("AONO")
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StlCd)
+                    .HasColumnName("STLCD")
+                    .HasMaxLength(7)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StlSiz)
+                    .HasColumnName("STLSIZ")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StlCosn)
+                    .HasColumnName("STLCOSN")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StlRevn)
+                    .HasColumnName("STLREVN")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrPono)
+                    .HasColumnName("BYR_PONO")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrStlCd)
+                    .HasColumnName("BYR_STLCD")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrStlName)
+                    .HasColumnName("BYR_STLNAME")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrStlClr)
+                    .HasColumnName("BYR_STLCLR")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ByrStlClrWay)
+                    .HasColumnName("BYR_STLCLRWAY")
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                // Dates
+                entity.Property(e => e.ProdDate)
+                    .HasColumnName("PROD_DATE");
+
+                // Numeric columns (decimal? as requested)
+                entity.Property(e => e.TotalQty)
+                    .HasColumnName("TOTAL_QTY");
+
+                entity.Property(e => e.QtyPerCtn)
+                    .HasColumnName("QTY_PER_CTN");
+
+                entity.Property(e => e.CtnUnit)
+                    .HasColumnName("CTN_UNIT")
+                    .HasMaxLength(14)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CtnQty)
+                    .HasColumnName("CTN_QTY");
+
+                entity.Property(e => e.CtnNo)
+                    .HasColumnName("CTN_NO");
+
+                entity.Property(e => e.CtnSizUnit)
+                    .HasColumnName("CTN_SIZ_UNIT")
+                    .HasMaxLength(14)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CtnLen)
+                    .HasColumnName("CTN_LEN");
+
+                entity.Property(e => e.CtnWid)
+                    .HasColumnName("CTN_WID");
+
+                entity.Property(e => e.CtnHgt)
+                    .HasColumnName("CTN_HGT");
+
+                entity.Property(e => e.CtnCbm)
+                    .HasColumnName("CTN_CBM");
+
+                entity.Property(e => e.CtnWtUnit)
+                    .HasColumnName("CTN_WT_UNIT")
+                    .HasMaxLength(14)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CtnNw)
+                    .HasColumnName("CTN_NW");
+
+                entity.Property(e => e.CtnGw)
+                    .HasColumnName("CTN_GW");
+
+                entity.Property(e => e.MixedFlag)
+                    .HasColumnName("MIXED_FLAG")
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ErrMsg)
+                    .HasColumnName("ERR_MSG")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CrtDat)
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.CrtId)
+                    .HasColumnName("CRTID")
+                    .HasMaxLength(8)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UptDat)
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.UptId)
+                    .HasColumnName("UPTID")
+                    .HasMaxLength(8)
+                    .IsUnicode(false);
+            });
             modelBuilder.Entity<AoStlmstTbl>(entity =>
             {
                 entity.ToTable("AO_STLMST_TBL");

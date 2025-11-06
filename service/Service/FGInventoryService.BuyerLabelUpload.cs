@@ -23,15 +23,15 @@ namespace service.Service
 {
     public partial class FGInventoryService : ServiceBase<FgRequestRow>
     {
-        public async Task<List<StByrmstTbl>> GetComBoBoxForBuyer()
+        public async Task<List<StByrmstTblView>> GetComBoBoxForBuyer()
         {
             return await _amtContext.StByrmstTbl
                 .AsNoTracking()
                 .Where(x => x.Useyn == "Y")
-                .Select(x => new StByrmstTbl
+                .Select(x => new StByrmstTblView
                 {
-                    Byrcd = x.Byrcd,
-                    Byrnm = x.Byrnm
+                    ByrCd = x.Byrcd,
+                    ByrNm = x.Byrnm
                 })
                 .ToListAsync();
         }

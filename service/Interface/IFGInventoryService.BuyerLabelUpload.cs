@@ -1,13 +1,14 @@
 using erpsolution.dal.DTO;
+using service.Common.Base.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace erpsolution.service.Interface
 {
-    public partial interface IFGInventoryService
+    public partial interface IFGInventoryService : IServiceBase<FgRequestRow>
     {
-        Task<List<StByrmstTbl>> GetComBoBoxForBuyer();
+        Task<List<StByrmstTblView>> GetComBoBoxForBuyer();
         Task<List<MtUccListUpload>> SaveBuyerLabelUpload(DataSaveLableUpload Data);
         Task<string> GetScanIdAsync(bool isExcel, DateTime? date = null, string module = "UCC_UPLOAD", string separator = "@", int width = 6);
     }
