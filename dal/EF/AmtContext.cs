@@ -25,6 +25,10 @@ namespace erpsolution.dal.EF
 
         public virtual DbSet<MtFgStockUcc> MtFgStockUcc { get; set; }
 
+        public virtual DbSet<MtFgPcount> MtFgPcount { get; set; }
+
+        public virtual DbSet<StTypecodeTbl> StTypecodeTbl { get; set; }
+
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
         public virtual DbSet<MtUccListUpload> MtUccListUpload { get; set; }
         // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
@@ -711,6 +715,114 @@ namespace erpsolution.dal.EF
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasColumnName("DEST");
+            });
+
+            modelBuilder.Entity<MtFgPcount>(entity =>
+            {
+                entity.ToTable("MT_FG_PCOUNT");
+
+                entity.HasKey(e => new { e.WhCode, e.SubwhCode, e.PcName })
+                    .HasName("MT_FG_PCOUNT_U1");
+
+                entity.Property(e => e.WhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WH_CODE");
+
+                entity.Property(e => e.SubwhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SUBWH_CODE");
+
+                entity.Property(e => e.PcName)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("PC_NAME");
+
+                entity.Property(e => e.FrLoc)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("FR_LOC");
+
+                entity.Property(e => e.ToLoc)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("TO_LOC");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("STATUS");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+            });
+
+            modelBuilder.Entity<StTypecodeTbl>(entity =>
+            {
+                entity.ToTable("ST_TYPECODE_TBL");
+
+                entity.HasKey(e => new { e.CType, e.CId });
+
+                entity.Property(e => e.CType)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("C_TYPE");
+
+                entity.Property(e => e.CId)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("C_ID");
+
+                entity.Property(e => e.CCode)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("C_CODE");
+
+                entity.Property(e => e.CName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("C_NAME");
+
+                entity.Property(e => e.CSeq)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("C_SEQ");
+
+                entity.Property(e => e.UseYn)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("USE_YN");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
             });
 
             modelBuilder.Entity<MtFgStockUcc>(entity =>

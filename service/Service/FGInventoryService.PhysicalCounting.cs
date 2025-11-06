@@ -13,23 +13,23 @@ namespace service.Service
     {
         public async Task<List<Pccount>> GetPcCountAsync(string whCode, string subwhCode)
         {
-            var result = await _amtContext.Set<Pccount>()
-                .FromSqlInterpolated($@"
-                SELECT  PC_NAME,
-                        CRTDAT,
-                        FR_LOC,
-                        TO_LOC,
-                        (SELECT C_CODE
-                           FROM ST_TYPECODE_TBL
-                          WHERE C_TYPE = 'FG_PC_STATUS'
-                            AND C_ID   = MT_FG_PCOUNT.STATUS) AS STATUS
-                  FROM MT_FG_PCOUNT
-                 WHERE STATUS      = 1
-                   AND WH_CODE     = {whCode}
-                   AND SUBWH_CODE  = {subwhCode}")
-                .ToListAsync();
+            var query = from pc in _amtContext.MtFgPcount
+                        where pc.Status == 1
+                              && pc.WhCode == whCode
+                              && pc.SubwhCode == subwhCode
+                        select new Pccount
+                        {
+                            Pc_name = pc.PcName,
+                            Crtdat = pc.Crtdat,
+                            Fr_loc = pc.FrLoc,
+                            To_loc = pc.ToLoc,
+                            Status = _amtContext.StTypecodeTbl
+                                .Where(st => st.CType == "FG_PC_STATUS" && st.CId == pc.Status)
+                                .Select(st => st.CCode)
+                                .FirstOrDefault()
+                        };
 
-            return result;
+            return await query.ToListAsync();
         }
 
         public async Task<List<Pcinput>> ExecutePcInputAndQueryAsync(Pcinputrequest req)
