@@ -1,4 +1,5 @@
 ﻿
+using erpsolution.service.Common.Cache;
 using service.Common.Base;
 using service.Common.Base.Interface;
 using service.Common.Cache;
@@ -14,8 +15,8 @@ namespace erpsolution.api.Helper
         {
             //ms sql db context
 
-            services.AddTransient<IAuthorityService, AuthorityService>();
-            services.AddTransient<IPkTbMasCodeNameService, PkTbMasCodeNameService>();
+           // services.AddTransient<IAuthorityService, AuthorityService>();
+            //services.AddTransient<IPkTbMasCodeNameService, PkTbMasCodeNameService>();
 
             //cache
             services.AddSingleton<ICacheService, MemoryCacheService>();

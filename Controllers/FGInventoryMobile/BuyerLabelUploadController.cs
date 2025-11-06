@@ -1,4 +1,23 @@
-﻿namespace FGInventoryManagement.Controllers.FGInventoryMobile
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using entities.Common;
+using entities.Setting;
+using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
+using FGInventoryManagement.Base;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Oracle.ManagedDataAccess.Client;
+using service.Common.Base;
+using service.Common.Base.Interface;
+using service.Interface;
+namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class BuyerLabelUploadController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
     {
@@ -6,16 +25,16 @@
         private IMapper _mapper;
         private AppSettings _appSettings;
         public IServiceProvider _serviceProvider;
-        private readonly IPkTbMasDeviceService _deviceService;
+ 
         public BuyerLabelUploadController(IFGInventoryService service,
         IServiceProvider serviceProvider,
         AmtContext context,
-        IPkTbMasDeviceService deviceService,
+ 
         ICurrentUser currentUser) : base(service, currentUser)
         {
             _serviceProvider = serviceProvider;
             _context = context;
-            _deviceService = deviceService;
+ 
 
             var option = (IOptions<AppSettings>)_serviceProvider.GetService(typeof(IOptions<AppSettings>));
             if (option != null)

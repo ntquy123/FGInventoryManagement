@@ -37,3 +37,16 @@ namespace erpsolution.dal.DTO
         public string MenuName { get; set; }
     }
 }
+public class ZmMasMobileMenuGetModel
+{
+    public decimal MenuId { get; set; }
+    public string MenuName { get; set; }
+    public decimal ParentMenuId { get; set; }
+    public decimal MenuLevel { get; set; }
+    public decimal MenuOrder { get; set; }
+    public string ProgramCd { get; set; }
+    public string UseYn { get; set; }
+    public string Description { get; set; }
+    public string MenuCd { get; set; }
+    public List<ZmMasMobileMenuModel> ListMenu { get; set; }
+}

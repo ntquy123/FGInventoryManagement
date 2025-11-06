@@ -8,6 +8,7 @@ using service.Common.Base.Interface;
 using Microsoft.EntityFrameworkCore;
 using erpsolution.api.Controllers.Base;
 using erpsolution.entities.Common;
+using erpsolution.lib;
 
 namespace FGInventoryManagement.Base
 {

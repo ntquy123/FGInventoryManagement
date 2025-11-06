@@ -1,5 +1,5 @@
 ﻿using dal.Context.Setting;
-using dal.EF;
+ 
 using entities.Setting;
 using erpsolution.api.Attribute;
 using erpsolution.api.Helper;

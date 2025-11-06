@@ -12,4 +12,8 @@
     <None Remove="DTO\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\erpsolution.lib.csproj" />
+  </ItemGroup>
+
 </Project>

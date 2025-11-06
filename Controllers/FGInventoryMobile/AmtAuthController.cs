@@ -1,9 +1,30 @@
-﻿using dal.EF;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using entities.Common;
+using entities.Setting;
+using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
+using erpsolution.entities.Common;
+using erpsolution.service.Common.Cache;
+using erpsolution.service.Interface;
 using FGInventoryManagement.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Oracle.ManagedDataAccess.Client;
+using service.Common.Base;
+using service.Common.Base.Interface;
+using service.Interface;
+ 
 namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class AmtAuthController : ControllerBaseEx<IAmtAuthService, OspAppusrTbl, decimal>
@@ -11,31 +32,20 @@ namespace FGInventoryManagement.Controllers.FGInventoryMobile
         private AmtContext _context;
         private IMapper _mapper;
         public IServiceProvider _serviceProvider;
-        private readonly IPkTbMasDeviceService _deviceService;
         private readonly IMasUserService _masUserService;
         private readonly ICacheService _memoryCache;
-        private readonly IZmMasUserService _zmMasUserService;
         private readonly IConfiguration _config;
         public AmtAuthController(IAmtAuthService service,
        IConfiguration config,
        IServiceProvider serviceProvider,
-       IZmMasUserService zmMasUserService,
        AmtContext context,
-       IPkTbMasDeviceService deviceService,
-       IMasUserService masUserService, ICacheService memoryCache,
+       ICacheService memoryCache,
        ICurrentUser currentUser) : base(service, currentUser)
         {
             _config = config;
-            zmMasUserService = _zmMasUserService;
             _memoryCache = memoryCache;
-            _masUserService = masUserService;
             _serviceProvider = serviceProvider;
             _context = context;
-            _deviceService = deviceService;
-
-            var option = (IOptions<AppSettings>)_serviceProvider.GetService(typeof(IOptions<AppSettings>));
-            if (option != null)
-                _appSettings = option.Value;
         }
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(GetRole))]

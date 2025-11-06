@@ -11,11 +11,11 @@ namespace erpsolution.api.Helper
         {
            
             //FGInventory Mobile
-            services.AddScoped<IAmtAuthService, AmtAuthService>();
+           // services.AddScoped<IAmtAuthService, AmtAuthService>();
             services.AddScoped<IFGInventoryService, FGInventoryService>();
 
             //Add Helper
-            services.AddScoped<IExternalDatabaseQueries, ExternalDatabaseQueries>();
+         //   services.AddScoped<IExternalDatabaseQueries, ExternalDatabaseQueries>();
 
 
             return services;

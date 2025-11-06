@@ -1,15 +1,23 @@
-﻿using AutoMapper;
-using dal.EF;
-using entities.Common;
-using Microsoft.EntityFrameworkCore;
-using service.Common.Base.Interface;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-
+using AutoMapper;
+using entities.Common;
+using entities.Setting;
+using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
+using erpsolution.entities.Common;
+using FGInventoryManagement.Base;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Oracle.ManagedDataAccess.Client;
+using service.Common.Base;
+using service.Common.Base.Interface;
+using service.Interface;
 namespace service.Common.Base
 {
     public abstract class ServiceBase<Model> : IServiceBase<Model>
@@ -22,7 +30,7 @@ namespace service.Common.Base
         private bool autoSaveChange = true;
 
         protected IMapper _mapper;
-        protected ILoggerManager _logger;
+ 
         public ServiceBase(IServiceProvider serviceProvider)
         {
             _currentUser = (ICurrentUser)serviceProvider.GetService(typeof(ICurrentUser));
