@@ -23,6 +23,8 @@ namespace erpsolution.dal.EF
         public virtual DbSet<MtUccList> MtUccList { get; set; }
 
         public virtual DbSet<MtFgStockUcc> MtFgStockUcc { get; set; }
+
+        public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
        // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
       //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -626,6 +628,145 @@ namespace erpsolution.dal.EF
                     .HasMaxLength(8)
                     .IsUnicode(false)
                     .HasColumnName("UPTID");
+            });
+
+            modelBuilder.Entity<StByrmstTbl>(entity =>
+            {
+                entity.ToTable("ST_BYRMST_TBL");
+
+                entity.HasKey(e => e.Byrcd);
+
+                entity.Property(e => e.Byrcd)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("BYRCD");
+
+                entity.Property(e => e.Byrnm)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("BYRNM");
+
+                entity.Property(e => e.Country)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("COUNTRY");
+
+                entity.Property(e => e.Addr1)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("ADDR1");
+
+                entity.Property(e => e.Addr2)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("ADDR2");
+
+                entity.Property(e => e.Zipcd)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("ZIPCD");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("EMAIL");
+
+                entity.Property(e => e.Tel)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("TEL");
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("FAX");
+
+                entity.Property(e => e.Paycur)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("PAYCUR");
+
+                entity.Property(e => e.Paytrm)
+                    .HasMaxLength(2)
+                    .IsUnicode(false)
+                    .HasColumnName("PAYTRM");
+
+                entity.Property(e => e.Incoterms)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("INCOTERMS");
+
+                entity.Property(e => e.Diltype)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("DILTYPE");
+
+                entity.Property(e => e.Paybuyer)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("PAYBUYER");
+
+                entity.Property(e => e.Docmanager)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("DOCMANAGER");
+
+                entity.Property(e => e.Itmmoq)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("ITMMOQ");
+
+                entity.Property(e => e.Pkteam)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("PKTEAM");
+
+                entity.Property(e => e.Useyn)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("USEYN");
+
+                entity.Property(e => e.Rmks)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("RMKS");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.Aono)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("AONO");
+
+                entity.Property(e => e.Shipdays)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("SHIPDAYS");
+
+                entity.Property(e => e.Appror)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("APPROR");
+
+                entity.Property(e => e.MgtBuyerInvoice)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("MGT_BUYER_INVOICE");
             });
 
            // modelBuilder.Entity<UserMenuRoleView>().HasNoKey();

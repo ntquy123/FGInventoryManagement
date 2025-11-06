@@ -25,9 +25,15 @@ namespace service.Service
     {
         public async Task<List<StByrmstTbl>> GetComBoBoxForBuyer()
         {
-            var result = await _amtContext.StByrmstTbl.FromSqlInterpolated($@"SELECT BYRCD , BYRNM FROM ST_BYRMST_TBL WHERE USEYN='Y'")
+            return await _amtContext.StByrmstTbl
+                .AsNoTracking()
+                .Where(x => x.Useyn == "Y")
+                .Select(x => new StByrmstTbl
+                {
+                    Byrcd = x.Byrcd,
+                    Byrnm = x.Byrnm
+                })
                 .ToListAsync();
-            return result;
         }
 
         public async Task<List<MtUccListUpload>> SaveBuyerLabelUpload(DataSaveLableUpload Data)
