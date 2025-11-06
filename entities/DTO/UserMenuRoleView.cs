@@ -6,7 +6,7 @@ namespace erpsolution.dal.DTO
 {
     public class UserMenuRoleView
     {
-        public string WhCode { get; set; }
+        public string? WhCode { get; set; }
         public string WhName { get; set; }
         public string SubwhCode { get; set; }
         public string SubwhName { get; set; }
@@ -48,5 +48,5 @@ public class ZmMasMobileMenuGetModel
     public string UseYn { get; set; }
     public string Description { get; set; }
     public string MenuCd { get; set; }
-    public List<ZmMasMobileMenuModel> ListMenu { get; set; }
+    //public List<ZmMasMobileMenuModel> ListMenu { get; set; }
 }

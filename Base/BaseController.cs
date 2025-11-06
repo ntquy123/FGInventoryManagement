@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using erpsolution.entities.Common;
+using erpsolution.api.Config;
 
 namespace FGInventoryManagement.Base
 {
@@ -69,7 +71,7 @@ namespace FGInventoryManagement.Base
             }
             return new ErrorResponseModel
             {
-                Error = new entities.Common.ErrorModel() { ErrorCode = code.GetHashCode(), ErrorMessage = message }
+                Error = new  ErrorModel() { ErrorCode = code.GetHashCode(), ErrorMessage = message }
             };
         }
 

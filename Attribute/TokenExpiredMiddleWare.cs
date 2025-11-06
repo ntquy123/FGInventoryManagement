@@ -1,4 +1,7 @@
 ﻿using entities.Common;
+using erpsolution.entities.Common;
+using erpsolution.entities.Setting;
+using erpsolution.service.Common.Cache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

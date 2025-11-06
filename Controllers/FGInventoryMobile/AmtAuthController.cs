@@ -11,6 +11,7 @@ using entities.Common;
 using entities.Setting;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
+using erpsolution.entities;
 using erpsolution.entities.Common;
 using erpsolution.service.Common.Cache;
 using erpsolution.service.Interface;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using service.Common.Base.Interface;
@@ -32,7 +34,6 @@ namespace FGInventoryManagement.Controllers.FGInventoryMobile
         private AmtContext _context;
         private IMapper _mapper;
         public IServiceProvider _serviceProvider;
-        private readonly IMasUserService _masUserService;
         private readonly ICacheService _memoryCache;
         private readonly IConfiguration _config;
         public AmtAuthController(IAmtAuthService service,

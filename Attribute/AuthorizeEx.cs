@@ -1,8 +1,8 @@
 ﻿
+using entities.Common;
 using erpsolution.entities.Common;
 using erpsolution.service.Common;
-using erpsolution.service.Common.Base;
-using erpsolution.service.Interface.SystemMaster;
+ 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

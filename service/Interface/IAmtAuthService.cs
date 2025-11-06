@@ -1,4 +1,8 @@
-﻿ 
+﻿
+
+using erpsolution.dal.DTO;
+using erpsolution.entities;
+using service.Common.Base.Interface;
 
 namespace erpsolution.service.Interface
 {

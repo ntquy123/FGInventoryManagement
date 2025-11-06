@@ -1,5 +1,8 @@
-﻿ 
+﻿
+using erpsolution.dal.EF;
+using erpsolution.entities.Common;
 using Newtonsoft.Json;
+using service.Common.Base.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +16,9 @@ namespace service.Common.Base
     {
 
         private readonly IPrincipal _principal;
-        private AtmanContext _context;
+        private AmtContext _context;
 
-        public CurrentUser(IPrincipal principal,AtmanContext context)
+        public CurrentUser(IPrincipal principal, AmtContext context)
         {
             _principal = principal;
             _context = context;
@@ -26,10 +29,10 @@ namespace service.Common.Base
         public int CompanyId => UserIdentity.CompanyId;
 
         private List<Claim> claims => ((ClaimsPrincipal) _principal).Claims.ToList();
-        public IQueryable<decimal> Companys => _context.PkTbMasUserRoll.Where(i => i.UserMapId == UserId && i.AuthType == (byte)AuthType.Company).Select(i => i.WorkOrgId);
-        public IQueryable<decimal> Factorys => _context.PkTbMasUserRoll.Where(i => i.UserMapId == UserId && i.AuthType == (byte)AuthType.Factory).Select(i => i.WorkOrgId);
+       // public IQueryable<decimal> Companys => _context.PkTbMasUserRoll.Where(i => i.UserMapId == UserId && i.AuthType == (byte)AuthType.Company).Select(i => i.WorkOrgId);
+     //   public IQueryable<decimal> Factorys => _context.PkTbMasUserRoll.Where(i => i.UserMapId == UserId && i.AuthType == (byte)AuthType.Factory).Select(i => i.WorkOrgId);
         //public List<string> Buyers => JsonConvert.DeserializeObject<List<string>>(claims.FirstOrDefault(i => i.Type == "buyers").Value);
-        public IQueryable<string> Buyers => _context.PkTbMasUserRoll.Where(i=> i.UserMapId == UserId && i.AuthType == (byte)AuthType.Buyer).Select(i=>i.ComfacbuyCd);
+       // public IQueryable<string> Buyers => _context.PkTbMasUserRoll.Where(i=> i.UserMapId == UserId && i.AuthType == (byte)AuthType.Buyer).Select(i=>i.ComfacbuyCd);
         //public List<decimal> Orgs => JsonConvert.DeserializeObject<List<decimal>>(claims.FirstOrDefault(i => i.Type == "work_orgs").Value);
 
         private IdentityUserModel _UserIdentity { get; set; }

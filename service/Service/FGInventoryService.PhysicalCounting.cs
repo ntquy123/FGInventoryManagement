@@ -1,3 +1,4 @@
+using erpsolution.dal.DTO;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using System;

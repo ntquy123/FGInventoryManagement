@@ -3,8 +3,15 @@
 using entities.Setting;
 using erpsolution.api.Attribute;
 using erpsolution.api.Helper;
+using erpsolution.dal.EF;
+using erpsolution.entities.Setting;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace FGInventoryManagement
 {
@@ -230,23 +237,12 @@ namespace FGInventoryManagement
             services.ConfigureLoggerService();
             services.AddRegisterService();
             var redisConnection = Configuration.GetConnectionString(nameof(ConnectionSetting.RedisConnection));
-            //services.AddSignalR(); //No redis
-            if (!string.IsNullOrWhiteSpace(redisConnection))
-            {
-                services.AddSignalR().AddStackExchangeRedis(redisConnection, options =>
-                {
-                    options.Configuration.ChannelPrefix = "erpsolution.api";
-                });
-            }
-            else
-            {
-                services.AddSignalR(); //No redis
-            }
+ 
 
 
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider, ILoggerManager logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             //loggerFactory.AddLog4Net();
             AppSettings appSettings = Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();

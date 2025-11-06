@@ -1,7 +1,4 @@
 ﻿
-using erpsolution.logger;
-using log4net;
-using log4net.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IO;
 using System;
@@ -17,16 +14,15 @@ namespace erpsolution.api.Attribute
     {
         const int readChunkBufferLength = 4096;
         private readonly RequestDelegate _next;
-        private readonly ILoggerManager _logger;
-
+ 
         private List<string> lsNotWriteLogs = new List<string>() { "/Auth/Login" , "/qrhostpc", "/qrhostpc/negotiate", "/syncdata" , "/auth/CheckPermission" };
         //private readonly ILog _logger = LogManager.GetLogger(typeof(RequestResponseLoggingMiddleware));
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
-        public RequestResponseLoggingMiddleware(RequestDelegate next, ILoggerManager logger)
+        public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
             _next = next;
             _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
-            _logger = logger;
+ 
         }
         public async Task Invoke(HttpContext context)
         {
@@ -73,12 +69,7 @@ namespace erpsolution.api.Attribute
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             // var text = await new StreamReader(context.Response.Body).ReadToEndAsync();
             context.Response.Body.Seek(0, SeekOrigin.Begin);
-            _logger.LogInfo($"Response User: {context.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value} - {context?.User?.Identity?.Name} " +
-                                   $"Host: {context.Request.Host} " +
-                                   $"Path: {context.Request.Path} " +
-                                   $"StatusCode: {context.Response?.StatusCode} "
-                                   //$"Response Body: {text}"
-                                   );
+           
             //await responseBody.CopyToAsync(originalBodyStream);
         }
     }
