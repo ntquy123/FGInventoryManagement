@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace erpsolution.dal.EF
 {
-    public partial class AmtContext : DbContext
+    public partial class AmtOracleContext : DbContext
     {
-        public AmtContext()
+        public AmtOracleContext()
         {
         }
 
-        public AmtContext(DbContextOptions<AmtContext> options) : base(options)
+        public AmtOracleContext(DbContextOptions<AmtOracleContext> options) : base(options)
         {
         }
  
@@ -31,6 +31,10 @@ namespace erpsolution.dal.EF
 
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
         public virtual DbSet<MtUccListUpload> MtUccListUpload { get; set; }
+        public virtual DbSet<UccStockRow> UccStockRow { get; set; }
+        public virtual DbSet<FgRequestDetailRow> FgRequestDetailRow { get; set; }
+        public virtual DbSet<FgRequestRow> FgRequestRow { get; set; }
+        public virtual DbSet<FgReceiptResultRow> FgReceiptResultRow { get; set; }
         // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
         //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -42,6 +46,10 @@ namespace erpsolution.dal.EF
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UccStockRow>().HasNoKey();
+            modelBuilder.Entity<FgRequestDetailRow>().HasNoKey();
+            modelBuilder.Entity<FgRequestRow>().HasNoKey();
+            modelBuilder.Entity<FgReceiptResultRow>().HasNoKey();
             modelBuilder.Entity<MtUccListUpload>(entity =>
             {
                 entity.HasKey(e => new { e.XlsId, e.XlsSq })

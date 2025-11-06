@@ -1,4 +1,5 @@
 ﻿
+using erpsolution.dal.Context;
 using erpsolution.dal.EF;
 using erpsolution.entities.Common;
 using Newtonsoft.Json;
@@ -67,12 +68,12 @@ namespace service.Common.Base
         }
         public bool CheckPerssion(decimal? CompanyId = null, decimal? Factory = null, string Buyer=null)
         {
-            if (CompanyId != null && !Companys.Contains(CompanyId.Value))
-                return false;
-            if (Factory != null && !Factorys.Contains(Factory.Value))
-                return false;
-            if (Buyer != null && !Buyers.Contains(Buyer))
-                return false;
+            //if (CompanyId != null && !Companys.Contains(CompanyId.Value))
+            //    return false;
+            //if (Factory != null && !Factorys.Contains(Factory.Value))
+            //    return false;
+            //if (Buyer != null && !Buyers.Contains(Buyer))
+            //    return false;
             return true;
         }
         //private List<decimal> GetPermissionWorkOrg(int UserMapId)

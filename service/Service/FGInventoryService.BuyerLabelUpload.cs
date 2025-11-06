@@ -21,7 +21,7 @@ using service.Interface;
 
 namespace service.Service
 {
-    public partial class FGInventoryService : ServiceBase<FgRequestRow>
+    public partial class FGInventoryService  
     {
         public async Task<List<StByrmstTblView>> GetComBoBoxForBuyer()
         {

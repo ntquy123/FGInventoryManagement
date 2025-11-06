@@ -4,7 +4,7 @@ using System.Text;
 
 namespace erpsolution.dal.DTO
 {
-    public class StByrmstTbl
+    public class StByrmstTblView
     {
         public string ByrCd { get; set; }
         public string ByrNm { get; set; }

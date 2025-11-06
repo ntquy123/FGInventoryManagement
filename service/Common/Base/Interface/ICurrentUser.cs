@@ -14,9 +14,9 @@ namespace service.Common.Base.Interface
         int UserId { get; }
         int CompanyId { get; }
         IdentityUserModel UserIdentity { get; }
-        IQueryable<decimal> Companys { get; }
-        IQueryable<decimal> Factorys { get; }
-        IQueryable<string> Buyers { get; }
+      //  IQueryable<decimal> Companys { get; }
+     //   IQueryable<decimal> Factorys { get; }
+       // IQueryable<string> Buyers { get; }
         //List<decimal> Orgs { get; }
         bool CheckPerssion(decimal? CompanyId = null, decimal? Factory = null, string Buyer = null);
         decimal? WHWorkOrgId { get; }

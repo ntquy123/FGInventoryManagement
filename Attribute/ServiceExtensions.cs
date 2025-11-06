@@ -1,4 +1,4 @@
-﻿using erpsolution.logger;
+﻿ 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +13,7 @@ namespace erpsolution.api.Attribute
         public static void ConfigureLoggerService(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<ILoggerManager, LoggerManager>();
+            //services.AddSingleton<ILoggerManager, LoggerManager>();
         }
     }
 }

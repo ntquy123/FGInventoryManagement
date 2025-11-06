@@ -4,7 +4,7 @@ using System.Text;
 
 namespace erpsolution.dal.DTO
 {
-    public class FgReceiptResultRow
+    public class FgReceiptResultRowView
     {
         public string WhCode { get; set; }
         public string ReqNo { get; set; }

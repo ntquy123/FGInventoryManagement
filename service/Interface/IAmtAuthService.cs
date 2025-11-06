@@ -6,7 +6,7 @@ using service.Common.Base.Interface;
 
 namespace erpsolution.service.Interface
 {
-    public interface IAmtAuthService : IServiceBase<FgRequestRow>
+    public interface IAmtAuthService  
     {
         new string PrimaryKey { get; }
         Task<UserMenuRoleViewHeader> GetRole(string UserId, string menuNm);

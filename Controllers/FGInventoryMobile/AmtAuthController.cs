@@ -26,7 +26,8 @@ using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using service.Common.Base.Interface;
 using service.Interface;
- 
+using erpsolution.dal.Context;
+
 namespace FGInventoryManagement.Controllers.FGInventoryMobile
 {
     public class AmtAuthController : ControllerBaseEx<IAmtAuthService, OspAppusrTbl, decimal>

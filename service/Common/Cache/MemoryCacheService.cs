@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using erpsolution.service.Common.Cache;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace service.Common.Cache

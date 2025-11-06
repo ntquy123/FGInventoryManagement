@@ -37,11 +37,6 @@ namespace erpsolution.api.Attribute
             if (!lsNotWriteLogs.Contains(context.Request.Path))
             {
                 await context.Request.Body.CopyToAsync(requestStream);
-                _logger.LogInfo($"User: {context.User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value} - {context?.User?.Identity?.Name} " +
-                            $"Host: {context.Request.Host} " +
-                            $"Path: {context.Request.Path} " +
-                            $"Query: {context.Request.QueryString} " +
-                            $"Body: {await ReadStreamInChunks(requestStream)}");
             }
             context.Request.Body.Position = 0;
         }

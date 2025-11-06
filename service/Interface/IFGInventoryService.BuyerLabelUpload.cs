@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace erpsolution.service.Interface
 {
-    public partial interface IFGInventoryService : IServiceBase<FgRequestRow>
+    public partial interface IFGInventoryService 
     {
         Task<List<StByrmstTblView>> GetComBoBoxForBuyer();
         Task<List<MtUccListUpload>> SaveBuyerLabelUpload(DataSaveLableUpload Data);

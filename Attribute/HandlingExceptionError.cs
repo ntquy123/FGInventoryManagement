@@ -7,8 +7,7 @@ namespace erpsolution.api.Attribute
 {
     public class HandlingExceptionError
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
-        (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public void OnException(Exception ex)
         {
@@ -18,7 +17,6 @@ namespace erpsolution.api.Attribute
             message += string.Format("TargetSite: {0}", ex.TargetSite.ToString().Replace(Environment.NewLine, string.Empty));
             //ModelState.AddModelError(string.Empty, message);
             //log.Error(string.Empty, ex);
-            log.Error(message);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace erpsolution.dal.DTO
+namespace erpsolution.dal.EF
 {
     public class FgRequestRow
     {
