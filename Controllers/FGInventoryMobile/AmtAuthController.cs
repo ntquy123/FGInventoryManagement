@@ -1,34 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using entities.Common;
-using entities.Setting;
+using erpsolution.api.Base;
+using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
-using erpsolution.dal.EF;
 using erpsolution.entities;
 using erpsolution.entities.Common;
+using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Common.Cache;
 using erpsolution.service.Interface;
-using FGInventoryManagement.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Oracle.ManagedDataAccess.Client;
-using service.Common.Base;
-using service.Common.Base.Interface;
-using service.Interface;
-using erpsolution.dal.Context;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-namespace FGInventoryManagement.Controllers.FGInventoryMobile
+namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class AmtAuthController : ControllerBaseEx<IAmtAuthService, OspAppusrTbl, decimal>
     {

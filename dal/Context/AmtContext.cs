@@ -17,19 +17,19 @@ namespace erpsolution.dal.Context
     {
         //IOptions<ConnectionSetting> _settings;
         DbContextOptions<AmtOracleContext> _options;
-        public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-        {
-            builder
-                .AddFilter((category, level) =>
-                    category == DbLoggerCategory.Database.Command.Name
-                    //&& category == DbLoggerCategory.Query.Name
-                    //&& category == DbLoggerCategory.Update.Name
-                    //&& category == DbLoggerCategory.Database.Transaction.Name
-                    //&& level == LogLevel.Debug
-                    )
-                // .AddConsole()
-                .AddDebug();
-        });
+        //public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+        //{
+        //    builder
+        //        .AddFilter((category, level) =>
+        //            category == DbLoggerCategory.Database.Command.Name
+        //            //&& category == DbLoggerCategory.Query.Name
+        //            //&& category == DbLoggerCategory.Update.Name
+        //            //&& category == DbLoggerCategory.Database.Transaction.Name
+        //            //&& level == LogLevel.Debug
+        //            )
+        //        // .AddConsole()
+        //        .AddDebug();
+        //});
         //public AmtContext(IOptions<ConnectionSetting> settings)
         //{
         //    _settings = settings;
@@ -129,8 +129,8 @@ namespace erpsolution.dal.Context
             //{
             //    optionsBuilder.UseSqlServer(_settings.Value.MsSQLConnection);
             //}
-            optionsBuilder.UseLoggerFactory(loggerFactory) //tie-up DbContext with LoggerFactory object
-           .EnableSensitiveDataLogging();
+           // optionsBuilder.UseLoggerFactory(loggerFactory) //tie-up DbContext with LoggerFactory object
+           //.EnableSensitiveDataLogging();
 
             base.OnConfiguring(optionsBuilder);
         }

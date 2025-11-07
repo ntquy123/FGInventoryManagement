@@ -1,24 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using entities.Common;
-using entities.Setting;
+﻿using entities.Common;
+using erpsolution.api.Base;
+using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
-using erpsolution.dal.EF;
-using FGInventoryManagement.Base;
+using erpsolution.service.Common.Base.Interface;
+using erpsolution.service.Interface;
+using erpsolution.service.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Oracle.ManagedDataAccess.Client;
-using service.Common.Base;
 using service.Common.Base.Interface;
-using service.Interface;
-using erpsolution.dal.Context;
-namespace FGInventoryManagement.Controllers.FGInventoryMobile
+namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class PhysicalCountingController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
     {

@@ -1,4 +1,5 @@
 using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace service.Service
+namespace erpsolution.service.Service
 {
     public partial class FGInventoryService
     {

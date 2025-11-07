@@ -1,25 +1,11 @@
 
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using entities.Common;
-using entities.Setting;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
-using erpsolution.entities.Common;
-using FGInventoryManagement.Base;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
-using service.Common.Base.Interface;
-using service.Interface;
-namespace service.Service
+using System.Data;
+namespace erpsolution.service.Service
 {
     public partial class FGInventoryService : ServiceBase<FgRequestRow>
     {

@@ -2,7 +2,7 @@ using erpsolution.dal.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace service.Interface
+namespace erpsolution.service.Interface
 {
     public partial interface IFGInventoryService
     {

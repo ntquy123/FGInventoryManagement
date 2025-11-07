@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using erpsolution.api.Controllers.Base;
 using erpsolution.entities.Common;
 using erpsolution.lib;
+using erpsolution.service.Common.Base.Interface;
 
-namespace FGInventoryManagement.Base
+namespace erpsolution.api.Base
 {
 [Route("[controller]")]
 [ApiController]

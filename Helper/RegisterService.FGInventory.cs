@@ -1,7 +1,6 @@
-﻿
-using service.Interface;
-using service.Service;
-
+﻿using erpsolution.entities;
+using erpsolution.service.Interface;
+using erpsolution.service.Service;
 namespace erpsolution.api.Helper
 {
     public static partial class RegisterService

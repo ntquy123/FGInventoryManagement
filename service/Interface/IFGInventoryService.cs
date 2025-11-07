@@ -1,4 +1,4 @@
-namespace service.Interface
+namespace erpsolution.service.Interface
 {
     public partial interface IFGInventoryService
     {

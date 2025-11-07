@@ -1,25 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using entities.Common;
-using entities.Setting;
 using erpsolution.dal.Context;
-using erpsolution.dal.DTO;
-using erpsolution.dal.EF;
 using erpsolution.entities.Common;
-using FGInventoryManagement.Base;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using erpsolution.service.Common.Base.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Oracle.ManagedDataAccess.Client;
-using service.Common.Base;
 using service.Common.Base.Interface;
-using service.Interface;
+using System.Data;
+using System.Linq.Expressions;
 namespace service.Common.Base
 {
     public abstract class ServiceBase<Model> : IServiceBase<Model>

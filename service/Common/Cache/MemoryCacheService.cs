@@ -4,7 +4,7 @@ using System.Text;
 using erpsolution.service.Common.Cache;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace service.Common.Cache
+namespace erpsolution.service.Common.Cache
 {
     public class MemoryCacheService : ICacheService
     {

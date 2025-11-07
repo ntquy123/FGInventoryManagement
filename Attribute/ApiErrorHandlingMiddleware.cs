@@ -1,4 +1,5 @@
-﻿using erpsolution.entities.Common;
+﻿using entities.Common;
+using erpsolution.entities.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

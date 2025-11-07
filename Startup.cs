@@ -1,19 +1,22 @@
-﻿using dal.Context.Setting;
- 
-using entities.Setting;
-using erpsolution.api.Attribute;
-using erpsolution.api.Helper;
-using erpsolution.dal.EF;
-using erpsolution.entities.Setting;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Authorization;
+using erpsolution.api.Attribute;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
+using entities.Setting;
+using erpsolution.entities.Setting;
 using System.Reflection;
+using Microsoft.OpenApi.Models;
+using erpsolution.api.Helper;
+using Microsoft.Extensions.FileProviders;
+using dal.Context.Setting;
+using erpsolution.dal.Context;
+using Microsoft.EntityFrameworkCore;
 
-namespace FGInventoryManagement
+
+namespace erpsolution.api
 {
     public class Startup
     {
@@ -140,7 +143,7 @@ namespace FGInventoryManagement
                 };
             });
 
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
 
             services.AddMemoryCache();
             //services.AddMemoryCache(opt =>
@@ -236,7 +239,7 @@ namespace FGInventoryManagement
 
             services.ConfigureLoggerService();
             services.AddRegisterService();
-            var redisConnection = Configuration.GetConnectionString(nameof(ConnectionSetting.RedisConnection));
+           // var redisConnection = Configuration.GetConnectionString(nameof(ConnectionSetting.RedisConnection));
  
 
 
@@ -330,9 +333,9 @@ namespace FGInventoryManagement
 
             //services.AddTransient<IDbConnection>(options => new SqlConnection(conn));
             //string msConnection = configuration.GetConnectionString(nameof(ConnectionSetting.MsSQLConnection));
-            string oracleConnection = configuration.GetConnectionString(nameof(ConnectionSetting.OracleConnection));
-            string erpConnection = configuration.GetConnectionString(nameof(ConnectionSetting.ErpConnection));
-            string amtConnection = configuration.GetConnectionString(nameof(ConnectionSetting.AmtConnection));
+            string amtConnection = configuration.GetConnectionString(nameof(ConnectionSetting.OracleConnection));
+            //string erpConnection = configuration.GetConnectionString(nameof(ConnectionSetting.ErpConnection));
+            //string amtConnection = configuration.GetConnectionString(nameof(ConnectionSetting.AmtConnection));
 
             services.Configure<ConnectionSetting>(configuration.GetSection("ConnectionStrings"));
  
@@ -344,7 +347,9 @@ namespace FGInventoryManagement
                         //sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)
                     .CommandTimeout(420)//< 1 Min is OK, if longer u need check your query
-                    .UseOracleSQLCompatibility("11");
+                                        // Thay thế "11" (string) bằng giá trị enum thích hợp.
+                                        // Giả sử bạn đang dùng Devart.Data.Oracle.EFCore hoặc phiên bản Oracle.EntityFrameworkCore cũ.
+                    .UseOracleSQLCompatibility(Microsoft.EntityFrameworkCore.OracleSQLCompatibility.DatabaseVersion19);
                     });
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }, ServiceLifetime.Scoped)

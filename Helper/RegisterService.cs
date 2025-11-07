@@ -1,11 +1,8 @@
-﻿
+﻿using erpsolution.service.Common.Base;
+using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Common.Cache;
-using service.Common.Base;
-using service.Common.Base.Interface;
-using service.Common.Cache;
 using System.Security.Claims;
 using System.Security.Principal;
-
 namespace erpsolution.api.Helper
 {
     public static partial class RegisterService

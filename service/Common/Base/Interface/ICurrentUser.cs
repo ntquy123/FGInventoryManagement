@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace service.Common.Base.Interface
+namespace erpsolution.service.Common.Base.Interface
 {
     public interface ICurrentUser
     {

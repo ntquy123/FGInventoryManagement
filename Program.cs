@@ -1,5 +1,5 @@
 
-using FGInventoryManagement;
+using erpsolution.api;
 var builder = WebApplication.CreateBuilder(args);
 
 // Clear default logging providers so NLog is the single source of truth for log output.

@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace service.Service
+namespace erpsolution.service.Service
 {
     public partial class FGInventoryService
     {

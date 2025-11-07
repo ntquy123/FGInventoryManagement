@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using erpsolution.entities.Common;
 using erpsolution.api.Config;
 
-namespace FGInventoryManagement.Base
+namespace erpsolution.api.Base
 {
     [Authorize]
     //[AllowAnonymous]

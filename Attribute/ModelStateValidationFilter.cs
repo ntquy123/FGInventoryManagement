@@ -1,4 +1,5 @@
-﻿using erpsolution.entities.Common;
+﻿using entities.Common;
+using erpsolution.entities.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;

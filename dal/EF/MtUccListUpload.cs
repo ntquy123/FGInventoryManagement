@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace erpsolution.dal.EFAMT
+namespace erpsolution.dal.EF
 {
     
     [Table("MT_UCC_LIST_UPLOAD")]

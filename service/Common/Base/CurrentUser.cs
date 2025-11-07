@@ -1,17 +1,10 @@
-﻿
-using erpsolution.dal.Context;
-using erpsolution.dal.EF;
+﻿using erpsolution.dal.Context;
 using erpsolution.entities.Common;
-using Newtonsoft.Json;
-using service.Common.Base.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using erpsolution.service.Common.Base.Interface;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
-namespace service.Common.Base
+namespace erpsolution.service.Common.Base
 {
     public class CurrentUser : ICurrentUser
     {

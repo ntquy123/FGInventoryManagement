@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace erpsolution.dal.EFAMT
+namespace erpsolution.dal.EF
 {
     public class UccStockRow
     {
