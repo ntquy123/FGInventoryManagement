@@ -16,7 +16,7 @@ namespace erpsolution.dal.Context
     public partial class AmtContext : AmtOracleContext
     {
         //IOptions<ConnectionSetting> _settings;
-        DbContextOptions<AmtOracleContext> _options;
+        DbContextOptions<AmtContext> _options;
         //public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
         //{
         //    builder
@@ -35,7 +35,7 @@ namespace erpsolution.dal.Context
         //    _settings = settings;
         //}
 
-        public AmtContext(DbContextOptions<AmtOracleContext> options) : base(options)
+        public AmtContext(DbContextOptions<AmtContext> options) : base(options)
         {
             _options = options;
         }
