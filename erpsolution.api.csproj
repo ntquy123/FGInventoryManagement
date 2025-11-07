@@ -10,6 +10,10 @@
       **\bin\**;**\obj\**;
       entities\**;  <!-- loại trừ toàn bộ cây entities -->
     </DefaultItemExcludes>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Bật tính năng XML doc -->
+    <DocumentationFile>bin\Debug\net8.0\erpsolution.api.xml</DocumentationFile>
+    <!-- Đặt đường dẫn -->
   </PropertyGroup>
 
   <ItemGroup>
