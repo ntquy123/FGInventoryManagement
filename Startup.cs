@@ -298,7 +298,12 @@ namespace erpsolution.api
             //Need Author First
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseMiddleware<TokenExpiredMiddleWare>();
- 
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
 
             app.UseSwagger(c =>
             {
