@@ -21,14 +21,14 @@ RUN dotnet publish "erpsolution.api.csproj" -c Release -o /app/publish /p:UseApp
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-# Configure ASP.NET Core to listen on port 8080
-ENV ASPNETCORE_URLS=http://+:8080
+# Configure ASP.NET Core to listen on port 8081
+ENV ASPNETCORE_URLS=http://+:8081
 
 # Copy the published output from the build stage
 COPY --from=build /app/publish .
 
 # Document the port the container listens on
-EXPOSE 8080
+EXPOSE 8081
 
 # Run the API
 ENTRYPOINT ["dotnet", "erpsolution.api.dll"]
