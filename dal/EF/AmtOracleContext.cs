@@ -18,6 +18,10 @@ namespace erpsolution.dal.EF
         public AmtOracleContext(DbContextOptions<AmtOracleContext> options) : base(options)
         {
         }
+
+        public AmtOracleContext(DbContextOptions options) : base(options)
+        {
+        }
  
         public virtual DbSet<AoStlmstTbl> AoStlmstTbl { get; set; }
 

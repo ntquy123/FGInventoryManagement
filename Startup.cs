@@ -14,6 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using dal.Context.Setting;
 using erpsolution.dal.Context;
 using Microsoft.EntityFrameworkCore;
+using erpsolution.dal.EF;
 
 
 namespace erpsolution.api
@@ -339,7 +340,7 @@ namespace erpsolution.api
 
             services.Configure<ConnectionSetting>(configuration.GetSection("ConnectionStrings"));
  
-            services.AddDbContext<AmtContext>((options) =>
+            services.AddDbContext<AmtOracleContext, AmtContext>((options) =>
             {
                 options.UseOracle(amtConnection,
                     oracleOptionsAction: sqlOptions =>
@@ -352,9 +353,8 @@ namespace erpsolution.api
                     .UseOracleSQLCompatibility(Microsoft.EntityFrameworkCore.OracleSQLCompatibility.DatabaseVersion19);
                     });
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            }, ServiceLifetime.Scoped)
-            .AddDbContext<AmtContext>();
- 
+            }, ServiceLifetime.Scoped);
+
 
             return services;
         }
