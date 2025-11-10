@@ -32,7 +32,7 @@ services:
     ports:
       - "8081:8080" 
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/fginventory.conf
+      - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf
     
     # Tắt restart để Nginx không liên tục cố gắng kết nối đến app đang lỗi
     restart: "no"
