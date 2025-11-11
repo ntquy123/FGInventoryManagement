@@ -27,11 +27,13 @@ namespace erpsolution.service.FGInventoryMobile
                                   join menu in _amtContext.StMenuTbl.AsNoTracking() on role.Menuid equals menu.Menuid
                                   join subwh in _amtContext.StSubwhTbl.AsNoTracking() on role.Fatoy equals subwh.SubwhCode into subwhJoin
                                   from subwh in subwhJoin.DefaultIfEmpty()
+                                  join factory in _amtContext.StFactoryTbl.AsNoTracking() on subwh.WhCode equals factory.CorporationcdFormal into factoryJoin
+                                  from factory in factoryJoin.DefaultIfEmpty()
                                   where role.UserId == UserId && menu.Menunm == menuNm
                                   select new UserMenuRoleView
                                   {
                                       WhCode = subwh != null ? subwh.WhCode : null,
-                                      WhName = subwh != null ? subwh.Remark : null,
+                                      WhName = factory != null ? factory.WmsWhname : null,
                                       SubwhCode = role.Fatoy,
                                       SubwhName = subwh != null ? subwh.SubwhName : null,
                                       LocControl = subwh != null ? subwh.LocControl : null,

@@ -36,6 +36,7 @@ namespace erpsolution.dal.EF
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
         public virtual DbSet<StMenuTbl> StMenuTbl { get; set; }
         public virtual DbSet<StSubwhTbl> StSubwhTbl { get; set; }
+        public virtual DbSet<StFactoryTbl> StFactoryTbl { get; set; }
         public virtual DbSet<StUserMenuRoleTbl> StUserMenuRoleTbl { get; set; }
         public virtual DbSet<MtUccListUpload> MtUccListUpload { get; set; }
         public virtual DbSet<UccStockRow> UccStockRow { get; set; }
@@ -1157,6 +1158,151 @@ namespace erpsolution.dal.EF
                     .IsUnicode(false)
                     .IsFixedLength()
                     .HasColumnName("DMNUID");
+            });
+
+            modelBuilder.Entity<StFactoryTbl>(entity =>
+            {
+                entity.ToTable("ST_FACTORY_TBL");
+
+                entity.HasKey(e => e.Fatoy)
+                    .HasName("ST_FACTORY_TBL");
+
+                entity.Property(e => e.Fatoy)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("FATOY");
+
+                entity.Property(e => e.Fatoynm)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("FATOYNM");
+
+                entity.Property(e => e.Magid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("MAGID");
+
+                entity.Property(e => e.Corporation)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("CORPORATION");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.FatoynmOld)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("FATOYNM_OLD");
+
+                entity.Property(e => e.UseYn)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("USE_YN");
+
+                entity.Property(e => e.Nation)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("NATION");
+
+                entity.Property(e => e.Corporationnm)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CORPORATIONNM");
+
+                entity.Property(e => e.CorporationcdFormal)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("CORPORATIONCD_FORMAL");
+
+                entity.Property(e => e.CorporationnmFormal)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("CORPORATIONNM_FORMAL");
+
+                entity.Property(e => e.Sortno)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("SORTNO");
+
+                entity.Property(e => e.UseT1)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("USE_T1");
+
+                entity.Property(e => e.DeptcodeHrm)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("DEPTCODE_HRM");
+
+                entity.Property(e => e.HrValidtionFlag)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("HR_VALIDTION_FLAG");
+
+                entity.Property(e => e.HrWhTolerance)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("HR_WH_TOLERANCE");
+
+                entity.Property(e => e.WmsCorporation)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WMS_CORPORATION");
+
+                entity.Property(e => e.WmsWarehouse)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WMS_WAREHOUSE");
+
+                entity.Property(e => e.PlanValidtionFlag)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("PLAN_VALIDTION_FLAG");
+
+                entity.Property(e => e.ExfactoryDateCheck)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("EXFACTORY_DATE_CHECK");
+
+                entity.Property(e => e.WarehouseGm)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WAREHOUSE_GM");
+
+                entity.Property(e => e.WmsWhname)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("WMS_WHNAME");
+
+                entity.Property(e => e.FginvFlag)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("FGINV_FLAG");
             });
 
             modelBuilder.Entity<StSubwhTbl>(entity =>
