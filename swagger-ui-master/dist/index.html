@@ -23,8 +23,39 @@
     <script src="./swagger-initializer.js" charset="UTF-8"> </script>
 <script>
         window.onload = function () {
-            var configObject = JSON.parse('{"urls":[{"url":"/api/swagger/auth/swagger.json","name":"Auth API"},{"url":"/api/swagger/wms/swagger.json","name":"WMS API"},{"url":"/api/swagger/hr/swagger.json","name":"HR API"},{"url":"/api/swagger/systemmaster/swagger.json","name":"System API"},{"url":"/api/swagger/mts/swagger.json","name":"WMS API MTS"},{"url":"/api/swagger/mes/swagger.json","name":"WMS API MES"},{"url":"/api/swagger/mobile/swagger.json","name":"API For Mobile"},{"url":"/api/swagger/import/swagger.json","name":"Import Data"},{"url":"/api/swagger/resetdata/swagger.json","name":"Reset Data"},{"url":"/api/swagger/report/swagger.json","name":"Report Search"},{"url":"/api/swagger/utilities/swagger.json","name":"Utilities API"},{"url":"/api/swagger/inboundsample/swagger.json","name":"Inbound Sample, Return poor API"},{"url":"/api/swagger/requestmanual/swagger.json","name":"Request Manual"}],"deepLinking":false,"displayOperationId":false,"defaultModelsExpandDepth":1,"defaultModelExpandDepth":1,"defaultModelRendering":"example","displayRequestDuration":false,"docExpansion":"list","showExtensions":false,"showCommonExtensions":false,"supportedSubmitMethods":["get","put","post","delete","options","head","patch","trace"]}');
-            var oauthConfigObject = JSON.parse('{"scopeSeparator":" ","useBasicAuthenticationWithAccessCodeGrant":false,"usePkceWithAuthorizationCodeGrant":false}');
+           // var configObject = JSON.parse('{"urls":[{"url":"/api/swagger/auth/swagger.json","name":"Auth API"},{"url":"/api/swagger/wms/swagger.json","name":"WMS API"},{"url":"/api/swagger/hr/swagger.json","name":"HR API"},{"url":"/api/swagger/systemmaster/swagger.json","name":"System API"},{"url":"/api/swagger/mts/swagger.json","name":"WMS API MTS"},{"url":"/api/swagger/mes/swagger.json","name":"WMS API MES"},{"url":"/api/swagger/mobile/swagger.json","name":"API For Mobile"},{"url":"/api/swagger/import/swagger.json","name":"Import Data"},{"url":"/api/swagger/resetdata/swagger.json","name":"Reset Data"},{"url":"/api/swagger/report/swagger.json","name":"Report Search"},{"url":"/api/swagger/utilities/swagger.json","name":"Utilities API"},{"url":"/api/swagger/inboundsample/swagger.json","name":"Inbound Sample, Return poor API"},{"url":"/api/swagger/requestmanual/swagger.json","name":"Request Manual"}],"deepLinking":false,"displayOperationId":false,"defaultModelsExpandDepth":1,"defaultModelExpandDepth":1,"defaultModelRendering":"example","displayRequestDuration":false,"docExpansion":"list","showExtensions":false,"showCommonExtensions":false,"supportedSubmitMethods":["get","put","post","delete","options","head","patch","trace"]}');
+          var configObject = {
+            // 📚 Danh sách các tài liệu Swagger API
+            "urls": [
+              { "url": "/api/swagger/fg_inventory_mobile/swagger.json", "name": "FG Inventory API" },
+              { "url": "/api/swagger/systemmaster/swagger.json", "name": "System API" },
+            ],
+
+            // ⚙️ Cài đặt giao diện Swagger UI
+            "deepLinking": false,
+            "displayOperationId": false,
+            "defaultModelsExpandDepth": 1,
+            "defaultModelExpandDepth": 1,
+            "defaultModelRendering": "example",
+            "displayRequestDuration": false,
+            "docExpansion": "list", // Mở rộng danh sách API khi tải trang
+            "showExtensions": false,
+            "showCommonExtensions": false,
+
+            // ➡️ Các phương thức HTTP được hỗ trợ
+            "supportedSubmitMethods": [
+              "get",
+              "put",
+              "post",
+              "delete",
+              "options",
+              "head",
+              "patch",
+              "trace"
+            ]
+          };
+
+          var oauthConfigObject = JSON.parse('{"scopeSeparator":" ","useBasicAuthenticationWithAccessCodeGrant":false,"usePkceWithAuthorizationCodeGrant":false}');
 
             // Workaround for https://github.com/swagger-api/swagger-ui/issues/5945
             configObject.urls.forEach(function (item) {
