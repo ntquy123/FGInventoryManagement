@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using service.Common.Base;
 using System.Data;
-namespace erpsolution.service.Service
+namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService : ServiceBase<FgRequestRow>
     {

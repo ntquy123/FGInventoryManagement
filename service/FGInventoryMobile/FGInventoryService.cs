@@ -1,7 +1,7 @@
 using System;
 using erpsolution.service.Interface;
 
-namespace erpsolution.service.Service
+namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService : IFGInventoryService
     {

@@ -4,7 +4,7 @@ using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Interface;
-using erpsolution.service.Service;
+using erpsolution.service.FGInventoryMobile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service.Common.Base.Interface;

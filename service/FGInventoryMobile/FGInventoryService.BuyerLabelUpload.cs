@@ -4,7 +4,7 @@ using erpsolution.dal.EF;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace erpsolution.service.Service
+namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService  
     {

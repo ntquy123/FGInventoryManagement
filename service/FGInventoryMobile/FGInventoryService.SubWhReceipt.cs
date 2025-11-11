@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 
-namespace erpsolution.service.Service
+namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService
     {

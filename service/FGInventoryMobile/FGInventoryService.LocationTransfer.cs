@@ -7,7 +7,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace erpsolution.service.Service
+namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService
     {

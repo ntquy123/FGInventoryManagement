@@ -1,6 +1,6 @@
 ﻿using erpsolution.entities;
 using erpsolution.service.Interface;
-using erpsolution.service.Service;
+using erpsolution.service.FGInventoryMobile;
 namespace erpsolution.api.Helper
 {
     public static partial class RegisterService
@@ -10,7 +10,7 @@ namespace erpsolution.api.Helper
         {
            
             //FGInventory Mobile
-           // services.AddScoped<IAmtAuthService, AmtAuthService>();
+            services.AddScoped<IAmtAuthService, AmtAuthService>();
             services.AddScoped<IFGInventoryService, FGInventoryService>();
 
             //Add Helper

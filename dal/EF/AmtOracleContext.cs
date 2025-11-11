@@ -39,8 +39,8 @@ namespace erpsolution.dal.EF
         public virtual DbSet<FgRequestDetailRow> FgRequestDetailRow { get; set; }
         public virtual DbSet<FgRequestRow> FgRequestRow { get; set; }
         public virtual DbSet<FgReceiptResultRow> FgReceiptResultRow { get; set; }
-        // public virtual DbSet<UserMenuRoleView> UserMenuRoleView { get; set; }
-        //  public virtual DbSet<UserMenuInfo> UserMenuInfo { get; set; }
+        public virtual DbSet<TCMUSMT> TCMUSMT { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -54,6 +54,7 @@ namespace erpsolution.dal.EF
             modelBuilder.Entity<FgRequestDetailRow>().HasNoKey();
             modelBuilder.Entity<FgRequestRow>().HasNoKey();
             modelBuilder.Entity<FgReceiptResultRow>().HasNoKey();
+            modelBuilder.Entity<TCMUSMT>().HasNoKey();
             modelBuilder.Entity<MtUccListUpload>(entity =>
             {
                 entity.HasKey(e => new { e.XlsId, e.XlsSq })

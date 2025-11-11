@@ -37,7 +37,22 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             _serviceProvider = serviceProvider;
             _context = context;
         }
-        [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
+
+        [ApiExplorerSettings(GroupName = "auth")]
+        [HttpPost(nameof(LoginERP))]
+        [ProducesResponseType(typeof(HandleResponse<object>), 400)]
+        [AllowAnonymous]
+
+        public IActionResult LoginERP([FromBody] LoginModel login)
+        {
+            var user = _service.CheckLoginERP(login);
+            if (user != null)
+            {
+                return CreateTokenERP(user);
+            }
+            return Json(new HandleResponse<LoginModel>(false, "Username or password is incorrect", null));
+        }
+        [ApiExplorerSettings(GroupName = "auth")]
         [HttpGet(nameof(GetRole))]
         [AllowAnonymous]
         public async Task<HandleState> GetRole(string UserId, string menuNm)
@@ -53,20 +68,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
         }
 
-        [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
-        [HttpPost(nameof(LoginERP))]
-        [ProducesResponseType(typeof(HandleResponse<object>), 400)]
-        [AllowAnonymous]
 
-        public IActionResult LoginERP([FromBody] LoginModel login)
-        {
-            var user = _service.CheckLoginERP(login);
-            if (user != null)
-            {
-                return CreateTokenERP(user);
-            }
-            return Json(new HandleResponse<LoginModel>(false, "Username or password is incorrect", null));
-        }
         private IActionResult CreateTokenERP(TCMUSMT user)
         {
 
@@ -131,7 +133,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
+        [ApiExplorerSettings(GroupName = "auth")]
         [HttpGet(nameof(GetMobileMenu))]
         [AllowAnonymous]
         public async Task<HandleList<ZmMasMobileMenuGetModel>> GetMobileMenu(string userId)

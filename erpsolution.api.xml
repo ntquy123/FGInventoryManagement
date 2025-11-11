@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>erpsolution.api</name>
+    </assembly>
+    <members>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForCarton(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForBuyer(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoLabelChange(erpsolution.dal.EF.LabelChangeRequest)">
+            <param name="pData">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "FromCartonId": "MKS1854RGL001202507080004",
+              "ToCartonId": "CARTONTEST123",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.ScanQrtoSubWHReceipt(erpsolution.dal.DTO.ParamScanQR)">
+            <param name="pData">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "locCode": "A01-0001", 
+              "referInfo": "I-GA2-250730-0003",
+              "cartonId": "MKS1854RGL001202507080004",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.GetUccByCartonAsync(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.PhysicalCountingController.ExecutePcInputAndQueryAsync(erpsolution.dal.DTO.Pcinputrequest)">
+            <param name="req">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "pcName": "920PGW1_TEST", 
+              "locCode": "A01-0002",
+               "trAction": 1, // Note: 1 (Input), -1 (Cancel)
+              "cartonId": "MKS1854RGL001202507080004",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="P:erpsolution.api.Base.BaseController.UserCreator">
+            <summary>
+            Username that authorized
+            </summary>
+        </member>
+        <member name="F:erpsolution.api.Base.BaseController.LanguageCol">
+            <summary>
+            Current language request
+            </summary>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Get(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get List Model
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.First(`2)">
+            <summary>
+            Get Model by ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Add(`1)">
+            <summary>
+            Add model
+            </summary>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Update(`1)">
+            <summary>
+            Update model
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Delete(`2)">
+            <summary>
+            Delete model
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
