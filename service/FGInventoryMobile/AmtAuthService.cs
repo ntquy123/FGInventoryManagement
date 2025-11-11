@@ -62,7 +62,7 @@ namespace erpsolution.service.FGInventoryMobile
                     {
                         SubwhCode = x.SubwhCode,
                         SubwhName = x.SubwhName,
-                    }).ToList()
+                    }).Distinct().ToList()
                 }).FirstOrDefault();
 
                 return result;
