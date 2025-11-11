@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using erpsolution.dal.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace erpsolution.dal.EF
         public virtual DbSet<FgRequestDetailRow> FgRequestDetailRow { get; set; }
         public virtual DbSet<FgRequestRow> FgRequestRow { get; set; }
         public virtual DbSet<FgReceiptResultRow> FgReceiptResultRow { get; set; }
+        public virtual DbSet<Pcinput> Pcinput { get; set; }
         public virtual DbSet<TCMUSMT> TCMUSMT { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -59,6 +61,7 @@ namespace erpsolution.dal.EF
             modelBuilder.Entity<FgRequestRow>().HasNoKey();
             modelBuilder.Entity<FgReceiptResultRow>().HasNoKey();
             modelBuilder.Entity<TCMUSMT>().HasNoKey();
+            modelBuilder.Entity<Pcinput>().HasNoKey();
             modelBuilder.Entity<MtUccListUpload>(entity =>
             {
                 entity.HasKey(e => new { e.XlsId, e.XlsSq })
