@@ -1,6 +1,7 @@
 ﻿
 
 using erpsolution.dal.DTO;
+using erpsolution.dal.EF;
 using erpsolution.entities;
 using service.Common.Base.Interface;
 
