@@ -319,7 +319,9 @@ namespace erpsolution.api
             });
             app.UseSwaggerUI(c =>
             {
-                c.RoutePrefix = "v1";
+                // Expose Swagger UI at the default "/swagger" path so that launching the
+                // application in IIS Express (which automatically opens that URL) works.
+                c.RoutePrefix = "swagger";
                 var basePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
                 c.SwaggerEndpoint($"/{basePath}{appSettings.Surfix}/swagger/auth/swagger.json", "Auth API");
                 c.SwaggerEndpoint($"/{basePath}{appSettings.Surfix}/swagger/fg_inventory_mobile/swagger.json", "FG Inventory API");
