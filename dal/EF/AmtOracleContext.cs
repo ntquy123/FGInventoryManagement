@@ -34,6 +34,9 @@ namespace erpsolution.dal.EF
         public virtual DbSet<StTypecodeTbl> StTypecodeTbl { get; set; }
 
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
+        public virtual DbSet<StMenuTbl> StMenuTbl { get; set; }
+        public virtual DbSet<StSubwhTbl> StSubwhTbl { get; set; }
+        public virtual DbSet<StUserMenuRoleTbl> StUserMenuRoleTbl { get; set; }
         public virtual DbSet<MtUccListUpload> MtUccListUpload { get; set; }
         public virtual DbSet<UccStockRow> UccStockRow { get; set; }
         public virtual DbSet<FgRequestDetailRow> FgRequestDetailRow { get; set; }
@@ -1062,6 +1065,230 @@ namespace erpsolution.dal.EF
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .HasColumnName("MGT_BUYER_INVOICE");
+            });
+
+            modelBuilder.Entity<StMenuTbl>(entity =>
+            {
+                entity.ToTable("ST_MENU_TBL");
+
+                entity.HasKey(e => e.Menuid);
+
+                entity.Property(e => e.Menuid)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("MENUID");
+
+                entity.Property(e => e.Lmnuid)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("LMNUID");
+
+                entity.Property(e => e.Mmnuid)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("MMNUID");
+
+                entity.Property(e => e.Smnuid)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("SMNUID");
+
+                entity.Property(e => e.Menunm)
+                    .IsRequired()
+                    .HasMaxLength(65)
+                    .IsUnicode(false)
+                    .HasColumnName("MENUNM");
+
+                entity.Property(e => e.Mndesc)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("MNDESC");
+
+                entity.Property(e => e.Mnurl)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("MNURL");
+
+                entity.Property(e => e.Imgurl)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("IMGURL");
+
+                entity.Property(e => e.Mndpth)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("MNDPTH");
+
+                entity.Property(e => e.Mnsort)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("MNSORT");
+
+                entity.Property(e => e.Useyn)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("USEYN");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Dmnuid)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("DMNUID");
+            });
+
+            modelBuilder.Entity<StSubwhTbl>(entity =>
+            {
+                entity.ToTable("ST_SUBWH_TBL");
+
+                entity.HasKey(e => new { e.WhCode, e.SubwhCode })
+                    .HasName("ST_SUBWH_TBL_U1");
+
+                entity.Property(e => e.WhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("WH_CODE");
+
+                entity.Property(e => e.SubwhCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SUBWH_CODE");
+
+                entity.Property(e => e.SubwhName)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("SUBWH_NAME");
+
+                entity.Property(e => e.SubwhType)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("SUBWH_TYPE");
+
+                entity.Property(e => e.LocControl)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("LOC_CONTROL");
+
+                entity.Property(e => e.LocDefault)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("LOC_DEFAULT");
+
+                entity.Property(e => e.UsedFlag)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("USED_FLAG");
+
+                entity.Property(e => e.Remark)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("REMARK");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.JobControl)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("JOB_CONTROL");
+
+                entity.Property(e => e.PickRule)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("PICK_RULE");
+            });
+
+            modelBuilder.Entity<StUserMenuRoleTbl>(entity =>
+            {
+                entity.ToTable("ST_USER_MENU_ROLE_TBL");
+
+                entity.HasKey(e => new { e.UserId, e.Fatoy, e.Menuid, e.Role })
+                    .HasName("ST_USER_MENU_ROLE_TBL_U1");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("USER_ID");
+
+                entity.Property(e => e.Fatoy)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .HasColumnName("FATOY");
+
+                entity.Property(e => e.Menuid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("MENUID");
+
+                entity.Property(e => e.Role)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("ROLE");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.LinkName)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("LINK_NAME");
             });
 
            // modelBuilder.Entity<UserMenuRoleView>().HasNoKey();
