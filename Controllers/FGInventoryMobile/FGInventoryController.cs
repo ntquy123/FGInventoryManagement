@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using entities.Common;
 using entities.Setting;
 using erpsolution.api.Base;
@@ -85,7 +86,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             try
             {
                 var data = await _service.ScanQrtoSubWHReceipt(pData);
-                return new HandleState(true, data.rtnMsg, data);
+                var isSuccess = !string.Equals(data.rtnCode, "E", StringComparison.OrdinalIgnoreCase);
+                return new HandleState(isSuccess, data.rtnMsg, data);
             }
             catch (Exception ex)
             {
