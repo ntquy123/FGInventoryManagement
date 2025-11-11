@@ -6,15 +6,15 @@ namespace erpsolution.dal.EF
 {
     public class FgRequestRow
     {
-        public string ReqNo { get; set; }
-        public string JobNo { get; set; }
+        public string? ReqNo { get; set; }
+        public string? JobNo { get; set; }
         public DateTime? ReqDate { get; set; }
-        public string FrSubwh { get; set; }
-        public string FrSubwhName { get; set; }
-        public string JobControl { get; set; }
-        public string Status { get; set; }    
-        public string CrtId { get; set; }
-        public string Remark { get; set; }
+        public string? FrSubwh { get; set; }
+        public string? FrSubwhName { get; set; }
+        public string? JobControl { get; set; }
+        public string? Status { get; set; }    
+        public string? CrtId { get; set; }
+        public string? Remark { get; set; }
     }
 
 }
