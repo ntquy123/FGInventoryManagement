@@ -42,28 +42,35 @@ namespace erpsolution.service.FGInventoryMobile
                                       Role = role.Role
                                   }).ToListAsync();
 
-                var result = data.GroupBy(x => new
-                {
-                    x.UserId,
-                    x.LocControl,
-                    x.WhCode,
-                    x.WhName,
-                    x.MenuNm,
-                    x.Role
-                }).Select(g => new UserMenuRoleViewHeader
-                {
-                    UserId = g.Key.UserId,
-                    LocControl = g.Key.LocControl,
-                    WhCode = g.Key.WhCode,
-                    WhName = g.Key.WhName,
-                    MenuNm = g.Key.MenuNm,
-                    Role = g.Key.Role,
-                    LstSubWh = g.Select(x => new UserMenuRoleViewDetail
-                    {
-                        SubwhCode = x.SubwhCode,
-                        SubwhName = x.SubwhName,
-                    }).Distinct().ToList()
-                }).FirstOrDefault();
+                var result = data
+    .GroupBy(x => new
+    {
+        x.UserId,
+        x.LocControl,
+        x.WhCode,
+        x.WhName,
+        x.MenuNm,
+        x.Role
+    })
+    .Select(g => new UserMenuRoleViewHeader
+    {
+        UserId = g.Key.UserId,
+        LocControl = g.Key.LocControl,
+        WhCode = g.Key.WhCode,
+        WhName = g.Key.WhName,
+        MenuNm = g.Key.MenuNm,
+        Role = g.Key.Role,
+        LstSubWh = g
+            .GroupBy(x => new { x.SubwhCode, x.SubwhName })
+            .Select(dg => new UserMenuRoleViewDetail
+            {
+                SubwhCode = dg.Key.SubwhCode,
+                SubwhName = dg.Key.SubwhName
+            })
+            .ToList()
+    })
+    .FirstOrDefault();
+
 
                 return result;
             }
