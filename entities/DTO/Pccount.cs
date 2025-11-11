@@ -23,4 +23,15 @@ namespace erpsolution.dal.DTO
         [Column("STATUS")]
         public string? Status { get; set; }
     }
+    public class Pcinputrequest
+    {
+        public string WhCode { get; set; } = default!;
+        public string SubwhCode { get; set; } = default!;
+        public string PcName { get; set; } = default!;
+        public string LocCode { get; set; } = default!;
+        /// <summary>Input: 1, Cancel: -1</summary>
+        public int TrAction { get; set; }
+        public string CartonId { get; set; } = default!;
+        public string UserId { get; set; } = default!;
+    }
 }

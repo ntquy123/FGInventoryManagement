@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace erpsolution.dal.DTO
+namespace erpsolution.dal.EF
 {
     public class Pcinput
     {
@@ -58,17 +58,7 @@ namespace erpsolution.dal.DTO
         [NotMapped]
         public string? Errormsg { get; set; }     
     }
-    public class Pcinputrequest
-    {
-        public string WhCode { get; set; } = default!;
-        public string SubwhCode { get; set; } = default!;
-        public string PcName { get; set; } = default!;
-        public string LocCode { get; set; } = default!;
-        /// <summary>Input: 1, Cancel: -1</summary>
-        public int TrAction { get; set; }
-        public string CartonId { get; set; } = default!;
-        public string UserId { get; set; } = default!;
-    }
+
  
 
 
