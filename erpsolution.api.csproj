@@ -12,8 +12,10 @@
     </DefaultItemExcludes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Bật tính năng XML doc -->
-    <DocumentationFile>bin\Debug\net8.0\erpsolution.api.xml</DocumentationFile>
-    <!-- Đặt đường dẫn -->
+    <DocumentationFile>$(OutputPath)erpsolution.api.xml</DocumentationFile>
+    <!-- Đặt đường dẫn đúng với từng cấu hình build -->
+    <CopyDocumentationFileToOutputDirectory>true</CopyDocumentationFileToOutputDirectory>
+    <CopyDocumentationFileToPublishDirectory>true</CopyDocumentationFileToPublishDirectory>
   </PropertyGroup>
 
   <ItemGroup>
