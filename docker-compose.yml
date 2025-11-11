@@ -1,33 +1,23 @@
-﻿# File: docker-compose.yml
 version: '3.8'
 
 services:
-  # 1. Dịch vụ ứng dụng .NET (Kestrel)
   app:
-    # Hướng dẫn Docker Compose build image từ Dockerfile trong thư mục hiện tại
     build:
       context: .
       dockerfile: Dockerfile
     container_name: erp-dotnet-api
-    # Kestrel đang chạy trên port 8081. 
-    # 'expose' chỉ mở cổng cho mạng nội bộ Docker.
     expose:
-      - "8081" 
+      - "8081"
     restart: always
 
-  # 2. Dịch vụ Nginx (Reverse Proxy)
   nginx:
-    # Sử dụng image Nginx có sẵn
     image: nginx:latest
     container_name: erp-nginx-proxy
-    # Map cổng 8081 của Host ra cổng 8080 của container Nginx. 
-    # Đây là cổng bạn sẽ truy cập.
     ports:
-      - "8081:8080" 
-    # Mount file cấu hình Nginx tùy chỉnh
+      - "8081:8081"
     volumes:
-       - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf
-    # Đảm bảo Nginx chỉ khởi động sau khi ứng dụng .NET đã sẵn sàng
+      - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf:ro
+      - ./swagger-ui-master:/usr/share/nginx/pkwms/swagger-ui-master:ro
     depends_on:
       - app
     restart: always
