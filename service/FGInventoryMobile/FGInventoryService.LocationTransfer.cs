@@ -35,7 +35,7 @@ namespace erpsolution.service.FGInventoryMobile
                 FROM MT_UCC_LIST MULL
                 LEFT JOIN (
                     SELECT MFSU.*
-                    FROM c MFSM, MT_FG_STOCK_UCC MFSU
+                    FROM MT_FG_STOCK MFSM, MT_FG_STOCK_UCC MFSU
                     WHERE MFSM.WH_CODE     = MFSU.WH_CODE
                       AND MFSM.SUBWH_CODE  = MFSU.SUBWH_CODE
                       AND MFSM.LOC_CODE    = MFSU.LOC_CODE
@@ -52,8 +52,7 @@ namespace erpsolution.service.FGInventoryMobile
                  AND MFSD.STLCOSN   = MULL.STLCOSN
                  AND MFSD.STLREVN   = MULL.STLREVN
                  AND MFSD.CARTON_ID = MULL.CARTON_ID
-                INNER JOIN AO_STLMST_TBL ASMTMT_UCC_LIST
-
+                INNER JOIN AO_STLMST_TBL ASMT
                         ON MULL.STLCD   = ASMT.STLCD
                        AND MULL.STLSIZ  = ASMT.STLSIZ
                        AND MULL.STLCOSN = ASMT.STLCOSN
