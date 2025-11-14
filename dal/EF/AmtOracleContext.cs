@@ -43,6 +43,8 @@ namespace erpsolution.dal.EF
         public virtual DbSet<FgRequestDetailRow> FgRequestDetailRow { get; set; }
         public virtual DbSet<FgRequestRow> FgRequestRow { get; set; }
         public virtual DbSet<FgReceiptResultRow> FgReceiptResultRow { get; set; }
+        public virtual DbSet<TransferShippingHeaderRow> TransferShippingHeaderRow { get; set; }
+        public virtual DbSet<TransferShippingLineRow> TransferShippingLineRow { get; set; }
         public virtual DbSet<Pcinput> Pcinput { get; set; }
         public virtual DbSet<TCMUSMT> TCMUSMT { get; set; }
         
@@ -59,6 +61,8 @@ namespace erpsolution.dal.EF
             modelBuilder.Entity<FgRequestDetailRow>().HasNoKey();
             modelBuilder.Entity<FgRequestRow>().HasNoKey();
             modelBuilder.Entity<FgReceiptResultRow>().HasNoKey();
+            modelBuilder.Entity<TransferShippingHeaderRow>().HasNoKey();
+            modelBuilder.Entity<TransferShippingLineRow>().HasNoKey();
             modelBuilder.Entity<TCMUSMT>().HasNoKey();
             modelBuilder.Entity<Pcinput>().HasNoKey();
             modelBuilder.Entity<MtUccListUpload>(entity =>
