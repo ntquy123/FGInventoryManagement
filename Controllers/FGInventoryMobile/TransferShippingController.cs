@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using entities.Common;
 using erpsolution.api.Base;
 using erpsolution.dal.Context;
+using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Interface;
