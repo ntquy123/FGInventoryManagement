@@ -10,6 +10,13 @@ namespace erpsolution.service.FGInventoryMobile
     {
         public async Task<(IReadOnlyList<FgReceiptResultRow> rows, string rtnCode, string rtnMsg)> ScanQrtoSubWHReceipt(ParamScanQR param)
         {
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(param.cartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(param.cartonId);
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, param.whCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, param.subwhCode, ParameterDirection.Input);
             var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, param.locCode, ParameterDirection.Input);

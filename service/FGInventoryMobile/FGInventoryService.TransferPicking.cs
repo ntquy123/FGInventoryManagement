@@ -4,6 +4,7 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -121,6 +122,13 @@ SELECT MFI.LINE_NO AS LineNo,
 
         public async Task<(IReadOnlyList<TransferPickingLineRow> rows, string rtnCode, string rtnMsg)> ScanTransferPickingAsync(TransferPickingScanRequest request)
         {
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(request.CartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(request.CartonId);
             CancellationToken ct = default;
             int TrType = 4;
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
@@ -179,6 +187,11 @@ SELECT MFI.LINE_NO AS LineNo,
             {
                 await tx.RollbackAsync(ct);
                 throw;
+            }
+            finally
+            {
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(request.CartonId);
             }
         }
     }

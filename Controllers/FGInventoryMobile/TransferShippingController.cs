@@ -1,12 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using entities.Common;
+using erpsolution.api.Attribute;
 using erpsolution.api.Base;
 using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Interface;
+using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +18,18 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
     {
         private readonly AmtContext _context;
         public IServiceProvider _serviceProvider;
-
+        private IApiExecutionLockService _ApiExcLockService;
         public TransferShippingController(
             IFGInventoryService service,
             IServiceProvider serviceProvider,
             AmtContext context,
+             IApiExecutionLockService ApiExcLockService,
             ICurrentUser currentUser)
             : base(service, currentUser)
         {
             _serviceProvider = serviceProvider;
             _context = context;
+            _ApiExcLockService = ApiExcLockService;
         }
         /// <param name="whCode">920</param>
         /// <param name="subwhCode">PGW2</param>
@@ -89,7 +93,23 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+                // string jsonData = JsonSerializer.Serialize(items);
+                var modelAdd = new ApiLogs
+                {
+                    Method = "POST",
+                    ApiName = currentUrl,
+                    //RequestJson = jsonData,
+                    Message = ex.Message,
+                    Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
+                    System = "Mobile",
+                    MenuName = "Transfer Shipping",
+                };
+                var log = await _ApiExcLockService.SaveLogError(modelAdd);
+                HandlingExceptionError exceptionError = new HandlingExceptionError();
+                exceptionError.OnException(ex);
+                string mess = "Error ID:" + log.LogId + ": " + ex.Message;
+                return new HandleState(false, mess);
             }
         }
     }

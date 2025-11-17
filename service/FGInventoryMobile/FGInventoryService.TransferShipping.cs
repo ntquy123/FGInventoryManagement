@@ -1,4 +1,5 @@
 using erpsolution.dal.EF;
+using erpsolution.service.Interface.SystemMaster;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -153,6 +154,13 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
 
         public async Task<(IReadOnlyList<TransferShippingLineRow> rows, string rtnCode, string rtnMsg)> ScanTransferShippingAsync(TransferShippingScanRequest request)
         {
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(request.CartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(request.CartonId);
             CancellationToken ct = default;
             int TrType = 4;
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
@@ -211,6 +219,11 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
             {
                 await tx.RollbackAsync(ct);
                 throw;
+            }
+            finally
+            {
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(request.CartonId);
             }
         }
     }

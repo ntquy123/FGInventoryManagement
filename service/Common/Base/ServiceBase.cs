@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using entities.Common;
 using erpsolution.dal.Context;
+using erpsolution.dal.EF;
 using erpsolution.entities.Common;
 using erpsolution.service.Common.Base.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace service.Common.Base
         protected DataModeType MODE_TYPE;
         protected readonly AmtContext _amtContext;
         protected ICurrentUser _currentUser;
-
+        protected readonly LogContext _logContext;
         private bool autoSaveChange = true;
 
         protected IMapper _mapper;
@@ -25,6 +26,7 @@ namespace service.Common.Base
             _currentUser = (ICurrentUser)serviceProvider.GetService(typeof(ICurrentUser));
             _mapper = (IMapper)serviceProvider.GetService(typeof(IMapper));
             _amtContext = (AmtContext)serviceProvider.GetService(typeof(AmtContext));
+            _logContext = (LogContext)serviceProvider.GetService(typeof(LogContext));
         }
         private string modelName => typeof(Model).Name;
 
