@@ -31,11 +31,11 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(GetTransferShippingHeadersAsync))]
         [AllowAnonymous]
-        public async Task<HandleState> GetTransferShippingHeadersAsync(string invoiceNo)
+        public async Task<HandleState> GetTransferShippingHeadersAsync(string whCode, string subwhCode)
         {
             try
             {
-                var data = await _service.GetTransferShippingHeadersAsync(invoiceNo);
+                var data = await _service.GetTransferShippingHeadersAsync(whCode, subwhCode);
                 return new HandleState(true, data);
             }
             catch (Exception ex)
