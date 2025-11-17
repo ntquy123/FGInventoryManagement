@@ -7,6 +7,7 @@ namespace erpsolution.dal.EF
     public class ApiLogs
     {
         public int LogId { get; set; } // LOG_ID
+        public int TransDate { get; set; } // TRANS_DATE
         public string Method { get; set; } // API_NAME
         public string Exception { get; set; } // API_NAME
         public string Message { get; set; } // API_NAME
@@ -21,6 +22,7 @@ namespace erpsolution.dal.EF
     public class ApiLogsForSearch
     {
         public int LogId { get; set; } // LOG_ID
+        public int TransDate { get; set; } // TRANS_DATE
         public string Method { get; set; } // API_NAME
         public string MenuName { get; set; } // API_NAME
         public string System { get; set; } // API_NAME

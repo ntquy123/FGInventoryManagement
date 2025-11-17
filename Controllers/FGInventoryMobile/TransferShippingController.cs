@@ -6,6 +6,7 @@ using erpsolution.api.Base;
 using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
+using erpsolution.api.Attribute;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Interface;
 using erpsolution.service.Interface.SystemMaster;
@@ -45,7 +46,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Transfer Shipping");
+                return new HandleState(false, message);
             }
         }
         /// <param name="invoiceNo">20251107-00001</param>
@@ -61,7 +63,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Transfer Shipping");
+                return new HandleState(false, message);
             }
         }
         /// <param name="request">
@@ -93,24 +96,29 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
-                // string jsonData = JsonSerializer.Serialize(items);
-                var modelAdd = new ApiLogs
-                {
-                    Method = "POST",
-                    ApiName = currentUrl,
-                    //RequestJson = jsonData,
-                    Message = ex.Message,
-                    Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
-                    System = "Mobile",
-                    MenuName = "Transfer Shipping",
-                };
-                var log = await _ApiExcLockService.SaveLogError(modelAdd);
-                HandlingExceptionError exceptionError = new HandlingExceptionError();
-                exceptionError.OnException(ex);
-                string mess = "Error ID:" + log.LogId + ": " + ex.Message;
-                return new HandleState(false, mess);
+                var message = await LogErrorAsync(ex, "Transfer Shipping");
+                return new HandleState(false, message);
             }
+        }
+
+        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        {
+            string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            var modelAdd = new ApiLogs
+            {
+                Method = HttpContext.Request.Method,
+                ApiName = currentUrl,
+                //RequestJson = jsonData,
+                Message = ex.Message,
+                Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
+                System = "Mobile",
+                MenuName = menuName,
+            };
+            var log = await _ApiExcLockService.SaveLogError(modelAdd);
+            HandlingExceptionError exceptionError = new HandlingExceptionError();
+            exceptionError.OnException(ex);
+            string mess = "Error ID:" + log.LogId + ": " + ex.Message;
+            return mess;
         }
     }
 }

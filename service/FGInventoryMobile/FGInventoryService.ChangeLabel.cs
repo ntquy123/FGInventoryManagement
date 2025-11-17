@@ -75,6 +75,13 @@ namespace erpsolution.service.FGInventoryMobile
 
         public async Task<(string rtnCode, string rtnMsg)> ScanQRtoLabelChange(LabelChangeRequest param)
         {
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(param.FromCartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(param.FromCartonId);
             CancellationToken ct = default;
 
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, param.WhCode, ParameterDirection.Input);
@@ -125,6 +132,11 @@ namespace erpsolution.service.FGInventoryMobile
             {
                 await tx.RollbackAsync(ct);
                 throw;
+            }
+            finally
+            {
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(param.FromCartonId);
             }
         }
     }

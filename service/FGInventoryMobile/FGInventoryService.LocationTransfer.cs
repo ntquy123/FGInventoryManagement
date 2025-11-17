@@ -71,6 +71,13 @@ namespace erpsolution.service.FGInventoryMobile
 
         public async Task<(string rtnCode, string rtnMsg)> ScanQRtoTransferLocation(LocTransferRequest param)
         {
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(param.CartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(param.CartonId);
             CancellationToken ct = default;
 
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, param.WhCode, ParameterDirection.Input);
@@ -92,16 +99,28 @@ namespace erpsolution.service.FGInventoryMobile
             var plsql = "BEGIN PKAMT.MT_FG_PKG.M_LOC_TRANS(:P_WH_CODE, :P_SUBWH_CODE, :P_LOC_CODE, :P_CARTON_ID, :P_USER_ID, :P_RTN_CODE, :P_RTN_MSG); END;";
 
             using var tx = await _amtContext.Database.BeginTransactionAsync(ct);
+            try
+            {
+                await _amtContext.Database.ExecuteSqlRawAsync(plsql,
+                    parameters: new object[] { pWhCode, pSubwh, pLoc, pCarton, pUser, pRtnCode, pRtnMsg },
+                    cancellationToken: ct);
 
-            await _amtContext.Database.ExecuteSqlRawAsync(plsql,
-                parameters: new object[] { pWhCode, pSubwh, pLoc, pCarton, pUser, pRtnCode, pRtnMsg },
-                cancellationToken: ct);
+                var rtnCode = (pRtnCode.Value ?? "").ToString();
+                var rtnMsg = (pRtnMsg.Value ?? "").ToString();
 
-            var rtnCode = (pRtnCode.Value ?? "").ToString();
-            var rtnMsg = (pRtnMsg.Value ?? "").ToString();
-
-            await tx.CommitAsync(ct);
-            return (rtnCode, rtnMsg);
+                await tx.CommitAsync(ct);
+                return (rtnCode, rtnMsg);
+            }
+            catch
+            {
+                await tx.RollbackAsync(ct);
+                throw;
+            }
+            finally
+            {
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(param.CartonId);
+            }
         }
     }
 }

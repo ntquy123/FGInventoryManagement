@@ -31,14 +31,16 @@ namespace erpsolution.service.FGInventoryMobile
 
             using var tx = await _amtContext.Database.BeginTransactionAsync();
 
-            await _amtContext.Database.ExecuteSqlRawAsync(
-                plsql,
-                pWhCode, pSubwh, pLoc, pRefer, pCarton, pUser, pRtnCode, pRtnMsg);
+            try
+            {
+                await _amtContext.Database.ExecuteSqlRawAsync(
+                    plsql,
+                    pWhCode, pSubwh, pLoc, pRefer, pCarton, pUser, pRtnCode, pRtnMsg);
 
-            var rtnCode = (pRtnCode.Value ?? "").ToString();
-            var rtnMsg = (pRtnMsg.Value ?? "").ToString();
+                var rtnCode = (pRtnCode.Value ?? "").ToString();
+                var rtnMsg = (pRtnMsg.Value ?? "").ToString();
 
-            var sqlResult = $@"
+                var sqlResult = $@"
 SELECT
   REQ.WH_CODE AS WhCode,
   REQ.REQ_NO AS ReqNo,
@@ -78,12 +80,23 @@ WHERE MST.WH_CODE       = '{param.whCode}'
   AND REQ.CARTON_ID    = '{param.cartonId}'
 ORDER BY REQ.LINE_NO";
 
-            var rows = await _amtContext.FgReceiptResultRow
-                .FromSqlRaw(sqlResult)
-                .ToListAsync();
+                var rows = await _amtContext.FgReceiptResultRow
+                    .FromSqlRaw(sqlResult)
+                    .ToListAsync();
 
-            await tx.CommitAsync();
-            return (rows, rtnCode, rtnMsg);
+                await tx.CommitAsync();
+                return (rows, rtnCode, rtnMsg);
+            }
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
+            finally
+            {
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(param.cartonId);
+            }
         }
 
         public async Task<List<FgRequestRow>> GetHeaderSubWhReceipt(string whCode, string toSubwh)

@@ -38,6 +38,14 @@ namespace erpsolution.service.FGInventoryMobile
             string? rtnCode;
             string? rtnMsg;
 
+            bool isprocess = false;
+            if (_ApiExcLockService.IsRequestScanQRPending(req.CartonId))
+            {
+                isprocess = true;
+                throw new Exception("A request is being saved. Please wait until the current process completes.");
+            }
+            _ApiExcLockService.MarkRequestScanQRAsPending(req.CartonId);
+
             await using var conn = (OracleConnection)_amtContext.Database.GetDbConnection();
             var needClose = false;
             if (conn.State != ConnectionState.Open)
@@ -148,6 +156,8 @@ SELECT MFSU.WH_CODE AS WH_CODE
             finally
             {
                 if (needClose) await conn.CloseAsync();
+                if (!isprocess)
+                    _ApiExcLockService.ClearPendingScanQRRequest(req.CartonId);
             }
         }
     }

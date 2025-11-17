@@ -5,8 +5,10 @@ using erpsolution.api.Base;
 using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
+using erpsolution.api.Attribute;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Interface;
+using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,15 +20,18 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         private IMapper _mapper;
         private AppSettings _appSettings;
         public IServiceProvider _serviceProvider;
- 
+        private IApiExecutionLockService _ApiExcLockService;
+
         public FGChangeToBuyerLabelController(IFGInventoryService service,
         IServiceProvider serviceProvider,
         AmtContext context,
- 
+        IApiExecutionLockService ApiExcLockService,
+
         ICurrentUser currentUser) : base(service, currentUser)
         {
             _serviceProvider = serviceProvider;
             _context = context;
+            _ApiExcLockService = ApiExcLockService;
  
 
             var option = (IOptions<AppSettings>)_serviceProvider.GetService(typeof(IOptions<AppSettings>));
@@ -46,7 +51,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Change Label");
+                return new HandleState(false, message);
             }
         }
         /// <param name="cartonId">MKS1854RGL001202507080004</param>
@@ -62,7 +68,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Change Label");
+                return new HandleState(false, message);
             }
         }
         /// <param name="pData">
@@ -90,8 +97,27 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Change Label");
+                return new HandleState(false, message);
             }
+        }
+
+        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        {
+            string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            var modelAdd = new ApiLogs
+            {
+                Method = HttpContext.Request.Method,
+                ApiName = currentUrl,
+                Message = ex.Message,
+                Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
+                System = "Mobile",
+                MenuName = menuName,
+            };
+            var log = await _ApiExcLockService.SaveLogError(modelAdd);
+            HandlingExceptionError exceptionError = new HandlingExceptionError();
+            exceptionError.OnException(ex);
+            return "Error ID:" + log.LogId + ": " + ex.Message;
         }
 
     }

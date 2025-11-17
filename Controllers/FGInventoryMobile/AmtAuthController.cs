@@ -6,9 +6,11 @@ using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
 using erpsolution.entities;
 using erpsolution.entities.Common;
+using erpsolution.api.Attribute;
 using erpsolution.service.Common.Base.Interface;
 using erpsolution.service.Common.Cache;
 using erpsolution.service.Interface;
+using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -26,17 +28,20 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         public IServiceProvider _serviceProvider;
         private readonly ICacheService _memoryCache;
         private readonly IConfiguration _config;
+        private readonly IApiExecutionLockService _ApiExcLockService;
         public AmtAuthController(IAmtAuthService service,
        IConfiguration config,
        IServiceProvider serviceProvider,
        AmtContext context,
        ICacheService memoryCache,
+       IApiExecutionLockService ApiExcLockService,
        ICurrentUser currentUser) : base(service, currentUser)
         {
             _config = config;
             _memoryCache = memoryCache;
             _serviceProvider = serviceProvider;
             _context = context;
+            _ApiExcLockService = ApiExcLockService;
         }
 
         [ApiExplorerSettings(GroupName = "auth")]
@@ -44,14 +49,22 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         [ProducesResponseType(typeof(HandleResponse<object>), 400)]
         [AllowAnonymous]
 
-        public IActionResult LoginERP([FromBody] LoginModel login)
+        public async Task<IActionResult> LoginERP([FromBody] LoginModel login)
         {
-            var user = _service.CheckLoginERP(login);
-            if (user != null)
+            try
             {
-                return CreateTokenERP(user);
+                var user = _service.CheckLoginERP(login);
+                if (user != null)
+                {
+                    return CreateTokenERP(user);
+                }
+                return Json(new HandleResponse<LoginModel>(false, "Username or password is incorrect", null));
             }
-            return Json(new HandleResponse<LoginModel>(false, "Username or password is incorrect", null));
+            catch (Exception ex)
+            {
+                var message = await LogErrorAsync(ex, "Auth");
+                return Json(new HandleResponse<LoginModel>(false, message, null));
+            }
         }
         [ApiExplorerSettings(GroupName = "auth")]
         [HttpGet(nameof(GetRole))]
@@ -65,7 +78,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                return new HandleState(false, ex.Message);
+                var message = await LogErrorAsync(ex, "Auth");
+                return new HandleState(false, message);
             }
         }
 
@@ -146,8 +160,27 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception e)
             {
-                return new HandleList<ZmMasMobileMenuGetModel>(false, e.Message);
+                var message = await LogErrorAsync(e, "Auth");
+                return new HandleList<ZmMasMobileMenuGetModel>(false, message);
             }
+        }
+
+        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        {
+            string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            var modelAdd = new ApiLogs
+            {
+                Method = HttpContext.Request.Method,
+                ApiName = currentUrl,
+                Message = ex.Message,
+                Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
+                System = "Mobile",
+                MenuName = menuName,
+            };
+            var log = await _ApiExcLockService.SaveLogError(modelAdd);
+            HandlingExceptionError exceptionError = new HandlingExceptionError();
+            exceptionError.OnException(ex);
+            return "Error ID:" + log.LogId + ": " + ex.Message;
         }
     }
 }

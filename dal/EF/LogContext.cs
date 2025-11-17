@@ -31,10 +31,13 @@ namespace erpsolution.dal.EF
             {
                 entity.ToTable("API_LOGS");
 
-                entity.HasKey(e => e.LogId);
+                entity.HasKey(e => new { e.LogId, e.TransDate });
 
                 entity.Property(e => e.LogId)
                    .HasColumnName("LOG_ID").ValueGeneratedOnAdd();
+
+                entity.Property(e => e.TransDate)
+                   .HasColumnName("TRANS_DATE");
 
                 entity.Property(e => e.Method)
                .HasColumnName("METHOD");

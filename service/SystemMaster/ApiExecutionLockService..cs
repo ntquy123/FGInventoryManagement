@@ -47,6 +47,7 @@ namespace erpsolution.service.SystemMaster
                     Description = modelSave.Description,
                     Exception = modelSave.Exception,
                     Message = modelSave.Message,
+                    TransDate = int.Parse(DateTime.Now.ToString("yyyyMMdd")),
                     CreatedDate = DateTime.Now,
                     CreateId = modelSave.CreateId ?? _currentUser.UserId.ToString(),
 
