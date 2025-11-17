@@ -29,11 +29,12 @@ FROM AO_MOVMST_TBL AMMT,
         SELECT
             INVNO,
             WH_CODE,
+            SUBWH_CODE,
             MAX(REQ_NO)  AS REQ_NO,
             MAX(STATUS)  AS STATUS,
             MIN(JOB_NO)  AS JOB_NO
           FROM (
-                SELECT
+               SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
                     MFI.SUBWH_CODE,
