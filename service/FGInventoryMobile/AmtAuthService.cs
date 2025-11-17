@@ -135,7 +135,7 @@ namespace erpsolution.service.FGInventoryMobile
                                         MenuName = mobile.MenuName,
                                         MenuCd = mobile.MenuCode,
                                         ProgramCd = mobile.LinkMenu
-                                    }).ToListAsync();
+                                    }).Distinct().ToListAsync();
 
                 return result;
             }
