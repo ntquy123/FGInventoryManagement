@@ -31,8 +31,7 @@ namespace erpsolution.dal.EF
     {
         public string WhCode { get; set; }
         public string SubwhCode { get; set; }
-        public string LocCode { get; set; }
-        public int TrType { get; set; }
+        public string? LocCode { get; set; }
         public int TrAction { get; set; }
         public string TrInfo { get; set; }
         public string CartonId { get; set; }

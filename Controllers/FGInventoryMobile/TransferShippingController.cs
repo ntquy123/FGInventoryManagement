@@ -27,7 +27,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             _serviceProvider = serviceProvider;
             _context = context;
         }
-
+        /// <param name="whCode">920</param>
+        /// <param name="subwhCode">PGW2</param>
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(GetTransferShippingHeadersAsync))]
         [AllowAnonymous]
@@ -43,7 +44,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                 return new HandleState(false, ex.Message);
             }
         }
-
+        /// <param name="invoiceNo">20251107-00001</param>
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(GetTransferShippingLinesAsync))]
         [AllowAnonymous]
@@ -59,7 +60,22 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                 return new HandleState(false, ex.Message);
             }
         }
-
+        /// <param name="request">
+        /// Data input for Transfer Shipping Scan
+        /// Example:
+        /// ```json
+        /// {
+        ///   "WhCode": "920",
+        ///   "SubwhCode": "PGW2",
+        ///   "LocCode": "A01-0001",
+        ///   "TrAction": 2, // Note: 2 (Ship), -2 (Cancel Ship)
+        ///   "TrInfo": "20251107-00001",
+        ///   "CartonId": "MKS1927RGL003001",
+        ///   "ContainerNo": "CTN001004",
+        ///   "UserId": "2021017"
+        /// }
+        /// ```
+        /// </param>
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpPost(nameof(ScanTransferShippingAsync))]
         [AllowAnonymous]

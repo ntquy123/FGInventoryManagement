@@ -154,11 +154,11 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
         public async Task<(IReadOnlyList<TransferShippingLineRow> rows, string rtnCode, string rtnMsg)> ScanTransferShippingAsync(TransferShippingScanRequest request)
         {
             CancellationToken ct = default;
-
+            int TrType = 4;
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, request.SubwhCode, ParameterDirection.Input);
             var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, request.LocCode, ParameterDirection.Input);
-            var pTrType = new OracleParameter("P_TR_TYPE", OracleDbType.Int32, request.TrType, ParameterDirection.Input);
+            var pTrType = new OracleParameter("P_TR_TYPE", OracleDbType.Int32, TrType, ParameterDirection.Input);
             var pTrAction = new OracleParameter("P_TR_ACTION", OracleDbType.Int32, request.TrAction, ParameterDirection.Input);
             var pTrInfo = new OracleParameter("P_TR_INFO", OracleDbType.Varchar2, request.TrInfo, ParameterDirection.Input);
             var pCartonId = new OracleParameter("P_CARTON_ID", OracleDbType.Varchar2, request.CartonId, ParameterDirection.Input);
