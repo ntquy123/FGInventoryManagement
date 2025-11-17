@@ -35,6 +35,7 @@ namespace erpsolution.dal.EF
 
         public virtual DbSet<StByrmstTbl> StByrmstTbl { get; set; }
         public virtual DbSet<StMenuTbl> StMenuTbl { get; set; }
+        public virtual DbSet<StMobileMenuTbl> StMobileMenuTbl { get; set; }
         public virtual DbSet<StSubwhTbl> StSubwhTbl { get; set; }
         public virtual DbSet<StFactoryTbl> StFactoryTbl { get; set; }
         public virtual DbSet<StUserMenuRoleTbl> StUserMenuRoleTbl { get; set; }
@@ -1168,6 +1169,56 @@ namespace erpsolution.dal.EF
                     .IsUnicode(false)
                     .IsFixedLength()
                     .HasColumnName("DMNUID");
+            });
+
+            modelBuilder.Entity<StMobileMenuTbl>(entity =>
+            {
+                entity.ToTable("ST_MOBILE_MENU_TBL");
+
+                entity.HasKey(e => new { e.SysCode, e.MenuCode });
+
+                entity.Property(e => e.SysCode)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .HasColumnName("SYS_CODE");
+
+                entity.Property(e => e.MenuCode)
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .HasColumnName("MENU_CODE");
+
+                entity.Property(e => e.MenuName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("MENU_NAME");
+
+                entity.Property(e => e.MenuSort)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("MENU_SORT");
+
+                entity.Property(e => e.LinkMenu)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("LINK_MENU");
+
+                entity.Property(e => e.Crtid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CRTID");
+
+                entity.Property(e => e.Crtdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CRTDAT");
+
+                entity.Property(e => e.Uptid)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("UPTID");
+
+                entity.Property(e => e.Uptdat)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPTDAT");
             });
 
             modelBuilder.Entity<StFactoryTbl>(entity =>

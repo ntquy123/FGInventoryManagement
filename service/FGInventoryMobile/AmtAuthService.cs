@@ -122,25 +122,20 @@ namespace erpsolution.service.FGInventoryMobile
 
             try
             {
-                var menuList = await (from role in _amtContext.StUserMenuRoleTbl.AsNoTracking()
-                                      join menu in _amtContext.StMenuTbl.AsNoTracking() on role.Menuid equals menu.Menuid
-                                      where role.UserId == userId && menu.Useyn == "Y"
-                                      select new
-                                      {
-                                          menu.Menuid,
-                                          menu.Menunm
-                                      })
-                                      .Distinct()
-                                      .OrderBy(x => x.Menuid)
-                                      .ToListAsync();
-
-                var result = menuList.Select((x, index) => new ZmMasMobileMenuGetModel
-                {
-                    ParentMenuId = 0,
-                    MenuLevel = 1,
-                    MenuOrder = index + 1,
-                    MenuName = x.Menunm,
-                }).ToList();
+                var result = await (from mobile in _amtContext.StMobileMenuTbl.AsNoTracking()
+                                    join menu in _amtContext.StMenuTbl.AsNoTracking() on mobile.LinkMenu equals menu.Menunm
+                                    join role in _amtContext.StUserMenuRoleTbl.AsNoTracking() on menu.Menuid equals role.Menuid
+                                    where role.UserId == userId && mobile.SysCode == "PKFGM"
+                                    orderby mobile.MenuSort
+                                    select new ZmMasMobileMenuGetModel
+                                    {
+                                        ParentMenuId = 0,
+                                        MenuLevel = 1,
+                                        MenuOrder = mobile.MenuSort ?? 0,
+                                        MenuName = mobile.MenuName,
+                                        MenuCd = mobile.MenuCode,
+                                        ProgramCd = mobile.LinkMenu
+                                    }).ToListAsync();
 
                 return result;
             }
