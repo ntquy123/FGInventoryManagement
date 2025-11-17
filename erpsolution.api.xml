@@ -61,6 +61,56 @@
             ```
             </param>
         </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.GetTransferPickingHeadersAsync(System.String,System.String)">
+            <param name="whCode">920</param>
+            <param name="subwhCode">PGW2</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.GetTransferPickingLinesAsync(System.String)">
+            <param name="invoiceNo">20251107-00001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.ScanTransferPickingAsync(erpsolution.dal.EF.TransferPickingScanRequest)">
+            <param name="request">
+            Data input for Transfer Picking Scan
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": 1, // Note: 1 (Pick), -1 (Cancel Pick)
+              "TrInfo": "20251107-00001",
+              "CartonId": "MKS1927RGL003001",
+              "ContainerNo": null,
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.GetTransferShippingHeadersAsync(System.String,System.String)">
+            <param name="whCode">920</param>
+            <param name="subwhCode">PGW2</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.GetTransferShippingLinesAsync(System.String)">
+            <param name="invoiceNo">20251107-00001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.ScanTransferShippingAsync(erpsolution.dal.EF.TransferShippingScanRequest)">
+            <param name="request">
+            Data input for Transfer Shipping Scan
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": 2, // Note: 2 (Ship), -2 (Cancel Ship)
+              "TrInfo": "20251107-00001",
+              "CartonId": "MKS1927RGL003001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
         <member name="P:erpsolution.api.Base.BaseController.UserCreator">
             <summary>
             Username that authorized
