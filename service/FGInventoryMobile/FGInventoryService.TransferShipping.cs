@@ -11,7 +11,7 @@ namespace erpsolution.service.FGInventoryMobile
 {
     public partial class FGInventoryService
     {
-        public async Task<List<TransferShippingHeaderRow>> GetTransferShippingHeadersAsync(string invoiceNo)
+        public async Task<List<TransferShippingHeaderRow>> GetTransferShippingHeadersAsync(string whCode, string subwhCode)
         {
             var sql = @"
 SELECT
@@ -29,13 +29,15 @@ FROM AO_MOVMST_TBL AMMT,
         SELECT
             INVNO,
             WH_CODE,
+            SUBWH_CODE,
             MAX(REQ_NO)  AS REQ_NO,
             MAX(STATUS)  AS STATUS,
             MIN(JOB_NO)  AS JOB_NO
           FROM (
-                SELECT
+               SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
+                    MFI.SUBWH_CODE,
                     CASE
                         WHEN SST.JOB_CONTROL = 'N' THEN '@'
                         ELSE NVL(JOB.JOB_NO, NULL)
@@ -63,6 +65,7 @@ FROM AO_MOVMST_TBL AMMT,
                 SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
+                    MFI.SUBWH_CODE,
                     CASE
                         WHEN SST.JOB_CONTROL = 'N' THEN '@'
                         ELSE NVL(JOB.JOB_NO, NULL)
@@ -86,17 +89,19 @@ FROM AO_MOVMST_TBL AMMT,
                        AND MFI.STATUS IN (6, 8)
                        AND SST.PICK_RULE = 'A'
                )
-         GROUP BY INVNO, WH_CODE
+         GROUP BY INVNO, WH_CODE, SUBWH_CODE
      ) MFIP
 WHERE AMMT.INVNO = MFIP.INVNO
   AND AMMT.WHCODE = MFIP.WH_CODE
   AND MFIP.JOB_NO IS NOT NULL
-  AND AMMT.USRINVNO = :pInvoiceNo";
+  AND AMMT.WHCODE = :pWhCode
+  AND MFIP.SUBWH_CODE = :pSubwhCode";
 
-            var pInvoiceNo = new OracleParameter("pInvoiceNo", OracleDbType.Varchar2, invoiceNo, ParameterDirection.Input);
+            var pWhCode = new OracleParameter("pWhCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input);
+            var pSubwhCode = new OracleParameter("pSubwhCode", OracleDbType.Varchar2, subwhCode, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferShippingHeaderRow
-                .FromSqlRaw(sql, pInvoiceNo)
+                .FromSqlRaw(sql, pWhCode, pSubwhCode)
                 .ToListAsync();
 
             return rows;
