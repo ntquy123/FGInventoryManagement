@@ -374,8 +374,7 @@ namespace erpsolution.api
                         .UseOracleSQLCompatibility(Microsoft.EntityFrameworkCore.OracleSQLCompatibility.DatabaseVersion19);
                     });
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            }, ServiceLifetime.Scoped)
-                .AddDbContext<LogContext>();
+            }, ServiceLifetime.Scoped);
 
             return services;
         }
