@@ -47,7 +47,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Transfer Shipping", request);
+                var message = await LogErrorAsync(ex, "Transfer Shipping");
                 return new HandleState(false, message);
             }
         }

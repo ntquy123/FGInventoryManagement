@@ -53,7 +53,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Change Label", pData);
+                var message = await LogErrorAsync(ex, "Change Label");
                 return new HandleState(false, message);
             }
         }

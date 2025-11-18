@@ -14,11 +14,11 @@ using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
@@ -169,7 +169,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         private async Task<string> LogErrorAsync(Exception ex, string menuName, object vm = null)
         {
             string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
-            string jsonData = JsonSerializer.Serialize(vm);
+            string jsonData = System.Text.Json.JsonSerializer.Serialize(vm);
             var modelAdd = new ApiLogs
             {
                 Method = HttpContext.Request.Method,

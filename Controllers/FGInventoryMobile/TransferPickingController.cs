@@ -48,7 +48,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Transfer Picking", request);
+                var message = await LogErrorAsync(ex, "Transfer Picking");
                 return new HandleState(false, message);
             }
         }
@@ -66,7 +66,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Transfer Picking", request);
+                var message = await LogErrorAsync(ex, "Transfer Picking");
                 return new HandleState(false, message);
             }
         }
