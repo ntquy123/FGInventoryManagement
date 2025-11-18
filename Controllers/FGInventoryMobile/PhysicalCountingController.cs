@@ -1,4 +1,6 @@
-﻿using entities.Common;
+using System;
+using System.Linq;
+using entities.Common;
 using erpsolution.api.Base;
 using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
@@ -69,8 +71,16 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         {
             try
             {
-                var data = await _service.ExecutePcInputAndQueryAsync(req);
-                return new HandleState(true, data);
+                var result = await _service.ExecutePcInputAndQueryAsync(req);
+                var firstItem = result.FirstOrDefault();
+                var isSuccess = !string.Equals(firstItem?.Statuscode, "E", StringComparison.OrdinalIgnoreCase);
+
+                if (!isSuccess)
+                {
+                    await LogErrorAsync(new Exception(firstItem?.Errormsg ?? "Physical Counting error"), "Physical Counting");
+                }
+
+                return new HandleState(isSuccess, firstItem?.Errormsg, result);
             }
             catch (Exception ex)
             {

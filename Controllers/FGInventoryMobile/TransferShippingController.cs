@@ -92,6 +92,12 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             {
                 var result = await _service.ScanTransferShippingAsync(request);
                 var isSuccess = !string.Equals(result.rtnCode, "E", StringComparison.OrdinalIgnoreCase);
+
+                if (!isSuccess)
+                {
+                    await LogErrorAsync(new Exception(result.rtnMsg ?? "Transfer Shipping error"), "Transfer Shipping");
+                }
+
                 return new HandleState(isSuccess, result.rtnMsg, result);
             }
             catch (Exception ex)

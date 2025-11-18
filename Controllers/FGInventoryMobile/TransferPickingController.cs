@@ -95,6 +95,12 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             {
                 var result = await _service.ScanTransferPickingAsync(request);
                 var isSuccess = !string.Equals(result.rtnCode, "E", StringComparison.OrdinalIgnoreCase);
+
+                if (!isSuccess)
+                {
+                    await LogErrorAsync(new Exception(result.rtnMsg ?? "Transfer Picking error"), "Transfer Picking");
+                }
+
                 return new HandleState(isSuccess, result.rtnMsg, result);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System;
+using AutoMapper;
 using entities.Common;
 using entities.Setting;
 using erpsolution.api.Base;
@@ -92,8 +93,15 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         {
             try
             {
-                var data = await _service.ScanQRtoLabelChange(pData);
-                return new HandleState(true, data.rtnMsg, data);
+                var result = await _service.ScanQRtoLabelChange(pData);
+                var isSuccess = !string.Equals(result.rtnCode, "E", StringComparison.OrdinalIgnoreCase);
+
+                if (!isSuccess)
+                {
+                    await LogErrorAsync(new Exception(result.rtnMsg ?? "Change Label error"), "Change Label");
+                }
+
+                return new HandleState(isSuccess, result.rtnMsg, result);
             }
             catch (Exception ex)
             {

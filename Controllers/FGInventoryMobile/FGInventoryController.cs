@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AutoMapper;
 using entities.Common;
 using entities.Setting;
@@ -126,8 +126,15 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         {
             try
             {
-                var data = await _service.ScanQRtoTransferLocation(pData);
-                return new HandleState(true, data.rtnMsg, data);
+                var result = await _service.ScanQRtoTransferLocation(pData);
+                var isSuccess = !string.Equals(result.rtnCode, "E", StringComparison.OrdinalIgnoreCase);
+
+                if (!isSuccess)
+                {
+                    await LogErrorAsync(new Exception(result.rtnMsg ?? "Transfer Location error"), "Transfer Location");
+                }
+
+                return new HandleState(isSuccess, result.rtnMsg, result);
             }
             catch (Exception ex)
             {
