@@ -15,6 +15,7 @@ using dal.Context.Setting;
 using erpsolution.dal.Context;
 using Microsoft.EntityFrameworkCore;
 using erpsolution.dal.EF;
+using Oracle.ManagedDataAccess.Client;
 
 
 namespace erpsolution.api
@@ -362,6 +363,19 @@ namespace erpsolution.api
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }, ServiceLifetime.Scoped);
 
+            services.AddDbContext<LogContext>((options) =>
+            {
+                options.UseOracle(amtConnection,
+                    oracleOptionsAction: sqlOptions =>
+                    {
+                        //sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)
+                        .CommandTimeout(420)//< 1 Min is OK, if longer u need check your query
+                        .UseOracleSQLCompatibility(Microsoft.EntityFrameworkCore.OracleSQLCompatibility.DatabaseVersion19);
+                    });
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }, ServiceLifetime.Scoped)
+                .AddDbContext<LogContext>();
 
             return services;
         }
