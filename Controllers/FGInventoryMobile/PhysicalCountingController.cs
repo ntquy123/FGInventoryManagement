@@ -13,6 +13,7 @@ using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service.Common.Base.Interface;
+using System.Text.Json;
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class PhysicalCountingController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
@@ -77,7 +78,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
 
                 if (!isSuccess)
                 {
-                    await LogErrorAsync(new Exception(firstItem?.Errormsg ?? "Physical Counting error"), "Physical Counting");
+                    var message = await LogErrorAsync(new Exception(firstItem?.Errormsg ?? "Physical Counting error"), "Physical Counting", req);
+                    return new HandleState(isSuccess, message, result);
                 }
 
                 return new HandleState(isSuccess, firstItem?.Errormsg, result);
@@ -89,13 +91,15 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
         }
 
-        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        private async Task<string> LogErrorAsync(Exception ex, string menuName, object vm = null)
         {
             string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            string jsonData = JsonSerializer.Serialize(vm);
             var modelAdd = new ApiLogs
             {
                 Method = HttpContext.Request.Method,
                 ApiName = currentUrl,
+                RequestJson = jsonData,
                 Message = ex.Message,
                 Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
                 System = "Mobile",

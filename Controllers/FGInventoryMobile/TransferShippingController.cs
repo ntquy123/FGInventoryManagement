@@ -12,6 +12,7 @@ using erpsolution.service.Interface;
 using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
@@ -46,7 +47,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Transfer Shipping");
+                var message = await LogErrorAsync(ex, "Transfer Shipping", request);
                 return new HandleState(false, message);
             }
         }
@@ -95,7 +96,8 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
 
                 if (!isSuccess)
                 {
-                    await LogErrorAsync(new Exception(result.rtnMsg ?? "Transfer Shipping error"), "Transfer Shipping");
+                    var message = await LogErrorAsync(new Exception(result.rtnMsg ?? "Transfer Shipping error"), "Transfer Shipping", request);
+                    result.rtnMsg = message;
                 }
 
                 return new HandleState(isSuccess, result.rtnMsg, result);
@@ -107,14 +109,15 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
         }
 
-        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        private async Task<string> LogErrorAsync(Exception ex, string menuName, object vm = null)
         {
             string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            string jsonData = JsonSerializer.Serialize(vm);
             var modelAdd = new ApiLogs
             {
                 Method = HttpContext.Request.Method,
                 ApiName = currentUrl,
-                //RequestJson = jsonData,
+                RequestJson = jsonData,
                 Message = ex.Message,
                 Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
                 System = "Mobile",

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -62,7 +63,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Auth");
+                var message = await LogErrorAsync(ex, "Auth", login);
                 return Json(new HandleResponse<LoginModel>(false, message, null));
             }
         }
@@ -78,7 +79,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Auth");
+                var message = await LogErrorAsync(ex, "Auth", new { UserId, menuNm });
                 return new HandleState(false, message);
             }
         }
@@ -160,18 +161,20 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception e)
             {
-                var message = await LogErrorAsync(e, "Auth");
+                var message = await LogErrorAsync(e, "Auth", new { userId });
                 return new HandleList<ZmMasMobileMenuGetModel>(false, message);
             }
         }
 
-        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        private async Task<string> LogErrorAsync(Exception ex, string menuName, object vm = null)
         {
             string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            string jsonData = JsonSerializer.Serialize(vm);
             var modelAdd = new ApiLogs
             {
                 Method = HttpContext.Request.Method,
                 ApiName = currentUrl,
+                RequestJson = jsonData,
                 Message = ex.Message,
                 Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
                 System = "Mobile",

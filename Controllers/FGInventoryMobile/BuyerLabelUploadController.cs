@@ -12,6 +12,7 @@ using erpsolution.service.Interface.SystemMaster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class BuyerLabelUploadController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
@@ -66,18 +67,20 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Buyer Label Upload");
+                var message = await LogErrorAsync(ex, "Buyer Label Upload", Data);
                 return new HandleState(false, message);
             }
         }
 
-        private async Task<string> LogErrorAsync(Exception ex, string menuName)
+        private async Task<string> LogErrorAsync(Exception ex, string menuName, object vm = null)
         {
             string currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
+            string jsonData = JsonSerializer.Serialize(vm);
             var modelAdd = new ApiLogs
             {
                 Method = HttpContext.Request.Method,
                 ApiName = currentUrl,
+                RequestJson = jsonData,
                 Message = ex.Message,
                 Exception = ex.ToString().Length > 100 ? ex.ToString().Substring(0, 100) : ex.ToString(),
                 System = "Mobile",
