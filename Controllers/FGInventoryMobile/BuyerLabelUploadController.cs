@@ -87,8 +87,6 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                 MenuName = menuName,
             };
             var log = await _ApiExcLockService.SaveLogError(modelAdd);
-            HandlingExceptionError exceptionError = new HandlingExceptionError();
-            exceptionError.OnException(ex);
             return "Error ID:" + log.LogId + ": " + ex.Message;
         }
     }
