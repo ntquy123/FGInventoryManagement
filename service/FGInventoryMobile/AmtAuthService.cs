@@ -34,7 +34,6 @@ namespace erpsolution.service.FGInventoryMobile
                                   from factory in factoryJoin.DefaultIfEmpty()
                                   where role.UserId == UserId 
                                   && menu.Menunm == menuNm
-                                  && role.Role == typeRole
                                   select new UserMenuRoleView
                                   {
                                       WhCode = subwh != null ? subwh.WhCode : null,
