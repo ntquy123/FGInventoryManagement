@@ -55,7 +55,8 @@ namespace erpsolution.service.FGInventoryMobile
         x.WhCode,
         x.WhName,
         x.MenuNm,
-        x.Role
+        x.Role,
+        x.SubWHPickRule
     })
     .Select(g => new UserMenuRoleViewHeader
     {
@@ -65,6 +66,7 @@ namespace erpsolution.service.FGInventoryMobile
         WhName = g.Key.WhName,
         MenuNm = g.Key.MenuNm,
         Role = g.Key.Role,
+        SubWHPickRule= g.Key.SubWHPickRule,
         LstSubWh = g
             .GroupBy(x => new { x.SubwhCode, x.SubwhName })
             .Select(dg => new UserMenuRoleViewDetail
