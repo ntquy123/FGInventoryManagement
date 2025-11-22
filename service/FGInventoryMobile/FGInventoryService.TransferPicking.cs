@@ -56,7 +56,6 @@ SELECT AMMT.INVNO AS Invno,
                    AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
                    AND MFI.REFER_INFO = JOB.REQ_NO(+)
                    AND MFI.STATUS IN (6,8)
-                   AND NVL(MFRD.REQUEST_QTY,0) - NVL(MFI.INPUT_PICK_QTY,0) > 0
                    AND SST.PICK_RULE = 'M'
                    AND MFI.WH_CODE = :pWhCode
                    AND MFI.SUBWH_CODE = :pSubwhCode

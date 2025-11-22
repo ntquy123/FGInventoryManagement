@@ -19,17 +19,22 @@ namespace erpsolution.service.FGInventoryMobile
         }
         public override string PrimaryKey => throw new NotImplementedException();
 
-        public async Task<UserMenuRoleViewHeader> GetRole(string UserId,string menuNm)
+        public async Task<UserMenuRoleViewHeader> GetRole(string UserId,string menuNm, string? typeRole)
         {
             try
             {
-                var data = await (from role in _amtContext.StUserMenuRoleTbl.AsNoTracking()
+                var headerquery = _amtContext.StUserMenuRoleTbl.AsNoTracking();
+                if (typeRole != null)
+                    headerquery = _amtContext.StUserMenuRoleTbl.Where(x => x.Role == typeRole);
+                var data = await (from role in headerquery
                                   join menu in _amtContext.StMenuTbl.AsNoTracking() on role.Menuid equals menu.Menuid
                                   join subwh in _amtContext.StSubwhTbl.AsNoTracking() on role.Fatoy equals subwh.SubwhCode into subwhJoin
                                   from subwh in subwhJoin.DefaultIfEmpty()
                                   join factory in _amtContext.StFactoryTbl.AsNoTracking() on subwh.WhCode equals factory.CorporationcdFormal into factoryJoin
                                   from factory in factoryJoin.DefaultIfEmpty()
-                                  where role.UserId == UserId && menu.Menunm == menuNm
+                                  where role.UserId == UserId 
+                                  && menu.Menunm == menuNm
+                                  && role.Role == typeRole
                                   select new UserMenuRoleView
                                   {
                                       WhCode = subwh != null ? subwh.WhCode : null,

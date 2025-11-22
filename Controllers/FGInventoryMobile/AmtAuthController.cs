@@ -70,11 +70,11 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         [ApiExplorerSettings(GroupName = "auth")]
         [HttpGet(nameof(GetRole))]
         [AllowAnonymous]
-        public async Task<HandleState> GetRole(string UserId, string menuNm)
+        public async Task<HandleState> GetRole(string UserId, string menuNm, string? typeRole)
         {
             try
             {
-                var data = await _service.GetRole(UserId, menuNm);
+                var data = await _service.GetRole(UserId, menuNm, typeRole);
                 return new HandleState(true, data);
             }
             catch (Exception ex)
