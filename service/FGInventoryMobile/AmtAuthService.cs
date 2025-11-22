@@ -42,6 +42,7 @@ namespace erpsolution.service.FGInventoryMobile
                                       SubwhCode = role.Fatoy,
                                       SubwhName = subwh != null ? subwh.SubwhName : null,
                                       LocControl = subwh != null ? subwh.LocControl : null,
+                                      SubWHPickRule = subwh != null ? subwh.PickRule : null,
                                       MenuNm = menu.Menunm,
                                       UserId = role.UserId,
                                       Role = role.Role

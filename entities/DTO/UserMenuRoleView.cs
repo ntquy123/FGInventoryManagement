@@ -14,6 +14,7 @@ namespace erpsolution.dal.DTO
         public string? MenuNm { get; set; }
         public string? UserId { get; set; }
         public string? Role { get; set; }
+        public string? SubWHPickRule { get; set; }
     }
     public class UserMenuRoleViewHeader
     {
