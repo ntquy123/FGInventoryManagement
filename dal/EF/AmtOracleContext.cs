@@ -48,6 +48,9 @@ namespace erpsolution.dal.EF
         public virtual DbSet<TransferShippingLineRow> TransferShippingLineRow { get; set; }
         public virtual DbSet<TransferPickingHeaderRow> TransferPickingHeaderRow { get; set; }
         public virtual DbSet<TransferPickingLineRow> TransferPickingLineRow { get; set; }
+        public virtual DbSet<WHReceiptHeaderRow> WHReceiptHeaderRow { get; set; }
+        public virtual DbSet<WHReceiptLineRow> WHReceiptLineRow { get; set; }
+        public virtual DbSet<WHReceiptScanRequest> WHReceiptScanRequest { get; set; }
         public virtual DbSet<Pcinput> Pcinput { get; set; }
         public virtual DbSet<TCMUSMT> TCMUSMT { get; set; }
         
@@ -68,6 +71,9 @@ namespace erpsolution.dal.EF
             modelBuilder.Entity<TransferShippingLineRow>().HasNoKey();
             modelBuilder.Entity<TransferPickingHeaderRow>().HasNoKey();
             modelBuilder.Entity<TransferPickingLineRow>().HasNoKey();
+            modelBuilder.Entity<WHReceiptHeaderRow>().HasNoKey();
+            modelBuilder.Entity<WHReceiptLineRow>().HasNoKey();
+            modelBuilder.Entity<WHReceiptScanRequest>().HasNoKey();
             modelBuilder.Entity<TCMUSMT>().HasNoKey();
             modelBuilder.Entity<Pcinput>().HasNoKey();
             modelBuilder.Entity<MtUccListUpload>(entity =>
