@@ -166,7 +166,7 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, request.SubwhCode, ParameterDirection.Input);
             var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, request.LocCode, ParameterDirection.Input);
-            var pInvNo = new OracleParameter("P_INVNO", OracleDbType.Varchar2, request.InvoiceNo, ParameterDirection.Input);
+            var pInvNo = new OracleParameter("P_INVNO", OracleDbType.Varchar2, request.InvNo, ParameterDirection.Input);
             var pCartonId = new OracleParameter("P_CARTON_ID", OracleDbType.Varchar2, request.CartonId, ParameterDirection.Input);
             var pUserId = new OracleParameter("P_USER_ID", OracleDbType.Varchar2, (object?)request.UserId ?? DBNull.Value, ParameterDirection.Input);
 
@@ -205,7 +205,7 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
 
                 await tx.CommitAsync(ct);
 
-                var rows = await GetReceiptLinesAsync(request.InvoiceNo);
+                var rows = await GetReceiptLinesAsync(request.InvNo);
 
                 return (rows, rtnCode, rtnMsg);
             }

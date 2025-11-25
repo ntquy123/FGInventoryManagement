@@ -75,7 +75,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         ///   "WhCode": "920",
         ///   "SubwhCode": "PGW2",
         ///   "LocCode": "A01-0001",
-        ///   "Invno": "20251107-00001"
+        ///   "InvNo": "20251107-00001",
         ///   "CartonId": "MKS1927RGL003001",
         ///   "UserId": "2021017"
         /// }
