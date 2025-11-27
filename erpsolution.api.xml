@@ -4,6 +4,29 @@
         <name>erpsolution.api</name>
     </assembly>
     <members>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.GetExFactoryPickingHeadersAsync(System.String)">
+            <param name="whCode">920</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.GetExFactoryPickingLinesAsync(System.String)">
+            <param name="shpPkg">MKS-25W47-0001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.ScanExFactoryPickingAsync(erpsolution.dal.EF.ExFactoryPickingScanRequest)">
+            <param name="request">
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": -1,
+              "TrInfo": "MKS-25W47-0001",
+              "CartonId": "MKS1854RGL0012511240001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForCarton(System.String)">
             <param name="cartonId">MKS1854RGL001202507080004</param>
         </member>
@@ -127,7 +150,7 @@
               "WhCode": "920",
               "SubwhCode": "PGW2",
               "LocCode": "A01-0001",
-              "Invno": "20251107-00001"
+              "InvNo": "20251107-00001",
               "CartonId": "MKS1927RGL003001",
               "UserId": "2021017"
             }
