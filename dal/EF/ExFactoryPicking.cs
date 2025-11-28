@@ -4,13 +4,13 @@ namespace erpsolution.dal.EF
 {
     public class ExFactoryPickingHeaderRow
     {
-        public string Shppkg { get; set; }
-        public string InvoiceNo { get; set; }
-        public string Dest { get; set; }
+        public string? Shppkg { get; set; }
+        public string? InvoiceNo { get; set; }
+        public string? Dest { get; set; }
         public DateTime? ScheduleDate { get; set; }
-        public string Status { get; set; }
-        public string JobNo { get; set; }
-        public string Remark { get; set; }
+        public string? Status { get; set; }
+        public string? JobNo { get; set; }
+        public string? Remark { get; set; }
     }
 
     public class ExFactoryPickingLineRow
