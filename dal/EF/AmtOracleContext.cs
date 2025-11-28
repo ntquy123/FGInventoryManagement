@@ -50,6 +50,9 @@ namespace erpsolution.dal.EF
         public virtual DbSet<TransferPickingLineRow> TransferPickingLineRow { get; set; }
         public virtual DbSet<ExFactoryPickingHeaderRow> ExFactoryPickingHeaderRow { get; set; }
         public virtual DbSet<ExFactoryPickingLineRow> ExFactoryPickingLineRow { get; set; }
+        public virtual DbSet<ExFactoryShippingHeaderRow> ExFactoryShippingHeaderRow { get; set; }
+        public virtual DbSet<ExFactoryShippingLineRow> ExFactoryShippingLineRow { get; set; }
+        public virtual DbSet<ExFactoryShippingHeaderRow> ExFactoryShippingScanRequest { get; set; }
         public virtual DbSet<WHReceiptHeaderRow> WHReceiptHeaderRow { get; set; }
         public virtual DbSet<WHReceiptLineRow> WHReceiptLineRow { get; set; }
         public virtual DbSet<WHReceiptScanRequest> WHReceiptScanRequest { get; set; }
@@ -75,6 +78,9 @@ namespace erpsolution.dal.EF
             modelBuilder.Entity<TransferPickingLineRow>().HasNoKey();
             modelBuilder.Entity<ExFactoryPickingHeaderRow>().HasNoKey();
             modelBuilder.Entity<ExFactoryPickingLineRow>().HasNoKey();
+            modelBuilder.Entity<ExFactoryShippingHeaderRow>().HasNoKey();
+            modelBuilder.Entity<ExFactoryShippingScanRequest>().HasNoKey();
+            modelBuilder.Entity<ExFactoryShippingLineRow>().HasNoKey();
             modelBuilder.Entity<WHReceiptHeaderRow>().HasNoKey();
             modelBuilder.Entity<WHReceiptLineRow>().HasNoKey();
             modelBuilder.Entity<WHReceiptScanRequest>().HasNoKey();

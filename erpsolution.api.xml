@@ -27,6 +27,29 @@
             ```
             </param>
         </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.GetExFactoryShippingHeadersAsync(System.String)">
+            <param name="whCode">920</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.GetExFactoryShippingLinesAsync(System.String)">
+            <param name="shpPkg">MKS-25W47-0001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.ScanExFactoryShippingAsync(erpsolution.dal.EF.ExFactoryShippingScanRequest)">
+            <param name="request">
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": 2,
+              "TrInfo": "MKS-25W47-0001",
+              "CartonId": "MKS1927RGL003001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForCarton(System.String)">
             <param name="cartonId">MKS1854RGL001202507080004</param>
         </member>
