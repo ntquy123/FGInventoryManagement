@@ -160,6 +160,10 @@ SELECT MFSD.SHPPKG AS Shppkg
                 var rtnCode = (pRtnCode.Value ?? string.Empty).ToString();
                 var rtnMsg = (pRtnMsg.Value ?? string.Empty).ToString();
 
+                //string rtnCode = Convert.ToString(pRtnCode.Value) ?? "";
+                //string rtnMsg = Convert.ToString(pRtnMsg.Value) ?? "";
+
+
                 await tx.CommitAsync(ct);
 
                 var rows = await GetExFactoryPickingLinesAsync(request.TrInfo);

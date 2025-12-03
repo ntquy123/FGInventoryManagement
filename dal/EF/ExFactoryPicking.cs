@@ -31,11 +31,11 @@ namespace erpsolution.dal.EF
     {
         public string WhCode { get; set; }
         public string SubwhCode { get; set; }
-        public string LocCode { get; set; }
+        public string? LocCode { get; set; }
         public int TrAction { get; set; }
         public string TrInfo { get; set; }
         public string CartonId { get; set; }
-        public string ContainerNo { get; set; }
-        public string UserId { get; set; }
+        public string? ContainerNo { get; set; }
+        public string? UserId { get; set; }
     }
 }

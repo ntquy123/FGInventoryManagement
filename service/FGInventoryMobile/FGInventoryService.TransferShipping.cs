@@ -209,6 +209,9 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
                 var rtnCode = (pRtnCode.Value ?? string.Empty).ToString();
                 var rtnMsg = (pRtnMsg.Value ?? string.Empty).ToString();
 
+                //string rtnCode = Convert.ToString(pRtnCode.Value) ?? "";
+                //string rtnMsg = Convert.ToString(pRtnMsg.Value) ?? "";
+
                 await tx.CommitAsync(ct);
 
                 var rows = await GetTransferShippingLinesAsync(request.TrInfo);
