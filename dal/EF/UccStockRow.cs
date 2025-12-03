@@ -13,7 +13,7 @@ namespace erpsolution.dal.EF
         public string ByrCd { get; set; }          // SUBSTR(MULL.AONO,4,3)
         public string Aono { get; set; }           // MULL.AONO
         public string Stlcd { get; set; }
-        public string Stlnm { get; set; }          // ASMT.STLNM
+        //public string Stlnm { get; set; }          // ASMT.STLNM
         public string Stlsiz { get; set; }
         public string Stlcosn { get; set; }
        // public string Stlclrway { get; set; }      // ASMT.STLCLRWAY
