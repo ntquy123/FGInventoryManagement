@@ -16,7 +16,7 @@ namespace erpsolution.dal.EF
         public string Stlnm { get; set; }          // ASMT.STLNM
         public string Stlsiz { get; set; }
         public string Stlcosn { get; set; }
-        public string Stlclrway { get; set; }      // ASMT.STLCLRWAY
+       // public string Stlclrway { get; set; }      // ASMT.STLCLRWAY
         public string Stlrevn { get; set; }
         public decimal? TrQty { get; set; }        // MULL.TOTAL_QTY
         public string CartonId { get; set; }
