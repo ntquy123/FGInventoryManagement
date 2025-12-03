@@ -162,7 +162,7 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
             }
             _ApiExcLockService.MarkRequestScanQRAsPending(request.CartonId);
             CancellationToken ct = default;
-            int TrType = 4;
+            int TrType = 6;
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, request.SubwhCode, ParameterDirection.Input);
             var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, request.LocCode, ParameterDirection.Input);
