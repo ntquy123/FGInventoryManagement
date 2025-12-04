@@ -105,7 +105,7 @@ WHERE AMMT.INVNO = MFIP.INVNO
             return rows;
         }
 
-        public async Task<List<TransferShippingLineRow>> GetTransferShippingLinesAsync(string invoiceNo)
+        public async Task<List<TransferShippingLineRow>> GetTransferShippingLinesAsync(string Shppkg)
         {
             var sql = @"
 SELECT
@@ -153,7 +153,7 @@ FROM MT_FG_SHIP_DTL MFSD,
    AND MFSD.LINE_NO= MFIM.LINE_NO(+)      
    AND MFSD.SHPPKG = :pShppkg";
 
-            var pShppkg = new OracleParameter("pShppkg", OracleDbType.Varchar2, invoiceNo, ParameterDirection.Input);
+            var pShppkg = new OracleParameter("pShppkg", OracleDbType.Varchar2, Shppkg, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferShippingLineRow
                 .FromSqlRaw(sql, pShppkg)
