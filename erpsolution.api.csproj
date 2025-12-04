@@ -56,4 +56,8 @@
     <ProjectReference Include="entities\erpsolution.entities.csproj" />
     <ProjectReference Include="service\erpsolution.service.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\SystemMaster\" />
+  </ItemGroup>
 </Project>
