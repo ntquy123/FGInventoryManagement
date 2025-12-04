@@ -24,6 +24,7 @@ namespace erpsolution.dal.EF
         public string Stlrevn { get; set; }
         public decimal ReleaseQty { get; set; }
         public decimal PickQty { get; set; }
+        public decimal ShipQty { get; set; }
         public string Status { get; set; }
     }
 
