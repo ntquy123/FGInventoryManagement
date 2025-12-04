@@ -69,7 +69,7 @@ namespace erpsolution.service.FGInventoryMobile
             }
             catch (Exception ex)
             {
-                throw new Exception("Error while fetching UccListBoxDetail", ex);
+                throw new Exception(ex.Message);
             }
         }
 
