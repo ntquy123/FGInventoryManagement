@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using entities.Common;
+﻿using entities.Common;
 using erpsolution.api.Base;
-using erpsolution.dal.Context;
 using erpsolution.dal.DTO;
 using erpsolution.dal.EF;
 using erpsolution.entities;
@@ -19,15 +17,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Newtonsoft.Json;
-using erpsolution.entities.SystemMaster;
-using Microsoft.EntityFrameworkCore;
 
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class AmtAuthController : ControllerBaseEx<IAmtAuthService, OspAppusrTbl, decimal>
     {
-        private AmtContext _context;
-        private IMapper _mapper;
         public IServiceProvider _serviceProvider;
         private readonly ICacheService _memoryCache;
         private readonly IConfiguration _config;
@@ -35,7 +29,6 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         public AmtAuthController(IAmtAuthService service,
        IConfiguration config,
        IServiceProvider serviceProvider,
-       AmtContext context,
        ICacheService memoryCache,
        IApiExecutionLockService ApiExcLockService,
        ICurrentUser currentUser) : base(service, currentUser)
@@ -43,35 +36,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             _config = config;
             _memoryCache = memoryCache;
             _serviceProvider = serviceProvider;
-            _context = context;
             _ApiExcLockService = ApiExcLockService;
-        }
-
-        [ApiExplorerSettings(GroupName = "mobile")]
-        [AllowAnonymous]
-        [HttpPost(nameof(CheckMobileVersion))]
-        public async Task<HandleResponse<ZmMasMobileVersionModel>> CheckMobileVersion(int VersionId)
-        {
-            try
-            {
-                var getVersion = await _context.ZmMasMobileVersions.Where(x => x.UseYn == '1').ToListAsync();
-                if (getVersion.Count() > 1)
-                {
-                    getVersion = getVersion.OrderByDescending(x => x.VersionId).ToList();
-                }
-
-                var lastVersion = getVersion.Select(x => x.VersionId).FirstOrDefault();
-                if (VersionId < lastVersion)
-                {
-                    throw new Exception("New version available, Please update your mobile app");
-                }
-                return new HandleResponse<ZmMasMobileVersionModel>(true, "Success");
-
-            }
-            catch (Exception ex)
-            {
-                return new HandleResponse<ZmMasMobileVersionModel>(false, ex.Message);
-            }
         }
         [ApiExplorerSettings(GroupName = "auth")]
         [HttpPost(nameof(LoginERP))]
