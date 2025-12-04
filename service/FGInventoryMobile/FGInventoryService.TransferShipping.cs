@@ -105,58 +105,46 @@ WHERE AMMT.INVNO = MFIP.INVNO
             return rows;
         }
 
-        public async Task<List<TransferShippingLineRow>> GetTransferShippingLinesAsync(string Shppkg)
+        public async Task<List<TransferShippingLineRow>> GetTransferShippingLinesAsync(string invno)
         {
             var sql = @"
-SELECT
-    MFSD.SHPPKG AS Shppkg,
-    MFSD.LINE_NO AS LineNo,
-    MFSD.AONO AS Aono,
-    MFSD.STLCD AS Stlcd,
-    MFSD.STLSIZ AS Stlsiz,
-    MFSD.STLCOSN AS Stlcosn,
-    MFSD.STLREVN AS Stlrevn,
-    MFSD.RELEASE_QTY AS ReleaseQty,
-    MFIM.PICK_QTY AS PickQty,
-    MFIM.SHIP_QTY AS ShipQty,
-    (SELECT C_CODE
-       FROM ST_TYPECODE_TBL STCT
-      WHERE STCT.C_TYPE='FG_SHIP_STATUS'
-        AND STCT.C_ID = MFSD.STATUS
-    ) AS Status
-FROM MT_FG_SHIP_DTL MFSD,
-     (SELECT WH_CODE
-             , REFER_INFO
-             , ORI_AONO AS AONO
-             , STLCD
-             , STLSIZ
-             , STLCOSN
-             , ORI_STLREVN AS STLREVN
-             , LINE_NO
-             , SUM(INPUT_PICK_QTY) AS PICK_QTY
-             , SUM(INPUT_SHIP_QTY) AS SHIP_QTY
-          FROM MT_FG_INPUT 
-         WHERE REFER_INFO= :pShppkg
-         GROUP BY 
-               WH_CODE
-             , REFER_INFO
-             , ORI_AONO
-             , STLCD
-             , STLSIZ
-             , STLCOSN
-             ,  ORI_STLREVN
-             , LINE_NO                      
-       )MFIM
- WHERE 1=1
-   AND MFSD.WH_CODE = MFIM.WH_CODE(+)
-   AND MFSD.SHPPKG = MFIM.REFER_INFO(+)
-   AND MFSD.LINE_NO= MFIM.LINE_NO(+)      
-   AND MFSD.SHPPKG = :pShppkg";
+SELECT MFI.LINE_NO AS LineNo
+     , MFI.AONO 
+     , MFI.STLCD
+     , MFI.STLSIZ
+     , MFI.STLCOSN
+     , MFI.STLREVN
+     , MFRD.REQUEST_QTY AS RequestQty
+     , MFI.INPUT_PICK_QTY AS PickQty 
+     , MFI.INPUT_SHIP_QTY AS ShipQty
+     , (SELECT C_CODE
+          FROM ST_TYPECODE_TBL STCT  
+         WHERE STCT.C_TYPE='FG_REQUEST_STATUS'
+           AND STCT.C_ID = MFI.STATUS
+         ) AS Status
+     , MFI.ATTRIBUTE2 AS Invno    
+  FROM MT_FG_INPUT MFI
+     , MT_FG_REQUEST_DTL MFRD
+     , ST_SUBWH_TBL SST
+     , MT_FG_MV_ORDER_DTL JOB
+ WHERE 1=1          
+   AND MFI.WH_CODE = SST.WH_CODE
+   AND MFI.SUBWH_CODE = SST.SUBWH_CODE                    
+   AND MFI.WH_CODE = MFRD.WH_CODE
+   AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
+   AND MFI.LOC_CODE = MFRD.LOC_CODE
+   AND MFI.REFER_INFO = MFRD.REQ_NO
+   AND MFI.LINE_NO = MFRD.LINE_NO
+   AND MFI.WH_CODE = JOB.WH_CODE(+)
+   AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
+   AND MFI.REFER_INFO = JOB.REQ_NO(+)
+   AND MFI.STATUS IN (6,8)
+   AND MFI.ATTRIBUTE2 = :pInvno";
 
-            var pShppkg = new OracleParameter("pShppkg", OracleDbType.Varchar2, Shppkg, ParameterDirection.Input);
+            var pInvno = new OracleParameter("pInvno", OracleDbType.Varchar2, invno, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferShippingLineRow
-                .FromSqlRaw(sql, pShppkg)
+                .FromSqlRaw(sql, pInvno)
                 .ToListAsync();
 
             return rows;
