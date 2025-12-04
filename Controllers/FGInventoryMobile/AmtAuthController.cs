@@ -19,6 +19,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Newtonsoft.Json;
+using erpsolution.entities.SystemMaster;
+using Microsoft.EntityFrameworkCore;
 
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
@@ -45,6 +47,32 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             _ApiExcLockService = ApiExcLockService;
         }
 
+        [ApiExplorerSettings(GroupName = "mobile")]
+        [AllowAnonymous]
+        [HttpPost(nameof(CheckMobileVersion))]
+        public async Task<HandleResponse<ZmMasMobileVersionModel>> CheckMobileVersion(int VersionId)
+        {
+            try
+            {
+                var getVersion = await _context.ZmMasMobileVersions.Where(x => x.UseYn == '1').ToListAsync();
+                if (getVersion.Count() > 1)
+                {
+                    getVersion = getVersion.OrderByDescending(x => x.VersionId).ToList();
+                }
+
+                var lastVersion = getVersion.Select(x => x.VersionId).FirstOrDefault();
+                if (VersionId < lastVersion)
+                {
+                    throw new Exception("New version available, Please update your mobile app");
+                }
+                return new HandleResponse<ZmMasMobileVersionModel>(true, "Success");
+
+            }
+            catch (Exception ex)
+            {
+                return new HandleResponse<ZmMasMobileVersionModel>(false, ex.Message);
+            }
+        }
         [ApiExplorerSettings(GroupName = "auth")]
         [HttpPost(nameof(LoginERP))]
         [ProducesResponseType(typeof(HandleResponse<object>), 400)]
