@@ -51,15 +51,15 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                 return new HandleState(false, message);
             }
         }
-        /// <param name="Shppkg">MKS-25W47-0001</param>
+        /// <param name="invno">20251107-00001</param>
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(GetTransferShippingLinesAsync))]
         [AllowAnonymous]
-        public async Task<HandleState> GetTransferShippingLinesAsync(string Shppkg)
+        public async Task<HandleState> GetTransferShippingLinesAsync(string invno)
         {
             try
             {
-                var data = await _service.GetTransferShippingLinesAsync(Shppkg);
+                var data = await _service.GetTransferShippingLinesAsync(invno);
                 return new HandleState(true, data);
             }
             catch (Exception ex)
