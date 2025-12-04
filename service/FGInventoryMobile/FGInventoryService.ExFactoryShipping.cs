@@ -14,31 +14,87 @@ namespace erpsolution.service.FGInventoryMobile
         public async Task<List<ExFactoryShippingHeaderRow>> GetExFactoryShippingHeadersAsync(string whCode)
         {
             var sql = @"
-SELECT MFSM.SHPPKG AS Shppkg
-     , INV.INVOICE_NO AS InvoiceNo
-     , MFSM.DEST AS Dest
-     , MFSM.SCHEDULE_DATE AS ScheduleDate
+SELECT AMMT.INVNO AS Invno
+     , AMMT.USRINVNO AS InvoiceNo
+     , AMMT.CSTSHTNO AS Cstshtno
+     , AMMT.TO_WHCODE AS ToWhcode
      , (SELECT C_CODE
           FROM ST_TYPECODE_TBL STCT
-         WHERE STCT.C_TYPE='FG_SHIP_STATUS'
-           AND STCT.C_ID = MFSM.STATUS
+         WHERE STCT.C_TYPE='FG_REQUEST_STATUS'
+           AND STCT.C_ID = MFIP.STATUS
          ) AS Status
-     , JOB.JOB_NO AS JobNo
-     , MFSM.REMARK AS Remark
-  FROM MT_FG_SHIP MFSM
-     , MT_FG_MV_ORDER_DTL JOB
-     , (SELECT AIMT.INVNO
-             , AIMT.USRINVNO AS INVOICE_NO
-             , AIDT.SHPPKG
-          FROM AO_INVMST_TBL AIMT
-             , AO_INVDTL_TBL AIDT
- WHERE AIMT.INVNO = AIDT.INVNO ) INV
- WHERE 1=1          
-   AND MFSM.WH_CODE = JOB.WH_CODE(+)
-   AND MFSM.SHPPKG = JOB.REQ_NO(+)
-   AND MFSM.SHPPKG = INV.SHPPKG
-   AND MFSM.STATUS IN (6,8)
-   AND MFSM.WH_CODE = :pWhCode";
+     , MFIP.JOB_NO AS JobNo
+  FROM AO_MOVMST_TBL AMMT
+     , (
+        SELECT INVNO
+             , WH_CODE
+             , MAX(REQ_NO) AS REQ_NO
+             , MAX(STATUS) AS STATUS
+             , MIN(JOB_NO) AS JOB_NO
+          FROM (
+                --MANUAL PICK
+                SELECT MFI.ATTRIBUTE2 AS INVNO
+                     , MFI.WH_CODE
+                     , CASE WHEN SST.JOB_CONTROL = 'N'
+                            THEN '@'
+                            ELSE NVL(JOB.JOB_NO,NULL)
+                       END AS JOB_NO
+                     , (MFI.REFER_INFO) AS REQ_NO
+                     , (MFI.STATUS) AS STATUS
+                  FROM MT_FG_INPUT MFI
+                     , MT_FG_REQUEST_DTL MFRD
+                     , ST_SUBWH_TBL SST
+                     , MT_FG_MV_ORDER_DTL JOB
+                 WHERE 1=1
+                   AND MFI.WH_CODE = SST.WH_CODE
+                   AND MFI.SUBWH_CODE = SST.SUBWH_CODE
+                   AND MFI.WH_CODE = MFRD.WH_CODE
+                   AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
+                   AND MFI.LOC_CODE = MFRD.LOC_CODE
+                   AND MFI.REFER_INFO = MFRD.REQ_NO
+                   AND MFI.LINE_NO = MFRD.LINE_NO
+                   AND MFI.WH_CODE = JOB.WH_CODE(+)
+                   AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
+                   AND MFI.REFER_INFO = JOB.REQ_NO(+)
+                   AND MFI.STATUS IN (6,8)
+                   AND SST.PICK_RULE = 'M'
+                   AND NVL(MFI.INPUT_PICK_QTY,0) > 0
+                UNION ALL
+                --AUTO PICK
+                SELECT MFI.ATTRIBUTE2 AS INVNO
+                     , MFI.WH_CODE
+                     , CASE WHEN SST.JOB_CONTROL = 'N'
+                            THEN '@'
+                            ELSE NVL(JOB.JOB_NO,NULL)
+                       END AS JOB_NO
+                     , (MFI.REFER_INFO) AS REQ_NO
+                     , (MFI.STATUS) AS STATUS
+                  FROM MT_FG_INPUT MFI
+                     , MT_FG_REQUEST_DTL MFRD
+                     , ST_SUBWH_TBL SST
+                     , MT_FG_MV_ORDER_DTL JOB
+                 WHERE 1=1
+                   AND MFI.WH_CODE = SST.WH_CODE
+                   AND MFI.SUBWH_CODE = SST.SUBWH_CODE
+                   AND MFI.WH_CODE = MFRD.WH_CODE
+                   AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
+                   AND MFI.LOC_CODE = MFRD.LOC_CODE
+                   AND MFI.REFER_INFO = MFRD.REQ_NO
+                   AND MFI.LINE_NO = MFRD.LINE_NO
+                   AND MFI.WH_CODE = JOB.WH_CODE(+)
+                   AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
+                   AND MFI.REFER_INFO = JOB.REQ_NO(+)
+                   AND MFI.STATUS IN (6,8)
+                   AND SST.PICK_RULE = 'A'
+                 )
+         GROUP BY
+               INVNO
+             , WH_CODE
+        ) MFIP
+  WHERE AMMT.INVNO = MFIP.INVNO
+    AND AMMT.WHCODE = MFIP.WH_CODE
+    AND AMMT.WHCODE = :pWhCode
+    AND MFIP.JOB_NO IS NOT NULL";
 
             var pWhCode = new OracleParameter("pWhCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input);
 
@@ -115,7 +171,7 @@ SELECT MFSD.SHPPKG AS Shppkg
             }
             _ApiExcLockService.MarkRequestScanQRAsPending(request.CartonId);
             CancellationToken ct = default;
-            int TrType = 6;  // SHIPPING EX_FACTORY
+            int TrType = 4;  // SHIPPING EX_FACTORY
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, request.SubwhCode, ParameterDirection.Input);
             var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, request.LocCode, ParameterDirection.Input);
