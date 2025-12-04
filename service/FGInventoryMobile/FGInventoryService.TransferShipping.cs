@@ -30,7 +30,6 @@ FROM AO_MOVMST_TBL AMMT,
         SELECT
             INVNO,
             WH_CODE,
-            SUBWH_CODE,
             MAX(REQ_NO)  AS REQ_NO,
             MAX(STATUS)  AS STATUS,
             MIN(JOB_NO)  AS JOB_NO
@@ -90,19 +89,17 @@ FROM AO_MOVMST_TBL AMMT,
                        AND MFI.STATUS IN (6, 8)
                        AND SST.PICK_RULE = 'A'
                )
-         GROUP BY INVNO, WH_CODE, SUBWH_CODE
-     ) MFIP
+         GROUP BY INVNO, WH_CODE
+        ) MFIP
 WHERE AMMT.INVNO = MFIP.INVNO
   AND AMMT.WHCODE = MFIP.WH_CODE
   AND MFIP.JOB_NO IS NOT NULL
-  AND AMMT.WHCODE = :pWhCode
-  AND MFIP.SUBWH_CODE = :pSubwhCode";
+  AND AMMT.WHCODE = :pWhCode";
 
             var pWhCode = new OracleParameter("pWhCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input);
-            var pSubwhCode = new OracleParameter("pSubwhCode", OracleDbType.Varchar2, subwhCode, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferShippingHeaderRow
-                .FromSqlRaw(sql, pWhCode, pSubwhCode)
+                .FromSqlRaw(sql, pWhCode)
                 .ToListAsync();
 
             return rows;
@@ -112,41 +109,54 @@ WHERE AMMT.INVNO = MFIP.INVNO
         {
             var sql = @"
 SELECT
-    MFI.LINE_NO          AS LineNo,
-    MFI.AONO             AS Aono,
-    MFI.STLCD            AS Stlcd,
-    MFI.STLSIZ           AS Stlsiz,
-    MFI.STLCOSN          AS Stlcosn,
-    MFI.STLREVN          AS Stlrevn,
-    MFRD.REQUEST_QTY     AS RequestQty,
-    MFI.INPUT_PICK_QTY   AS InputPickQty,
-    MFI.INPUT_SHIP_QTY   AS InputShipQty,
+    MFSD.SHPPKG AS Shppkg,
+    MFSD.LINE_NO AS LineNo,
+    MFSD.AONO AS Aono,
+    MFSD.STLCD AS Stlcd,
+    MFSD.STLSIZ AS Stlsiz,
+    MFSD.STLCOSN AS Stlcosn,
+    MFSD.STLREVN AS Stlrevn,
+    MFSD.RELEASE_QTY AS ReleaseQty,
+    MFIM.PICK_QTY AS PickQty,
+    MFIM.SHIP_QTY AS ShipQty,
     (SELECT C_CODE
        FROM ST_TYPECODE_TBL STCT
-      WHERE STCT.C_TYPE = 'FG_REQUEST_STATUS'
-        AND STCT.C_ID   = MFI.STATUS) AS Status,
-    MFI.ATTRIBUTE2       AS Attribute2
-FROM MT_FG_INPUT MFI,
-     MT_FG_REQUEST_DTL MFRD,
-     ST_SUBWH_TBL SST,
-     MT_FG_MV_ORDER_DTL JOB
-WHERE     MFI.WH_CODE = SST.WH_CODE
-      AND MFI.SUBWH_CODE = SST.SUBWH_CODE
-      AND MFI.WH_CODE = MFRD.WH_CODE
-      AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
-      AND MFI.LOC_CODE = MFRD.LOC_CODE
-      AND MFI.REFER_INFO = MFRD.REQ_NO
-      AND MFI.LINE_NO = MFRD.LINE_NO
-      AND MFI.WH_CODE = JOB.WH_CODE(+)
-      AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
-      AND MFI.REFER_INFO = JOB.REQ_NO(+)
-      AND MFI.STATUS IN (6, 8)
-      AND MFI.ATTRIBUTE2 = :pInvoiceNo";
+      WHERE STCT.C_TYPE='FG_SHIP_STATUS'
+        AND STCT.C_ID = MFSD.STATUS
+    ) AS Status
+FROM MT_FG_SHIP_DTL MFSD,
+     (SELECT WH_CODE
+             , REFER_INFO
+             , ORI_AONO AS AONO
+             , STLCD
+             , STLSIZ
+             , STLCOSN
+             , ORI_STLREVN AS STLREVN
+             , LINE_NO
+             , SUM(INPUT_PICK_QTY) AS PICK_QTY
+             , SUM(INPUT_SHIP_QTY) AS SHIP_QTY
+          FROM MT_FG_INPUT 
+         WHERE REFER_INFO= :pShppkg
+         GROUP BY 
+               WH_CODE
+             , REFER_INFO
+             , ORI_AONO
+             , STLCD
+             , STLSIZ
+             , STLCOSN
+             ,  ORI_STLREVN
+             , LINE_NO                      
+       )MFIM
+ WHERE 1=1
+   AND MFSD.WH_CODE = MFIM.WH_CODE(+)
+   AND MFSD.SHPPKG = MFIM.REFER_INFO(+)
+   AND MFSD.LINE_NO= MFIM.LINE_NO(+)      
+   AND MFSD.SHPPKG = :pShppkg";
 
-            var pInvoiceNo = new OracleParameter("pInvoiceNo", OracleDbType.Varchar2, invoiceNo, ParameterDirection.Input);
+            var pShppkg = new OracleParameter("pShppkg", OracleDbType.Varchar2, invoiceNo, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferShippingLineRow
-                .FromSqlRaw(sql, pInvoiceNo)
+                .FromSqlRaw(sql, pShppkg)
                 .ToListAsync();
 
             return rows;
@@ -162,10 +172,10 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
             }
             _ApiExcLockService.MarkRequestScanQRAsPending(request.CartonId);
             CancellationToken ct = default;
-            int TrType = 6;
+            int TrType = 4;
             var pWhCode = new OracleParameter("P_WH_CODE", OracleDbType.Varchar2, request.WhCode, ParameterDirection.Input);
             var pSubwh = new OracleParameter("P_SUBWH_CODE", OracleDbType.Varchar2, request.SubwhCode, ParameterDirection.Input);
-            var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, request.LocCode, ParameterDirection.Input);
+            var pLoc = new OracleParameter("P_LOC_CODE", OracleDbType.Varchar2, (object?)request.LocCode ?? DBNull.Value, ParameterDirection.Input);
             var pTrType = new OracleParameter("P_TR_TYPE", OracleDbType.Int32, TrType, ParameterDirection.Input);
             var pTrAction = new OracleParameter("P_TR_ACTION", OracleDbType.Int32, request.TrAction, ParameterDirection.Input);
             var pTrInfo = new OracleParameter("P_TR_INFO", OracleDbType.Varchar2, request.TrInfo, ParameterDirection.Input);
