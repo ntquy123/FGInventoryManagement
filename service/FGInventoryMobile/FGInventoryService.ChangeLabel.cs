@@ -55,7 +55,7 @@ namespace erpsolution.service.FGInventoryMobile
             }
         }
 
-        public async Task<List<MtUccList>> ScanQRtoChangeLabelForBuyer(string cartonId)
+        public async Task<List<BuyerLabelDto>> ScanQRtoChangeLabelForBuyer(string cartonId)
         {
             try
             {
@@ -63,6 +63,19 @@ namespace erpsolution.service.FGInventoryMobile
                     .Where(m => m.UsedFlag == "Y"
                                 && m.LabelType == "B"
                                 && m.CartonId == cartonId)
+                    .Select(m => new BuyerLabelDto
+                    {
+                        ByrCd = m.Byrcd,
+                        ByrPono = m.ByrPono,
+                        Stlcd = m.Stlcd,
+                        ByrStlname = m.ByrStlname,
+                        ByrStlclr = m.ByrStlclr,
+                        ByrStlclrway = m.ByrStlclrway,
+                        Qty = m.TotalQty,
+                        CartonId = m.CartonId,
+                        MixedFlag = m.MixedFlag,
+                        PatialBox = ((m.QtyPerCtn ?? 0) - (m.TotalQty ?? 0)) > 0 ? "Y" : "N"
+                    })
                     .ToListAsync();
 
                 return result;

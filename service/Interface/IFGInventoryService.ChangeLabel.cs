@@ -9,6 +9,6 @@ namespace erpsolution.service.Interface
     {
         Task<(string rtnCode, string rtnMsg)> ScanQRtoLabelChange(LabelChangeRequest param);
         Task<List<UccListDetailDto>> ScanQRtoChangeLabelForCarton(string cartonId);
-        Task<List<MtUccList>> ScanQRtoChangeLabelForBuyer(string cartonId);
+        Task<List<BuyerLabelDto>> ScanQRtoChangeLabelForBuyer(string cartonId);
     }
 }
