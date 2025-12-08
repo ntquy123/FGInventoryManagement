@@ -18,6 +18,7 @@ services:
     volumes:
       - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf:ro
       - ./swagger-ui-5.30.2:/usr/share/nginx/pkwms/swagger-ui-5.30.2:ro
+      - ./downloads:/usr/share/nginx/pkwms/downloads:ro
     depends_on:
       - app
     restart: always

@@ -24,16 +24,17 @@ services:
     # volumes:
     #   - .:/src 
 
-  # 2. Dịch vụ Nginx (Dừng tạm thời hoặc giữ lại để kiểm tra mạng)
+    # 2. Dịch vụ Nginx (Dừng tạm thời hoặc giữ lại để kiểm tra mạng)
   nginx:
     image: nginx:latest
     container_name: erp-nginx-proxy
-    # Map cổng 8081 của Host ra cổng 8080 của Nginx
+    # Map cổng 8081 của Host ra cổng 8081 của Nginx
     ports:
-      - "8081:8080" 
+      - "8081:8081"
     volumes:
       - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf
-    
+      - ./downloads:/usr/share/nginx/pkwms/downloads:ro
+
     # Tắt restart để Nginx không liên tục cố gắng kết nối đến app đang lỗi
     restart: "no"
     depends_on:
