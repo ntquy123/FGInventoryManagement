@@ -35,24 +35,31 @@ log_step() {
 }
 
 # --- DRAW PROJECT HEADER ---
- draw_header() {
+ 
+ # ---   (COWBOY BOSS - HD) ---
+draw_header() {
     clear
     printf "\n"
-    # Dùng ký tự ^, ~, ", ; để tạo cảm giác lông xù
-    printf "      ${B_WHITE}      / \\__      /\\  ${NC}\n"
-    printf "      ${B_WHITE}     /     \\____/  \\ ${NC}\n"
-    printf "      ${B_WHITE}    /  ${B_CYAN}●${B_WHITE}      ${B_CYAN}●${B_WHITE}   \\   ${B_MAGENTA}FGInventory${NC}\n"
-    printf "      ${B_WHITE}   /   _    _     \\  ${B_CYAN}Server Deployment${NC}\n"
-    printf "      ${B_WHITE}  /    /    \\      \\ ${NC}\n"
-    printf "      ${B_WHITE} (     \\____/       ) ${NC}\n"
-    printf "      ${B_WHITE}  \\   \"      \"     /  ${NC}\n"
-    printf "      ${B_WHITE}   \\  ~      ~    /   ${NC}\n"
-    printf "      ${B_WHITE}    ;            ;    ${NC}\n"
-    printf "      ${B_WHITE}   /     ;;      \\    ${NC}\n"
-    printf "      ${B_WHITE}  /     //\\\\      \\   ${NC}\n"
-    printf "      ${B_WHITE} /     //  \\\\      \\  ${NC}\n"
+    printf "      ${B_YELLOW}             ,---.           ${NC}\n"
+    printf "      ${B_YELLOW}           /     \          ${NC}\n"
+    printf "      ${B_YELLOW}          /       \         ${NC}\n"
+    printf "      ${B_YELLOW}     _.-'\"         \"'-._    ${NC}\n"
+    printf "      ${B_YELLOW}   .'                   '.  ${NC}\n"
+    printf "      ${B_YELLOW}  /    ${B_BLACK}_.--\"\"\"\"\"--._${B_YELLOW}     \ ${NC}\n"
+    printf "      ${B_YELLOW} |    ${B_BLACK}/   ${B_WHITE}_     _${B_BLACK}   \ ${B_YELLOW}    | ${NC}\n"
+    
+    printf "      ${B_YELLOW} \   ${B_BLACK}|  ${B_CYAN}▀${B_BLACK}     ${B_CYAN}▀${B_BLACK}  |${B_YELLOW}   /  ${NC}\n"
+    printf "      ${B_YELLOW}  '._${B_BLACK}|     ${B_WHITE} \` ${B_BLACK}    |${B_YELLOW}_.'   ${B_MAGENTA} FGInventory${NC}\n"
+    printf "      ${B_WHITE}     |      L      |      ${B_CYAN} Wild West Deploy${NC}\n"
+    printf "      ${B_WHITE}     |   \  ---  / |      ${NC}\n"
+    printf "      ${B_WHITE}      \   '._${B_RED}*${B_WHITE}_.'   /      ${NC}\n"
+
+    printf "      ${B_WHITE}    _.-'  ${B_RED}/###\ ${B_WHITE}  '-._   ${NC}\n"
+    printf "      ${B_WHITE}  .'     ${B_RED}/#####\ ${B_WHITE}     '. ${NC}\n"
+    printf "      ${B_WHITE} /      ${B_RED}/#######\ ${B_WHITE}      \ ${NC}\n"
+    printf "      ${B_WHITE}|      ${B_RED}|#########|${B_WHITE}      |${NC}\n"
     printf "\n"
-    echo -e "${B_WHITE}    Đại Ca Chó đang canh gác quá trình deploy...${NC}\n"
+    echo -e "${B_YELLOW}   \"Howdy Partner! Server đang được lên đạn...\"${NC}\n"
     sleep 1
 }
 
