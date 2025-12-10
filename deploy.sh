@@ -35,21 +35,25 @@ log_step() {
 }
 
 # --- DRAW PROJECT HEADER ---
-draw_header() {
+ draw_header() {
     clear
-    printf "${B_BLUE}"
-    printf "      .╔══════════════════════════════════╗.\n"
-    printf "      ║   ${B_CYAN}◉${B_BLUE}    ${B_BLACK}···· · ·   ${B_CYAN}█▂▃▅▇${B_BLUE}    ║\n"
-    printf "      ║.─────────────────────────────────.║\n"
-    printf "      ║│                                 │║\n"
-    printf "      ║│    ${B_MAGENTA}FG INVENTORY DEPLOYMENT${B_CYAN} SYSTEM  │║\n"
-    printf "      ║│   ${B_GREEN}STATUS: READY FOR DEPLOYMENT${B_BLUE} │║\n"
-    printf "      ║│                                 │║\n"
-    printf "      ║'────────────────────────────────'║\n"
-    printf "      ║      ${B_BLACK}[  ${B_CYAN}●${B_BLACK}  ]${B_BLUE}        ║\n"
-    printf "      '╚════════════════════════════════╝'\n"
-    printf "${NC}\n"
-    echo -e "${B_WHITE}    Starting the automatic deployment process...${NC}\n"
+    printf "\n"
+    # Màu lông chính là B_WHITE, mắt là B_CYAN, mũi/miệng là B_BLACK
+    printf "      ${B_WHITE}       ,    /-. ${NC}\n"
+    printf "      ${B_WHITE}      ((___/  / ${NC}\n"
+    printf "      ${B_WHITE}      /     /  ${NC}\n"
+    printf "      ${B_WHITE}     /           \ ${NC}\n"
+    printf "      ${B_WHITE}    (   ${B_CYAN}◕${B_WHITE}  ,   ${B_CYAN}◕${B_WHITE}  )      ${B_MAGENTA}FGInventory${NC}\n"
+    printf "      ${B_WHITE}     \  ${B_BLACK}_${B_WHITE}     ${B_BLACK}_${B_WHITE}  /       ${B_CYAN}Deployment Watchdog${NC}\n"
+    printf "      ${B_WHITE}     \  ${B_BLACK}(     )${B_WHITE}  / ${NC}\n"
+    printf "      ${B_WHITE}      \  ${B_BLACK}\   /${B_WHITE}  /  ${NC}\n"
+    printf "      ${B_WHITE}       \  ${B_BLACK}\ /${B_WHITE}  /   ${NC}\n"
+    printf "      ${B_WHITE}        ) ${B_BLACK}\ /${B_WHITE} (    ${NC}\n"
+    printf "      ${B_WHITE}       /  / \  \   ${NC}\n"
+    printf "      ${B_WHITE}      (  )   (  )  ${NC}\n"
+    printf "      ${B_WHITE}     /  /     \  \ ${NC}\n"
+    printf "\n"
+    echo -e "${B_WHITE}    "Chó canh gác" đang khởi động quy trình...${NC}\n"
     sleep 1
 }
 
