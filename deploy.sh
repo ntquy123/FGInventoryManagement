@@ -38,22 +38,21 @@ log_step() {
  draw_header() {
     clear
     printf "\n"
-    # Màu lông chính là B_WHITE, mắt là B_CYAN, mũi/miệng là B_BLACK
-    printf "      ${B_WHITE}       ,    /-. ${NC}\n"
-    printf "      ${B_WHITE}      ((___/  / ${NC}\n"
-    printf "      ${B_WHITE}      /     /  ${NC}\n"
-    printf "      ${B_WHITE}     /           \ ${NC}\n"
-    printf "      ${B_WHITE}    (   ${B_CYAN}◕${B_WHITE}  ,   ${B_CYAN}◕${B_WHITE}  )      ${B_MAGENTA}FGInventory${NC}\n"
-    printf "      ${B_WHITE}     \  ${B_BLACK}_${B_WHITE}     ${B_BLACK}_${B_WHITE}  /       ${B_CYAN}Deployment Watchdog${NC}\n"
-    printf "      ${B_WHITE}     \  ${B_BLACK}(     )${B_WHITE}  / ${NC}\n"
-    printf "      ${B_WHITE}      \  ${B_BLACK}\   /${B_WHITE}  /  ${NC}\n"
-    printf "      ${B_WHITE}       \  ${B_BLACK}\ /${B_WHITE}  /   ${NC}\n"
-    printf "      ${B_WHITE}        ) ${B_BLACK}\ /${B_WHITE} (    ${NC}\n"
-    printf "      ${B_WHITE}       /  / \  \   ${NC}\n"
-    printf "      ${B_WHITE}      (  )   (  )  ${NC}\n"
-    printf "      ${B_WHITE}     /  /     \  \ ${NC}\n"
+    # Dùng ký tự ^, ~, ", ; để tạo cảm giác lông xù
+    printf "      ${B_WHITE}      / \\__      /\\  ${NC}\n"
+    printf "      ${B_WHITE}     /     \\____/  \\ ${NC}\n"
+    printf "      ${B_WHITE}    /  ${B_CYAN}●${B_WHITE}      ${B_CYAN}●${B_WHITE}   \\   ${B_MAGENTA}FGInventory${NC}\n"
+    printf "      ${B_WHITE}   /   _    _     \\  ${B_CYAN}Server Deployment${NC}\n"
+    printf "      ${B_WHITE}  /    /    \\      \\ ${NC}\n"
+    printf "      ${B_WHITE} (     \\____/       ) ${NC}\n"
+    printf "      ${B_WHITE}  \\   \"      \"     /  ${NC}\n"
+    printf "      ${B_WHITE}   \\  ~      ~    /   ${NC}\n"
+    printf "      ${B_WHITE}    ;            ;    ${NC}\n"
+    printf "      ${B_WHITE}   /     ;;      \\    ${NC}\n"
+    printf "      ${B_WHITE}  /     //\\\\      \\   ${NC}\n"
+    printf "      ${B_WHITE} /     //  \\\\      \\  ${NC}\n"
     printf "\n"
-    echo -e "${B_WHITE}    "Chó canh gác" đang khởi động quy trình...${NC}\n"
+    echo -e "${B_WHITE}    Đại Ca Chó đang canh gác quá trình deploy...${NC}\n"
     sleep 1
 }
 
