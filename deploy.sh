@@ -1,70 +1,141 @@
 ﻿#!/bin/bash
 
-# --- COLOR CONFIGURATION ---
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# ==============================================
+#    FGInventory DEPLOYMENT SCRIPT - V2.0 (WOW EDITION)
+# ==============================================
 
-# --- LOGGING FUNCTIONS ---
+# --- ADVANCED COLOR & STYLE PALETTE ---
+# Standard & Bold Colors
+NC='\033[0m' # No Color
+BLACK='\033[0;30m'  B_BLACK='\033[1;30m'
+RED='\033[0;31m'    B_RED='\033[1;31m'
+GREEN='\033[0;32m'  B_GREEN='\033[1;32m'
+YELLOW='\033[0;33m' B_YELLOW='\033[1;33m'
+BLUE='\033[0;34m'   B_BLUE='\033[1;34m'
+PURPLE='\033[0;35m' B_MAGENTA='\033[1;35m'
+CYAN='\033[0;36m'   B_CYAN='\033[1;36m'
+WHITE='\033[0;37m'  B_WHITE='\033[1;37m'
+
+# Backgrounds (Optional use for extreme emphasis)
+BG_RED='\033[41m'
+BG_GREEN='\033[42m'
+
+# Styles
+BOLD='\033[1m'
+UNDERLINE='\033[4m'
+BLINK='\033[5m' # Use sparingly!
+
+# --- LOGGING FUNCTIONS WITH ICONS ---
 log_info() {
-    echo -e "${CYAN}[INFO]${NC} $1"
+    echo -e "  ${B_BLUE}ℹ️   [INFO]${NC} $1"
+}
+
+log_process() {
+    echo -e "  ${B_CYAN}⚙️   [EXECUTING]${NC} $1..."
 }
 
 log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo -e "  ${B_GREEN}✅  [SUCCESS]${NC} $1"
 }
 
 log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    echo -e "\n${BG_RED}${B_WHITE} 🛑 FATAL ERROR 🛑 ${NC}"
+    echo -e "${B_RED}👉 $1${NC}\n"
+}
+
+# A fancy separator bar with a gradient effect
+separator() {
+    echo -e "\n${B_BLUE}════════════════${B_MAGENTA}════════════════${B_BLUE}════════════════${NC}"
 }
 
 log_step() {
-    echo -e "\n${YELLOW}==============================================${NC}"
-    echo -e "${YELLOW}➤ STEP $1: $2${NC}"
-    echo -e "${YELLOW}==============================================${NC}"
+    separator
+    echo -e "${B_MAGENTA}🚀  STEP $1:${NC} ${B_WHITE}$2${NC}"
+    separator
+    echo ""
 }
 
-# --- START SCRIPT ---
-echo -e "${GREEN}"
-echo "  ___  ___  ___ _    _____   __"
-echo " |   \| __|| _ \ |  / _ \ \ / /"
-echo " | |) | _| |  _/ |_| (_) \ V / "
-echo " |___/|___||_| |____\___/ |_|  "
-echo "     AUTO DEPLOY SCRIPT        "
-echo -e "${NC}"
+# --- THE "WOW" HEADER (FGInventory Mobile) ---
+draw_header() {
+    clear
+    echo -e "${B_BLUE}"
+    echo "      .╔════════════════════════╗."
+    echo "      ║   ${B_CYAN}◉${B_BLUE}  ${B_BLACK}···· ${B_BLUE}  ${B_CYAN}▂▃▅▇█${B_BLUE}   ║"  # Signal/Camera bar
+    echo "      ║.────────────────────────.║"
+    echo "      ║│                        │║"
+    echo "      ║│   ${B_MAGENTA}╔═╗╔═╗${B_CYAN}╦╔╗╔╦  ╦${B_BLUE}    │║"
+    echo "      ║│   ${B_MAGENTA}╠═╝║ ╦${B_CYAN}║║║║╚╗╔╝╠═╗${B_BLUE}   │║"
+    echo "      ║│   ${B_MAGENTA}╩  ╚═╝${B_CYAN}╩╝╚╝ ╚╝ ╩ ╩${B_BLUE}   │║"
+    echo "      ║│                        │║"
+    echo "      ║│   ${B_WHITE}MOBILE DEPLOYMENT${B_BLUE}    │║"
+    echo "      ║│      ${B_GREEN}STATUS: READY${B_BLUE}     │║"
+    echo "      ║│                        │║"
+    echo "      ║'────────────────────────'║"
+    echo "      ║      ${B_BLACK}[  ${B_CYAN}●${B_BLACK}  ]${B_BLUE}      ║" # Home button
+    echo "      '╚════════════════════════╝'"
+    echo -e "${NC}"
+    echo -e "${B_WHITE}    Starting Automated Sequence...${NC}\n"
+    sleep 1
+}
 
-# STEP 1: GIT PULL
-log_step "1" "Updating Source Code (Git Pull)"
-if git pull; then
-    log_success "Git pull completed successfully!"
+# ==============================================
+#    MAIN EXECUTION FLOW
+# ==============================================
+
+draw_header
+
+# --- STEP 1: GIT PULL ---
+log_step "1" "Synchronizing Source Code (Git)"
+log_info "Fetching latest changes from remote repository..."
+
+log_process "Running: git pull"
+# Capture output and check status
+if git_output=$(git pull 2>&1); then
+    echo -e "${CYAN}${git_output}${NC}" # Show git output in a subtle color
+    log_success "Source code is up-to-date!"
 else
-    log_error "Git pull failed! Please check your network connection or merge conflicts."
-    exit 1 # Stop script immediately on error
+    # If it fails, show the output in red
+    echo -e "${RED}${git_output}${NC}"
+    log_error "Git pull failed! Please check connection or conflicts."
+    exit 1
 fi
 
-# STEP 2: DOCKER COMPOSE DOWN
-log_step "2" "Stopping and Removing Old Containers (Down)"
+
+# --- STEP 2: DOCKER COMPOSE DOWN ---
+log_step "2" "Tearing Down Existing Infrastructure"
+log_info "Stopping currently running containers to ensure clean state."
+
+log_process "Running: docker compose down"
 if docker compose down; then
-    log_success "Old containers stopped and removed."
+    log_success "Environment successfully stopped and removed."
 else
-    log_error "Error executing 'docker compose down'."
+    log_error "Failed to stop existing containers."
     exit 1
 fi
 
-# STEP 3: DOCKER COMPOSE UP
-log_step "3" "Building and Starting New Containers (Up)"
-# Added --remove-orphans to keep the environment clean
+
+# --- STEP 3: DOCKER COMPOSE UP ---
+log_step "3" "Building & Launching FGInventory Mobile"
+log_info "Rebuilding images and starting services in detached mode."
+log_info "Using '--remove-orphans' to clean up stale services."
+
+log_process "Running: docker compose up --build -d"
+# Added --remove-orphans for hygiene
 if docker compose up --build -d --remove-orphans; then 
-    log_success "New containers started successfully!"
+    log_success "Containers launched successfully!"
 else
-    log_error "Error building or starting containers."
+    log_error "Docker build or startup failed."
     exit 1
 fi
 
-# FINISH
-echo -e "\n${GREEN}✅  DEPLOYMENT COMPLETED! SYSTEM IS RUNNING.  ✅${NC}\n"
 
-# (Optional) Show current container status
+# --- FINALIZATION ---
+separator
+echo -e "\n${B_GREEN}${BOLD}🎉✨  DEPLOYMENT COMPLETE! SYSTEM IS ONLINE.  ✨🎉${NC}\n"
+separator
+
+log_info "Current Container Status:"
+# Show status with a slight delay for dramatic effect
+sleep 1
 docker compose ps
+echo ""
