@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using Oracle.ManagedDataAccess.Client;
 using entities.Common;
 using entities.Setting;
 using erpsolution.api.Base;
@@ -14,6 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Collections.Generic;
+using System.Data;
 namespace erpsolution.api.Controllers.FGInventoryMobile
 {
     public class FGInventoryController : ControllerBaseEx<IFGInventoryService, OspAppusrTbl, decimal>
@@ -141,6 +144,53 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
             catch (Exception ex)
             {
                 var message = await LogErrorAsync(ex, "Transfer Location");
+                return new HandleState(false, message);
+            }
+        }
+
+        /// <summary>
+        /// Check whether a location code exists for the given warehouse and sub warehouse.
+        /// </summary>
+        /// <param name="locCode">Location code to validate.</param>
+        /// <param name="subwhCode">Sub warehouse code.</param>
+        /// <param name="whCode">Warehouse code.</param>
+        [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
+        [HttpGet(nameof(CheckRackExistsAsync))]
+        [AllowAnonymous]
+        public async Task<HandleState> CheckRackExistsAsync(string locCode, string subwhCode, string whCode)
+        {
+            try
+            {
+                const string sql = @"SELECT SLT.LOC_CODE
+                                  FROM ST_SUBWH_TBL SST
+                                  JOIN ST_LOCATION_TBL SLT ON SST.SUBWH_CODE = SLT.SUBWH_CODE
+                                  WHERE SST.USED_FLAG = 'Y'
+                                    AND SLT.USED_FLAG = 'Y'
+                                    AND SLT.LOC_TYPE IN ('C','A')
+                                    AND SST.WH_CODE = :whCode
+                                    AND SST.SUBWH_CODE = :subwhCode
+                                    AND SLT.LOC_CODE = :locCode";
+
+                var parameters = new List<OracleParameter>
+                {
+                    new OracleParameter("whCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input),
+                    new OracleParameter("subwhCode", OracleDbType.Varchar2, subwhCode, ParameterDirection.Input),
+                    new OracleParameter("locCode", OracleDbType.Varchar2, locCode, ParameterDirection.Input),
+                };
+
+                var result = _context.ExcuteDataSet(sql, CommandType.Text, parameters);
+                var exists = result?.Tables.Count > 0 && result.Tables[0].Rows.Count > 0;
+
+                if (exists)
+                {
+                    return new HandleState(true, locCode, locCode);
+                }
+
+                return new HandleState(false, "Không tồn tại rack này");
+            }
+            catch (Exception ex)
+            {
+                var message = await LogErrorAsync(ex, "Check Rack", new { locCode, subwhCode, whCode });
                 return new HandleState(false, message);
             }
         }
