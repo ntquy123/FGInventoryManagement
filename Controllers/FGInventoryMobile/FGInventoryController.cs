@@ -151,9 +151,9 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         /// <summary>
         /// Check whether a location code exists for the given warehouse and sub warehouse.
         /// </summary>
-        /// <param name="locCode">Location code to validate.</param>
-        /// <param name="subwhCode">Sub warehouse code.</param>
-        /// <param name="whCode">Warehouse code.</param>
+        /// <param name="locCode">A01-0001</param>
+        /// <param name="subwhCode">PGW2</param>
+        /// <param name="whCode">920</param>
         [ApiExplorerSettings(GroupName = "fg_inventory_mobile")]
         [HttpGet(nameof(CheckRackExistsAsync))]
         [AllowAnonymous]
@@ -186,7 +186,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                     return new HandleState(true, locCode, locCode);
                 }
 
-                return new HandleState(false, "Không tồn tại rack này");
+                return new HandleState(false, "Rack not exits");
             }
             catch (Exception ex)
             {
