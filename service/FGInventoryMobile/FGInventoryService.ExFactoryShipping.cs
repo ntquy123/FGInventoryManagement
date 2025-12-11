@@ -61,6 +61,7 @@ SELECT MFSD.SHPPKG AS Shppkg
      , MFSD.STLREVN AS Stlrevn
      , MFSD.RELEASE_QTY AS ReleaseQty
      , MFIM.PICK_QTY AS PickQty
+     , MFIM.SHIP_QTY AS ShipQty
      , (SELECT C_CODE
           FROM ST_TYPECODE_TBL STCT  
          WHERE STCT.C_TYPE='FG_SHIP_STATUS'
@@ -76,6 +77,7 @@ SELECT MFSD.SHPPKG AS Shppkg
              , ORI_STLREVN AS STLREVN
              , LINE_NO
              , SUM(INPUT_PICK_QTY) AS PICK_QTY
+             , SUM(INPUT_SHIP_QTY) AS SHIP_QTY
           FROM MT_FG_INPUT 
          WHERE REFER_INFO= :pShpPkg
          GROUP BY 

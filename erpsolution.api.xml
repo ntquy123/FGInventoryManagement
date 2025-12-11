@@ -41,9 +41,10 @@
               "WhCode": "920",
               "SubwhCode": "PGW2",
               "LocCode": "A01-0001",
+              "TrType": "6",
               "TrAction": 2,
               "TrInfo": "MKS-25W47-0001",
-              "CartonId": "MKS1927RGL003001",
+              "CartonId": "MKS1854RGL0012511240001",
               "ContainerNo": "CTN001004",
               "UserId": "2021017"
             }
@@ -89,6 +90,14 @@
         </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.GetUccByCartonAsync(System.String)">
             <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.CheckRackExistsAsync(System.String,System.String,System.String)">
+            <summary>
+            Check whether a location code exists for the given warehouse and sub warehouse.
+            </summary>
+            <param name="locCode">A01-0001</param>
+            <param name="subwhCode">PGW2</param>
+            <param name="whCode">920</param>
         </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.PhysicalCountingController.ExecutePcInputAndQueryAsync(erpsolution.dal.DTO.Pcinputrequest)">
             <param name="req">
@@ -137,7 +146,7 @@
             <param name="subwhCode">PGW2</param>
         </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.GetTransferShippingLinesAsync(System.String)">
-            <param name="invoiceNo">20251107-00001</param>
+            <param name="invno">20251107-00001</param>
         </member>
         <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.ScanTransferShippingAsync(erpsolution.dal.EF.TransferShippingScanRequest)">
             <param name="request">

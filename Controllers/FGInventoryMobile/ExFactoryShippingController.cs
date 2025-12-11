@@ -75,7 +75,7 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
         ///   "LocCode": "A01-0001",
         ///   "TrAction": 2,
         ///   "TrInfo": "MKS-25W47-0001",
-        ///   "CartonId": "MKS1927RGL003001",
+        ///   "CartonId": "MKS1854RGL0012511240001",
         ///   "ContainerNo": "CTN001004",
         ///   "UserId": "2021017"
         /// }
