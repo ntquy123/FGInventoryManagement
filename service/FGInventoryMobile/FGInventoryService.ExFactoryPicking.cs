@@ -14,7 +14,7 @@ namespace erpsolution.service.FGInventoryMobile
         public async Task<List<ExFactoryPickingHeaderRow>> GetExFactoryPickingHeadersAsync(string whCode)
         {
             var sql = @"
-SELECT MFSM.SHPPKG AS Shppkg
+SELECT DISTINCT MFSM.SHPPKG AS Shppkg
      , INV.INVOICE_NO AS InvoiceNo
      , MFSM.DEST AS Dest
      , MFSM.SCHEDULE_DATE AS ScheduleDate
@@ -36,7 +36,7 @@ SELECT MFSM.SHPPKG AS Shppkg
  WHERE 1=1          
    AND MFSM.WH_CODE = JOB.WH_CODE(+)
    AND MFSM.SHPPKG = JOB.REQ_NO(+)
-   AND MFSM.SHPPKG = INV.SHPPKG
+   AND MFSM.SHPPKG = INV.SHPPKG(+)
    AND MFSM.STATUS IN (6,8)
    AND MFSM.WH_CODE = :pWhCode";
 

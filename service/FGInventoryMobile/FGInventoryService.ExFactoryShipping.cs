@@ -14,7 +14,7 @@ namespace erpsolution.service.FGInventoryMobile
         public async Task<List<ExFactoryShippingHeaderRow>> GetExFactoryShippingHeadersAsync(string whCode)
         {
             var sql = @"
-SELECT MFSM.SHPPKG AS Shppkg
+SELECT DISTINCT MFSM.SHPPKG AS Shppkg
      , INV.INVOICE_NO AS InvoiceNo
      , MFSM.DEST AS Dest
      , MFSM.SCHEDULE_DATE AS ScheduleDate
