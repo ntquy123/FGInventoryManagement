@@ -20,7 +20,6 @@ namespace erpsolution.dal.DTO
     {
         public string WhCode { get; set; }
         public string WhName { get; set; }
-        public string LocControl { get; set; }
         public string MenuNm { get; set; }
         public string UserId { get; set; }
         public string Role { get; set; }
@@ -31,6 +30,7 @@ namespace erpsolution.dal.DTO
     {
         public string SubwhCode { get; set; }
         public string SubwhName { get; set; }
+        public string LocControl { get; set; }
 
     }
     public class UserMenuInfo
