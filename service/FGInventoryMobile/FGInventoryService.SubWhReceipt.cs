@@ -105,7 +105,7 @@ ORDER BY REQ.LINE_NO";
 SELECT *
   FROM (
         SELECT DISTINCT MST.REQ_NO AS ReqNo
-             , CASE WHEN SST.JOB_CONTROL = 'N'
+             , CASE WHEN SST.JOB_CONTROL IN ('N','O')
                     THEN '@'
                     ELSE JOB.JOB_NO
                END AS JobNo
