@@ -57,11 +57,11 @@ namespace erpsolution.service.FGInventoryMobile
     .Select(g => new UserMenuRoleViewHeader
     {
         UserId = g.Key.UserId,
-        WhCode = g.FirstOrDefault().WhCode,
-        WhName = g.FirstOrDefault().WhName,
+       // WhCode = g.FirstOrDefault().WhCode,
+        //WhName = g.FirstOrDefault().WhName,
         MenuNm = g.Key.MenuNm,
         Role = g.Key.Role,
-        SubWHPickRule = g.FirstOrDefault().SubWHPickRule,
+       // SubWHPickRule = g.FirstOrDefault().SubWHPickRule,
         LstSubWh = g
             .GroupBy(x => new { x.WhCode, x.WhName, x.SubWHPickRule, x.SubwhCode, x.SubwhName, x.LocControl })
             .Select(dg => new UserMenuRoleViewDetail
