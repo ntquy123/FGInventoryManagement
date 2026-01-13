@@ -19,6 +19,7 @@ SELECT
     AMMT.INVNO      AS Invno,
     AMMT.USRINVNO   AS InvoiceNo,
     AMMT.CSTSHTNO   AS Cstshtno,
+    AMMT.WHCODE     AS Whcode,
     AMMT.TO_WHCODE  AS ToWhcode,
     (SELECT C_CODE
        FROM ST_TYPECODE_TBL STCT
@@ -37,7 +38,6 @@ FROM AO_MOVMST_TBL AMMT,
                SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
-                    MFI.SUBWH_CODE,
                     CASE
                         WHEN SST.JOB_CONTROL = 'N' THEN '@'
                         ELSE NVL(JOB.JOB_NO, NULL)
@@ -65,7 +65,6 @@ FROM AO_MOVMST_TBL AMMT,
                 SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
-                    MFI.SUBWH_CODE,
                     CASE
                         WHEN SST.JOB_CONTROL = 'N' THEN '@'
                         ELSE NVL(JOB.JOB_NO, NULL)
@@ -108,7 +107,9 @@ WHERE AMMT.INVNO = MFIP.INVNO
         public async Task<List<TransferShippingLineRow>> GetTransferShippingLinesAsync(string invno)
         {
             var sql = @"
-SELECT MFI.LINE_NO AS LineNo
+SELECT MFI.REFER_INFO AS ReqNo
+     , MFI.LINE_NO AS LineNo
+     , MFI.LOC_CODE AS LocCode
      , MFI.AONO 
      , MFI.STLCD
      , MFI.STLSIZ

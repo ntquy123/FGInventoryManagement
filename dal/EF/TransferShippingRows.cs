@@ -7,6 +7,7 @@ namespace erpsolution.dal.EF
         public string Invno { get; set; }
         public string InvoiceNo { get; set; }
         public string Cstshtno { get; set; }
+        public string Whcode { get; set; }
         public string ToWhcode { get; set; }
         public string Status { get; set; }
         public string JobNo { get; set; }
@@ -15,7 +16,9 @@ namespace erpsolution.dal.EF
     public class TransferShippingLineRow
     {
         public string Invno { get; set; }
+        public string ReqNo { get; set; }
         public int? LineNo { get; set; }
+        public string LocCode { get; set; }
         public string Aono { get; set; }
         public string Stlcd { get; set; }
         public string Stlsiz { get; set; }
