@@ -18,6 +18,7 @@ namespace erpsolution.service.FGInventoryMobile
 SELECT AMMT.INVNO AS Invno,
        AMMT.USRINVNO AS InvoiceNo,
        AMMT.CSTSHTNO AS Cstshtno,
+       AMMT.WHCODE AS Whcode,
        AMMT.TO_WHCODE AS ToWhcode,
        (SELECT C_CODE
           FROM ST_TYPECODE_TBL STCT
@@ -56,21 +57,20 @@ SELECT AMMT.INVNO AS Invno,
                    AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
                    AND MFI.REFER_INFO = JOB.REQ_NO(+)
                    AND MFI.STATUS IN (6,8)
+                   AND NVL(MFRD.REQUEST_QTY,0) - NVL(MFI.INPUT_PICK_QTY,0) > 0
                    AND SST.PICK_RULE = 'M'
-                   AND MFI.WH_CODE = :pWhCode
-                   AND MFI.SUBWH_CODE = :pSubwhCode
                  )
          GROUP BY INVNO, WH_CODE
         ) MFIP
   WHERE AMMT.INVNO = MFIP.INVNO
     AND AMMT.WHCODE = MFIP.WH_CODE
-    AND MFIP.JOB_NO IS NOT NULL";
+    AND MFIP.JOB_NO IS NOT NULL
+    AND AMMT.WHCODE = :pWhCode";
 
             var pWhCode = new OracleParameter("pWhCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input);
-            var pSubwhCode = new OracleParameter("pSubwhCode", OracleDbType.Varchar2, subwhCode, ParameterDirection.Input);
 
             var rows = await _amtContext.TransferPickingHeaderRow
-                .FromSqlRaw(sql, pWhCode, pSubwhCode)
+                .FromSqlRaw(sql, pWhCode)
                 .ToListAsync();
 
             return rows;
@@ -79,7 +79,9 @@ SELECT AMMT.INVNO AS Invno,
         public async Task<List<TransferPickingLineRow>> GetTransferPickingLinesAsync(string invoiceNo)
         {
             var sql = @"
-SELECT MFI.LINE_NO AS LineNo,
+SELECT MFI.REFER_INFO AS ReqNo,
+       MFI.LINE_NO AS LineNo,
+       MFI.LOC_CODE AS LocCode,
        MFI.AONO AS Aono,
        MFI.STLCD AS Stlcd,
        MFI.STLSIZ AS Stlsiz,
