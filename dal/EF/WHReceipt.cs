@@ -7,13 +7,15 @@ namespace erpsolution.dal.EF
         public string Invno { get; set; }
         public string InvoiceNo { get; set; }
         public string Cstshtno { get; set; }
-        public string ToWhcode { get; set; }
+        public string Whcode { get; set; }
+        public string FromWhcode { get; set; }
         public string Status { get; set; }
         public string JobNo { get; set; }
     }
 
     public class WHReceiptLineRow
     {
+        public string ReqNo { get; set; }
         public int? LineNo { get; set; }
         public string Aono { get; set; }
         public string Stlcd { get; set; }
@@ -21,10 +23,9 @@ namespace erpsolution.dal.EF
         public string Stlcosn { get; set; }
         public string Stlrevn { get; set; }
         public decimal? RequestQty { get; set; }
-        public decimal? InputPickQty { get; set; }
-        public decimal? InputShipQty { get; set; }
+        public decimal? ReceiptQty { get; set; }
         public string Status { get; set; }
-        public string Attribute2 { get; set; }
+        public string StatusNm { get; set; }
     }
 
     public class WHReceiptScanRequest
