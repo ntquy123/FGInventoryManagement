@@ -51,24 +51,24 @@ namespace erpsolution.service.FGInventoryMobile
     .GroupBy(x => new
     {
         x.UserId,
-        x.WhCode,
-        x.WhName,
         x.MenuNm,
-        x.Role,
-        x.SubWHPickRule
+        x.Role
     })
     .Select(g => new UserMenuRoleViewHeader
     {
         UserId = g.Key.UserId,
-        WhCode = g.Key.WhCode,
-        WhName = g.Key.WhName,
+        WhCode = g.FirstOrDefault().WhCode,
+        WhName = g.FirstOrDefault().WhName,
         MenuNm = g.Key.MenuNm,
         Role = g.Key.Role,
-        SubWHPickRule = g.Key.SubWHPickRule,
+        SubWHPickRule = g.FirstOrDefault().SubWHPickRule,
         LstSubWh = g
-            .GroupBy(x => new { x.SubwhCode, x.SubwhName, x.LocControl })
+            .GroupBy(x => new { x.WhCode, x.WhName, x.SubWHPickRule, x.SubwhCode, x.SubwhName, x.LocControl })
             .Select(dg => new UserMenuRoleViewDetail
             {
+                WhCode = dg.Key.WhCode,
+                WhName = dg.Key.WhName,
+                SubWHPickRule = dg.Key.SubWHPickRule,
                 SubwhCode = dg.Key.SubwhCode,
                 SubwhName = dg.Key.SubwhName,
                 LocControl = dg.Key.LocControl

@@ -28,6 +28,9 @@ namespace erpsolution.dal.DTO
     }
     public class UserMenuRoleViewDetail
     {
+        public string WhCode { get; set; }
+        public string WhName { get; set; }
+        public string SubWHPickRule { get; set; }
         public string SubwhCode { get; set; }
         public string SubwhName { get; set; }
         public string LocControl { get; set; }
