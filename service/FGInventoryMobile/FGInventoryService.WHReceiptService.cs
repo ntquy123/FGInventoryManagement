@@ -19,7 +19,8 @@ SELECT
     AMMT.INVNO      AS Invno,
     AMMT.USRINVNO   AS InvoiceNo,
     AMMT.CSTSHTNO   AS Cstshtno,
-    AMMT.TO_WHCODE  AS ToWhcode,
+    AMMT.TO_WHCODE  AS Whcode,
+    AMMT.WHCODE     AS FromWhcode,
     (SELECT C_CODE
        FROM ST_TYPECODE_TBL STCT
       WHERE STCT.C_TYPE = 'FG_REQUEST_STATUS'
@@ -30,79 +31,43 @@ FROM AO_MOVMST_TBL AMMT,
         SELECT
             INVNO,
             WH_CODE,
-            SUBWH_CODE,
-            MAX(REQ_NO)  AS REQ_NO,
-            MAX(STATUS)  AS STATUS,
-            MIN(JOB_NO)  AS JOB_NO
+            MAX(REQ_NO) AS REQ_NO,
+            MAX(STATUS) AS STATUS,
+            MIN(JOB_NO) AS JOB_NO
           FROM (
                SELECT
                     MFI.ATTRIBUTE2 AS INVNO,
                     MFI.WH_CODE,
-                    MFI.SUBWH_CODE,
-                    CASE
-                        WHEN SST.JOB_CONTROL = 'N' THEN '@'
-                        ELSE NVL(JOB.JOB_NO, NULL)
-                    END AS JOB_NO,
+                    MFRM.TO_WH_CODE,
+                    NVL(JOB.JOB_NO, NULL) AS JOB_NO,
                     MFI.REFER_INFO AS REQ_NO,
                     MFI.STATUS     AS STATUS
-                  FROM MT_FG_INPUT MFI,
+                  FROM MT_FG_REQUEST MFRM,
                        MT_FG_REQUEST_DTL MFRD,
-                       ST_SUBWH_TBL SST,
+                       MT_FG_INPUT MFI,
                        MT_FG_MV_ORDER_DTL JOB
-                 WHERE     MFI.WH_CODE = SST.WH_CODE
-                       AND MFI.SUBWH_CODE = SST.SUBWH_CODE
+                 WHERE     MFRM.WH_CODE = MFRD.WH_CODE
+                       AND MFRM.SUBWH_CODE = MFRD.SUBWH_CODE
+                       AND MFRM.REQ_NO = MFRD.REQ_NO
                        AND MFI.WH_CODE = MFRD.WH_CODE
                        AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
                        AND MFI.LOC_CODE = MFRD.LOC_CODE
                        AND MFI.REFER_INFO = MFRD.REQ_NO
                        AND MFI.LINE_NO = MFRD.LINE_NO
-                       AND MFI.WH_CODE = JOB.WH_CODE(+)
-                       AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
-                       AND MFI.REFER_INFO = JOB.REQ_NO(+)
-                       AND MFI.STATUS IN (6, 8)
-                       AND SST.PICK_RULE = 'M'
-                       AND NVL(MFI.INPUT_PICK_QTY, 0) > 0
-                UNION ALL
-                SELECT
-                    MFI.ATTRIBUTE2 AS INVNO,
-                    MFI.WH_CODE,
-                    MFI.SUBWH_CODE,
-                    CASE
-                        WHEN SST.JOB_CONTROL = 'N' THEN '@'
-                        ELSE NVL(JOB.JOB_NO, NULL)
-                    END AS JOB_NO,
-                    MFI.REFER_INFO AS REQ_NO,
-                    MFI.STATUS     AS STATUS
-                  FROM MT_FG_INPUT MFI,
-                       MT_FG_REQUEST_DTL MFRD,
-                       ST_SUBWH_TBL SST,
-                       MT_FG_MV_ORDER_DTL JOB
-                 WHERE     MFI.WH_CODE = SST.WH_CODE
-                       AND MFI.SUBWH_CODE = SST.SUBWH_CODE
-                       AND MFI.WH_CODE = MFRD.WH_CODE
-                       AND MFI.SUBWH_CODE = MFRD.SUBWH_CODE
-                       AND MFI.LOC_CODE = MFRD.LOC_CODE
-                       AND MFI.REFER_INFO = MFRD.REQ_NO
-                       AND MFI.LINE_NO = MFRD.LINE_NO
-                       AND MFI.WH_CODE = JOB.WH_CODE(+)
-                       AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
-                       AND MFI.REFER_INFO = JOB.REQ_NO(+)
-                       AND MFI.STATUS IN (6, 8)
-                       AND SST.PICK_RULE = 'A'
+                       AND MFRM.TO_WH_CODE = JOB.WH_CODE(+)
+                       AND MFRM.REQ_NO = JOB.REQ_NO(+)
+                       AND MFI.STATUS IN (3, 7)
+                       AND NVL(MFI.SHIP_QTY, 0) - NVL(MFI.RECEIPT_QTY, 0) > 0
                )
-         GROUP BY INVNO, WH_CODE, SUBWH_CODE
+         GROUP BY INVNO, WH_CODE
      ) MFIP
 WHERE AMMT.INVNO = MFIP.INVNO
   AND AMMT.WHCODE = MFIP.WH_CODE
-  AND MFIP.JOB_NO IS NOT NULL
-  AND AMMT.WHCODE = :pWhCode
-  AND MFIP.SUBWH_CODE = :pSubwhCode";
+  AND AMMT.TO_WHCODE = :pWhCode";
 
             var pWhCode = new OracleParameter("pWhCode", OracleDbType.Varchar2, whCode, ParameterDirection.Input);
-            var pSubwhCode = new OracleParameter("pSubwhCode", OracleDbType.Varchar2, subwhCode, ParameterDirection.Input);
-
             var rows = await _amtContext.WHReceiptHeaderRow
-                .FromSqlRaw(sql, pWhCode, pSubwhCode)
+                .FromSqlRaw(sql, pWhCode)
                 .ToListAsync();
 
             return rows;
@@ -112,24 +77,23 @@ WHERE AMMT.INVNO = MFIP.INVNO
         {
             var sql = @"
 SELECT
-    MFI.LINE_NO          AS LineNo,
-    MFI.AONO             AS Aono,
-    MFI.STLCD            AS Stlcd,
-    MFI.STLSIZ           AS Stlsiz,
-    MFI.STLCOSN          AS Stlcosn,
-    MFI.STLREVN          AS Stlrevn,
-    MFRD.REQUEST_QTY     AS RequestQty,
-    MFI.INPUT_PICK_QTY   AS InputPickQty,
-    MFI.INPUT_SHIP_QTY   AS InputShipQty,
-    (SELECT C_CODE
-       FROM ST_TYPECODE_TBL STCT
-      WHERE STCT.C_TYPE = 'FG_REQUEST_STATUS'
-        AND STCT.C_ID   = MFI.STATUS) AS Status,
-    MFI.ATTRIBUTE2       AS Attribute2
+    MFI.REFER_INFO       AS ReqNo,
+    MFRD.LINE_NO         AS LineNo,
+    MFRD.AONO            AS Aono,
+    MFRD.STLCD           AS Stlcd,
+    MFRD.STLSIZ          AS Stlsiz,
+    MFRD.STLCOSN         AS Stlcosn,
+    MFRD.STLREVN         AS Stlrevn,
+    MFRD.SHIP_QTY        AS RequestQty,
+    NVL(MFRD.RECEIPT_QTY, 0) AS ReceiptQty,
+    MFRD.STATUS          AS Status,
+    (SELECT C_NAME
+       FROM ST_TYPECODE_TBL
+      WHERE C_TYPE = 'FG_REQUEST_STATUS'
+        AND C_ID = MFRD.STATUS) AS StatusNm
 FROM MT_FG_INPUT MFI,
      MT_FG_REQUEST_DTL MFRD,
-     ST_SUBWH_TBL SST,
-     MT_FG_MV_ORDER_DTL JOB
+     ST_SUBWH_TBL SST
 WHERE     MFI.WH_CODE = SST.WH_CODE
       AND MFI.SUBWH_CODE = SST.SUBWH_CODE
       AND MFI.WH_CODE = MFRD.WH_CODE
@@ -137,10 +101,7 @@ WHERE     MFI.WH_CODE = SST.WH_CODE
       AND MFI.LOC_CODE = MFRD.LOC_CODE
       AND MFI.REFER_INFO = MFRD.REQ_NO
       AND MFI.LINE_NO = MFRD.LINE_NO
-      AND MFI.WH_CODE = JOB.WH_CODE(+)
-      AND MFI.SUBWH_CODE = JOB.SUBWH_CODE(+)
-      AND MFI.REFER_INFO = JOB.REQ_NO(+)
-      AND MFI.STATUS IN (6, 8)
+      AND MFI.STATUS IN (3, 7)
       AND MFI.ATTRIBUTE2 = :pInvoiceNo";
 
             var pInvoiceNo = new OracleParameter("pInvoiceNo", OracleDbType.Varchar2, invoiceNo, ParameterDirection.Input);
