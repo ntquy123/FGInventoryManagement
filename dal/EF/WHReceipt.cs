@@ -4,13 +4,13 @@ namespace erpsolution.dal.EF
 {
     public class WHReceiptHeaderRow
     {
-        public string Invno { get; set; }
-        public string InvoiceNo { get; set; }
-        public string Cstshtno { get; set; }
-        public string Whcode { get; set; }
-        public string FromWhcode { get; set; }
-        public string Status { get; set; }
-        public string JobNo { get; set; }
+        public string? Invno { get; set; }
+        public string? InvoiceNo { get; set; }
+        public string? Cstshtno { get; set; }
+        public string? Whcode { get; set; }
+        public string? FromWhcode { get; set; }
+        public string? Status { get; set; }
+        public string? JobNo { get; set; }
     }
 
     public class WHReceiptLineRow
