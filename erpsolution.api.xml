@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>erpsolution.api</name>
+    </assembly>
+    <members>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.GetExFactoryPickingHeadersAsync(System.String)">
+            <param name="whCode">920</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.GetExFactoryPickingLinesAsync(System.String)">
+            <param name="shpPkg">MKS-25W47-0001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryPickingController.ScanExFactoryPickingAsync(erpsolution.dal.EF.ExFactoryPickingScanRequest)">
+            <param name="request">
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": -1,
+              "TrInfo": "MKS-25W47-0001",
+              "CartonId": "MKS1854RGL0012511240001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.GetExFactoryShippingHeadersAsync(System.String)">
+            <param name="whCode">920</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.GetExFactoryShippingLinesAsync(System.String)">
+            <param name="shpPkg">MKS-25W47-0001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.ExFactoryShippingController.ScanExFactoryShippingAsync(erpsolution.dal.EF.ExFactoryShippingScanRequest)">
+            <param name="request">
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrType": "6",
+              "TrAction": 2,
+              "TrInfo": "MKS-25W47-0001",
+              "CartonId": "MKS1854RGL0012511240001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForCarton(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoChangeLabelForBuyer(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGChangeToBuyerLabelController.ScanQRtoLabelChange(erpsolution.dal.EF.LabelChangeRequest)">
+            <param name="pData">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "FromCartonId": "MKS1854RGL001202507080004",
+              "ToCartonId": "CARTONTEST123",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.ScanQrtoSubWHReceipt(erpsolution.dal.DTO.ParamScanQR)">
+            <param name="pData">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "locCode": "A01-0001", 
+              "referInfo": "I-GA2-250730-0003",
+              "cartonId": "MKS1854RGL001202507080004",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.GetUccByCartonAsync(System.String)">
+            <param name="cartonId">MKS1854RGL001202507080004</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.FGInventoryController.CheckRackExistsAsync(System.String,System.String,System.String)">
+            <summary>
+            Check whether a location code exists for the given warehouse and sub warehouse.
+            </summary>
+            <param name="locCode">A01-0001</param>
+            <param name="subwhCode">PGW2</param>
+            <param name="whCode">920</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.PhysicalCountingController.ExecutePcInputAndQueryAsync(erpsolution.dal.DTO.Pcinputrequest)">
+            <param name="req">
+            Data input for QR code scanning
+            Example:
+            ```json
+            {
+              "whCode": "920",
+              "subwhCode": "PGW2",
+              "pcName": "920PGW1_TEST", 
+              "locCode": "A01-0002",
+               "trAction": 1, // Note: 1 (Input), -1 (Cancel)
+              "cartonId": "MKS1854RGL001202507080004",
+              "userId": "2021017",
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.GetTransferPickingHeadersAsync(System.String,System.String)">
+            <param name="whCode">920</param>
+            <param name="subwhCode">PGW2</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.GetTransferPickingLinesAsync(System.String)">
+            <param name="invoiceNo">20251107-00001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferPickingController.ScanTransferPickingAsync(erpsolution.dal.EF.TransferPickingScanRequest)">
+            <param name="request">
+            Data input for Transfer Picking Scan
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": 1, // Note: 1 (Pick), -1 (Cancel Pick)
+              "TrInfo": "20251107-00001",
+              "CartonId": "MKS1927RGL003001",
+              "ContainerNo": null,
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.GetTransferShippingHeadersAsync(System.String,System.String)">
+            <param name="whCode">920</param>
+            <param name="subwhCode">PGW2</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.GetTransferShippingLinesAsync(System.String)">
+            <param name="invno">20251107-00001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.TransferShippingController.ScanTransferShippingAsync(erpsolution.dal.EF.TransferShippingScanRequest)">
+            <param name="request">
+            Data input for Transfer Shipping Scan
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "TrAction": 2, // Note: 2 (Ship), -2 (Cancel Ship)
+              "TrInfo": "20251107-00001",
+              "CartonId": "MKS1927RGL003001",
+              "ContainerNo": "CTN001004",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.WHReceiptController.GetReceiptHeadersAsync(System.String,System.String)">
+            <param name="whCode">920</param>
+            <param name="subwhCode">PGW2</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.WHReceiptController.GetReceiptLinesAsync(System.String)">
+            <param name="invoiceNo">20251107-00001</param>
+        </member>
+        <member name="M:erpsolution.api.Controllers.FGInventoryMobile.WHReceiptController.ScanReceiptAsync(erpsolution.dal.EF.WHReceiptScanRequest)">
+            <param name="request">
+            Data input for WH receipt Scan
+            Example:
+            ```json
+            {
+              "WhCode": "920",
+              "SubwhCode": "PGW2",
+              "LocCode": "A01-0001",
+              "InvNo": "20251107-00001",
+              "CartonId": "MKS1927RGL003001",
+              "UserId": "2021017"
+            }
+            ```
+            </param>
+        </member>
+        <member name="P:erpsolution.api.Base.BaseController.UserCreator">
+            <summary>
+            Username that authorized
+            </summary>
+        </member>
+        <member name="F:erpsolution.api.Base.BaseController.LanguageCol">
+            <summary>
+            Current language request
+            </summary>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Get(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get List Model
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.First(`2)">
+            <summary>
+            Get Model by ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Add(`1)">
+            <summary>
+            Add model
+            </summary>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Update(`1)">
+            <summary>
+            Update model
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:erpsolution.api.Base.ControllerBaseEx`3.Delete(`2)">
+            <summary>
+            Delete model
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
