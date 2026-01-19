@@ -186,11 +186,11 @@ namespace erpsolution.api.Controllers.FGInventoryMobile
                     return new HandleState(true, locCode, locCode);
                 }
 
-                return new HandleState(false, "Rack not exits");
+                return new HandleState(false, "Location not exits");
             }
             catch (Exception ex)
             {
-                var message = await LogErrorAsync(ex, "Check Rack", new { locCode, subwhCode, whCode });
+                var message = await LogErrorAsync(ex, "Check Location", new { locCode, subwhCode, whCode });
                 return new HandleState(false, message);
             }
         }
