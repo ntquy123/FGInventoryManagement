@@ -16,6 +16,7 @@ using erpsolution.dal.Context;
 using Microsoft.EntityFrameworkCore;
 using erpsolution.dal.EF;
 using Oracle.ManagedDataAccess.Client;
+using Microsoft.AspNetCore.StaticFiles;
 
 
 namespace erpsolution.api
@@ -264,7 +265,26 @@ namespace erpsolution.api
                     RequestPath = appSettings.UploadRootDomain
                 });
             }
+            string downloadsPath = Environment.GetEnvironmentVariable("DOWNLOADS_PATH");
+            if (string.IsNullOrWhiteSpace(downloadsPath))
+            {
+                downloadsPath = Path.Combine(env.ContentRootPath, "downloads");
+            }
+            if (Directory.Exists(downloadsPath))
+            {
 
+                var downloadsContentTypes = new FileExtensionContentTypeProvider();
+                downloadsContentTypes.Mappings[".apk"] = "application/vnd.android.package-archive";
+
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(downloadsPath),
+                    RequestPath = "/downloads",
+                    ContentTypeProvider = downloadsContentTypes,
+                    ServeUnknownFileTypes = true
+
+                });
+            }
             //app.UseForwardedHeaders();
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
