@@ -1,105 +1,149 @@
-﻿#!/bin/bash
-
+﻿#!/usr/bin/env bash
 # ==============================================
-#        PKFGM DEPLOYMENT SCRIPT - V3.0
+#        PKFGM DEPLOYMENT SCRIPT - V4.2
+#        Pull-only / No checkout / No commit
 # ==============================================
 
-# --- CONFIG COLORS ---
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+# ---------------------------
+# Config
+# ---------------------------
+APP_NAME="PKFGM"
+COMPOSE_CMD="docker compose"
+PROGRESS_SPEED=0.02
+
+# ---------------------------
+# Colors
+# ---------------------------
 NC='\033[0m'
-B_BLACK='\033[1;30m'
 RED='\033[0;31m'    B_RED='\033[1;31m'
 GREEN='\033[0;32m'  B_GREEN='\033[1;32m'
-B_YELLOW='\033[1;33m'
 BLUE='\033[0;34m'   B_BLUE='\033[1;34m'
 MAGENTA='\033[0;35m' B_MAGENTA='\033[1;35m'
 CYAN='\033[0;36m'   B_CYAN='\033[1;36m'
 B_WHITE='\033[1;37m'
 BG_RED='\033[41m'
 
-# --- LOG FUNCTIONS ---
-log_info() { echo -e "  ${B_BLUE}[INFO]${NC} $1"; }
-log_process() { echo -e "  ${B_CYAN}[RUNNING]${NC} $1..."; }
-log_success() { echo -e "  ${B_GREEN}[SUCCESS]${NC} $1"; }
+# ---------------------------
+# Logging
+# ---------------------------
+ ts() { date +"%Y-%m-%d %H:%M:%S"; }
+
+log_info()    { echo -e "[$(ts)] ${B_BLUE}[INFO]${NC} $*"; }
+log_warn()    { echo -e "[$(ts)] ${B_MAGENTA}[WARN]${NC} $*"; }
+log_run()     { echo -e "[$(ts)] ${B_CYAN}[RUN]${NC}  $*"; }
+log_ok()      { echo -e "[$(ts)] ${B_GREEN}[OK]${NC}   $*"; }
+
 log_error() {
-    echo -e "\n${BG_RED}${B_WHITE}  CRITICAL ERROR  ${NC}"
-    echo -e "${B_RED}👉 $1${NC}\n"
+  echo -e "\n${BG_RED}${B_WHITE} ERROR ${NC}"
+  echo -e "${B_RED}[$(ts)] $*${NC}\n"
 }
 
-separator() {
-    echo -e "${B_BLUE}════════════${B_MAGENTA}════════════${CYAN}════════════${NC}"
+
+sep() { echo -e "${B_BLUE}════════════${B_MAGENTA}════════════${CYAN}════════════${NC}"; }
+
+# ---------------------------
+# Helpers
+# ---------------------------
+require() {
+  command -v "$1" >/dev/null 2>&1 || {
+    log_error "Missing required command: $1"
+    exit 1
+  }
 }
 
-log_step() {
-    separator
-    echo -e "${B_MAGENTA}STEP $1:${NC} ${B_WHITE}$2${NC}"
-    separator
-    echo ""
+fake_progress() {
+  local msg="$1"
+  local w=26
+  printf "%s [" "$msg"
+  for ((i=0;i<w;i++)); do printf " "; done
+  printf "]\r%s [" "$msg"
+  for ((i=0;i<=w;i++)); do
+    printf "#"
+    sleep "$PROGRESS_SPEED"
+  done
+  printf "]\n"
 }
 
-# --- DRAW HEADER : PKFGM GALAXY 3D ---
+# ---------------------------
+# Header
+# ---------------------------
 draw_header() {
-    clear
-    printf "\n"
-    printf "${B_MAGENTA}      ██████╗ ██╗  ██╗███████╗ ██████╗ ███╗   ███╗${NC}\n"
-    printf "${B_MAGENTA}      ██╔══██╗██║ ██╔╝██╔════╝██╔════╝ ████╗ ████║${NC}\n"
-    printf "${B_BLUE}       ██████╔╝█████╔╝ █████╗  ██║  ███╗██╔████╔██║${NC}\n"
-    printf "${B_CYAN}       ██╔═══╝ ██╔═██╗ ██╔══╝  ██║   ██║██║╚██╔╝██║${NC}\n"
-    printf "${B_WHITE}      ██║     ██║  ██╗██║     ╚██████╔╝██║ ╚═╝ ██║${NC}\n"
-    printf "${B_WHITE}      ╚═╝     ╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝     ╚═╝${NC}\n"
-
-    printf "\n"
-    printf "${CYAN}      ✦ Galaxy Deployment System ✦${NC}\n"
-    printf "${B_MAGENTA}      API • Docker • Nginx • Automation${NC}\n"
-    printf "\n"
-    sleep 1
+  clear
+  echo -e "${B_MAGENTA}
+ ██████╗ ██╗  ██╗███████╗ ██████╗ ███╗   ███╗
+ ██╔══██╗██║ ██╔╝██╔════╝██╔════╝ ████╗ ████║
+ ██████╔╝█████╔╝ █████╗  ██║  ███╗██╔████╔██║
+ ██╔═══╝ ██╔═██╗ ██╔══╝  ██║   ██║██║╚██╔╝██║
+ ██║     ██║  ██╗██║     ╚██████╔╝██║ ╚═╝ ██║
+ ╚═╝     ╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝     ╚═╝
+${NC}"
+  echo -e "${CYAN} Galaxy Deployment System${NC}"
+  echo -e "${B_WHITE} API • Docker • Nginx${NC}\n"
 }
 
-# ==============================================
-#           RUN DEPLOY PROCESS
-# ==============================================
+# ---------------------------
+# Rollback Docker only
+# ---------------------------
+rollback_docker() {
+  log_warn "Rolling back Docker containers"
+  ${COMPOSE_CMD} down || true
+  ${COMPOSE_CMD} up -d || true
+}
 
-draw_header
+trap 'log_error "Deploy failed"; rollback_docker' ERR
 
-# --- STEP 1: GIT PULL ---
-log_step "1" "Syncing latest source code from Git"
-log_process "git pull"
+# ---------------------------
+# Main
+# ---------------------------
+main() {
+  draw_header
 
-if git_output=$(git pull 2>&1); then
-    echo -e "${CYAN}${git_output}${NC}"
-    log_success "Source code updated successfully"
-else
-    echo -e "${RED}${git_output}${NC}"
-    log_error "Git pull failed"
+  require git
+  require docker
+
+  # Environment info
+  sep
+  log_info "OS: $(grep PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '\"')"
+  log_info "Kernel: $(uname -r)"
+  log_info "Git: $(git --version)"
+  log_info "Docker: $(docker --version)"
+  log_info "Branch: $(git rev-parse --abbrev-ref HEAD)"
+  sep
+
+  # STEP 1: Git pull (current branch only)
+  sep
+  log_info "STEP 1: Pull latest code (current branch only)"
+  fake_progress "git pull"
+
+  if ! git pull; then
+    log_error "git pull failed. Local changes detected or merge conflict."
     exit 1
-fi
+  fi
 
-# --- STEP 2: DOCKER COMPOSE DOWN ---
-log_step "2" "Stopping old containers"
-log_process "docker compose down"
+  log_ok "Git pull completed"
 
-if docker compose down; then
-    log_success "Old containers stopped"
-else
-    log_error "Failed to stop containers"
-    exit 1
-fi
+  # STEP 2: Docker down
+  sep
+  log_info "STEP 2: Stop old containers"
+  fake_progress "docker compose down"
+  ${COMPOSE_CMD} down
+  log_ok "Containers stopped"
 
-# --- STEP 3: DOCKER COMPOSE UP ---
-log_step "3" "Building and starting PKFGM system"
-log_process "docker compose up --build -d"
+  # STEP 3: Docker build & up
+  sep
+  log_info "STEP 3: Build & deploy"
+  fake_progress "docker compose up"
+  ${COMPOSE_CMD} up -d --build --remove-orphans
+  log_ok "Deployment successful"
 
-if docker compose up --build -d --remove-orphans; then
-    log_success "PKFGM deployed successfully"
-else
-    log_error "Docker build failed"
-    exit 1
-fi
+  # Final
+  sep
+  log_ok "${APP_NAME} IS ONLINE"
+  ${COMPOSE_CMD} ps
+  sep
+}
 
-# --- FINAL ---
-separator
-echo -e "\n${B_GREEN}DEPLOYMENT COMPLETED — SYSTEM ONLINE${NC}\n"
-separator
-
-log_info "Container status:"
-docker compose ps
-echo ""
+main
