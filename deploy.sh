@@ -29,15 +29,18 @@ BG_RED='\033[41m'
 # ---------------------------
 # Logging
 # ---------------------------
-ts() { date +"%Y-%m-%d %H:%M:%S"; }
-log_info()    { echo -e "[${ts}] ${B_BLUE}[INFO]${NC} $*"; }
-log_warn()    { echo -e "[${ts}] ${B_MAGENTA}[WARN]${NC} $*"; }
-log_run()     { echo -e "[${ts}] ${B_CYAN}[RUN]${NC}  $*"; }
-log_ok()      { echo -e "[${ts}] ${B_GREEN}[OK]${NC}   $*"; }
+ ts() { date +"%Y-%m-%d %H:%M:%S"; }
+
+log_info()    { echo -e "[$(ts)] ${B_BLUE}[INFO]${NC} $*"; }
+log_warn()    { echo -e "[$(ts)] ${B_MAGENTA}[WARN]${NC} $*"; }
+log_run()     { echo -e "[$(ts)] ${B_CYAN}[RUN]${NC}  $*"; }
+log_ok()      { echo -e "[$(ts)] ${B_GREEN}[OK]${NC}   $*"; }
+
 log_error() {
   echo -e "\n${BG_RED}${B_WHITE} ERROR ${NC}"
-  echo -e "${B_RED}[${ts}] $*${NC}\n"
+  echo -e "${B_RED}[$(ts)] $*${NC}\n"
 }
+
 
 sep() { echo -e "${B_BLUE}════════════${B_MAGENTA}════════════${CYAN}════════════${NC}"; }
 
