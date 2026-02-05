@@ -18,8 +18,8 @@ services:
     volumes:
       - ./nginx/fginventory.conf:/etc/nginx/conf.d/fginventory.conf:ro
       - ./swagger-ui-5.30.2:/usr/share/nginx/fginventory/swagger-ui-5.30.2:ro
-            # Mount downloads so updates don't require rebuilding the image
-      - ./downloads:/app/downloads:ro
+      # Mount downloads so updates don't require rebuilding the image
+      - ./downloads:/usr/share/nginx/fginventory/downloads:ro
     depends_on:
       - app
     restart: always
